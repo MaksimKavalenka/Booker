@@ -1,0 +1,27 @@
+<form method="POST" class="form-submit form-validation" name="form">
+	<fieldset>
+		<legend>Register</legend>
+		<div class="field">
+			<label class="required" for="login">Login</label>
+			<input type="text" id="login" name="login" maxlength="255" ng-model="ctrl.user.login" ng-check-login required/>
+			<span class="invalid" ng-show="form.login.$pending.ngCheckLogin">Checking if this login is available...</span>
+			<span class="invalid" ng-show="form.login.$error.ngCheckLogin">This login is already taken</span>
+		</div>
+		<div class="field">
+			<label class="required" for="password">Password</label>
+			<input type="password" id="password" name="password" maxlength="255" ng-model="ctrl.user.password" ng-minlength="3" required/>
+			<span class="invalid" ng-show="form.password.$error.required || form.password.$error.minlength">Minimal count of symbols is 3</span>
+		</div>
+		<div class="field">
+			<label class="required" for="confirmPassword">Confirm password</label>
+			<input type="password" id="confirmPassword" name="confirmPassword" maxlength="255" ng-model="ctrl.user.confirmPassword" ng-match="ctrl.user.password" ng-minlength="3" required/>
+			<span class="invalid" ng-show="form.confirmPassword.$error.required || form.confirmPassword.$error.minlength">Minimal count of symbols is 3</span>
+			<span class="invalid" ng-show="form.confirmPassword.$error.ngMatch && !form.confirmPassword.$error.required && !form.confirmPassword.$error.minlength">Passwords do not match</span>
+		</div>
+		<div>
+			<button class="btn btn-primary" ng-click="ctrl.register()" ng-disabled="form.$invalid || ctrl.dataLoading">Register</button>
+			<button class="btn btn-default" ui-sref="login">Login</button>
+			<img ng-if="ctrl.dataLoading" src="/img/load.gif"/>
+		</div>
+	</fieldset>
+</form>

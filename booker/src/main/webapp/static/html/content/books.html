@@ -1,0 +1,5 @@
+<ul class="container content">
+	<li ng-repeat="book in ctrl.books">
+		<a ui-sref="book({id: book.id})"><img ng-src="book/{{book.id}}/cover.jpg"></a>
+	</li>
+</ul>

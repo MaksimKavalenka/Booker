@@ -1,0 +1,49 @@
+.btn {
+	border-width: 0;
+	color: #ffffff;
+	padding: 11px 23px;
+}
+.btn-input {
+	padding: 9px 16px;
+}
+.btn-search {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.btn-default {
+	background: #222222;
+}
+.btn-default:hover {
+	background: #575757;
+}
+.btn-default:active {
+	background: #000000;
+}
+.btn-primary {
+	background: #2780e3;
+}
+.btn-primary:hover {
+	background: #0fa3ff;
+}
+.btn-primary:active {
+	background: #1967be;
+}
+.btn-success {
+	background: #3fb618;
+}
+.btn-success:hover {
+	background: #5bda3b;
+}
+.btn-success:active {
+	background: #2f8912;
+}
+.btn-danger {
+	background: #cc002e;
+}
+.btn-danger:hover {
+	background: #f50029;
+}
+.btn-danger:active {
+	background: #80001c;
+}

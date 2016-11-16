@@ -1,0 +1,19 @@
+package by.training;
+
+import javax.security.auth.message.config.AuthConfigFactory;
+
+import org.apache.catalina.authenticator.jaspic.AuthConfigFactoryImpl;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BookerApplication {
+
+    public static void main(String[] args) {
+        if (AuthConfigFactory.getFactory() == null) {
+            AuthConfigFactory.setFactory(new AuthConfigFactoryImpl());
+        }
+        SpringApplication.run(BookerApplication.class, args);
+    }
+
+}

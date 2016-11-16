@@ -1,0 +1,81 @@
+form {
+	margin: 0;
+}
+textarea {
+	height: 50px;
+	resize: none;
+	width: 100%;
+}
+.form-search {
+	margin: 10px 0;
+	position: relative;
+}
+.form-search * {
+	display: inline;
+}
+.form-search .input-search {
+	padding: 9px;
+	width: 100%;
+}
+.form-submit {
+	margin: 50px 0;
+	text-align: center;
+}
+.form-submit * {
+	text-align: left;
+}
+.form-submit fieldset {
+	border-width: 0px;
+	display: inline-block;
+	font-family: sans-serif;
+}
+.form-submit fieldset legend {
+	font-size: 30px;
+}
+.form-submit .field {
+	margin: 24px 0;
+}
+.form-submit .field > * {
+	display: block;
+}
+.form-submit .simple > * {
+	display: inline-block;
+	vertical-align: middle;
+}
+.form-submit .field  label {
+	font-size: 14px;
+	font-weight: 600;
+	margin: 7px 0;
+}
+.form-submit .field input,
+.form-submit .field select {
+	border: 1px solid #aaaaaa;
+	margin: 5px 0;
+	padding: 7px;
+	width: 400px;
+}
+.form-submit .simple input,
+.form-submit .simple select {
+	margin: 5px 16px;
+	width: initial;
+}
+.form-submit .field span {
+	font-size: 13px;
+}
+.form-submit .field span.valid {
+	color: #00ff00;
+}
+.form-submit .field span.invalid {
+	color: #ff0000;
+}
+.form-validation label.required:after {
+	color: #ff0000;
+	content: " *";
+	font-size: 18px;
+}
+.form-validation input.ng-invalid.ng-touched {
+	border-color: #ff0000;
+}
+.form-validation input.ng-valid {
+	border-color: none;
+}

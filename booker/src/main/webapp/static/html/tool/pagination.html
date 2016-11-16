@@ -1,0 +1,3 @@
+<ul class="pagination">
+	<li ng-class="{'page-default': page.type === 'default', 'page-active': page.type === 'active'}" ng-repeat="page in pages"><a ui-sref="{{page.link}}">{{page.number}}</a>
+</ul>

@@ -1,0 +1,13 @@
+<form method="POST" class="form-submit form-validation" name="form">
+	<fieldset>
+		<legend>Upload books</legend>
+		<div class="field">
+			<label class="required" for="book">Book</label>
+			<input type="file" id="book" name="book" ng-model="ctrl.book" file-model="bookFile" required file-required/>
+		</div>
+		<div>
+			<button class="btn btn-success" ng-click="ctrl.uploadBooks()" ng-disabled="form.$invalid || form.name.$pending || ctrl.dataLoading">Submit</button>
+			<img ng-if="ctrl.dataLoading" src="/img/load.gif"/>
+		</div>
+	</fieldset>
+</form>

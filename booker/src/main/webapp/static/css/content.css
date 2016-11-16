@@ -1,0 +1,18 @@
+.container {
+	margin: 0 30px;
+}
+.content {
+	padding: 0;
+}
+.content li {
+	border: 2.5px solid #575757;
+	display: inline-block;
+	margin: 1px;
+	height: 306px;
+}
+.content li a {
+	cursor: pointer;
+}
+.content li img {
+	height: 100%;
+}

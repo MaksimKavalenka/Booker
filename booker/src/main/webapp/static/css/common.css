@@ -1,0 +1,77 @@
+body {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	margin: 0;
+	width: 100%;
+}
+hr.hr-common {
+	background-color: #292929;
+	border: none;
+	height: 1px;
+}
+hr.hr-comments {
+	background-color: #292929;
+	border: none;
+	height: 2px;
+	margin: 0;
+}
+hr.hr-dropdown {
+	background-color: #292929;
+	border: none;
+	height: 1px;
+	margin: 0 8px;
+}
+hr.hr-header-menu {
+	background-color: #eb0606;
+	border: none;
+	height: 5px;
+	margin: 0;
+}
+hr.hr-header-user {
+	background-color: #292929;
+	border: none;
+	height: 5px;
+	margin: 0;
+}
+.align-right {
+	text-align: right;
+}
+.flex {
+	flex: 1;
+}
+.footer {
+	margin-bottom: 20px;
+	text-align: center;
+}
+.justify {
+	display: flex;
+	justify-content: space-between;
+}
+.justify > * {
+	vertical-align: middle;
+}
+.welcome-title {
+	color: #eb0606;
+	font-size: 80px;
+	font-style: italic;
+	margin: 30px auto;
+	text-align: center;
+}
+.welcome-title > * {
+	display: inline-block;
+	vertical-align: middle;
+}
+.welcome-title > .logo {
+	background-image: url('../img/icon/icon-512.png');
+	background-repeat: no-repeat;
+	background-size: 150px;
+	display: inline-block;
+	height: 150px;
+	width: 150px;
+}
+.welcome-title > .title {
+	color: #6b2f04;
+	margin-left: -35px;
+	margin-top: -20px;
+}
