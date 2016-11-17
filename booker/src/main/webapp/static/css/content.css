@@ -10,9 +10,17 @@
 	margin: 1px;
 	height: 306px;
 }
+.content li > * {
+	display: inline-block;
+	vertical-align: top;
+}
 .content li a {
 	cursor: pointer;
 }
 .content li img {
 	height: 100%;
+}
+.content li title {
+}
+.content li author {
 }

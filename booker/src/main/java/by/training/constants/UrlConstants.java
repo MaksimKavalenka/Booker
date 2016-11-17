@@ -1,6 +1,6 @@
 package by.training.constants;
 
-public abstract class UrlConstants {
+public abstract class URLConstants {
 
     public static final String ANY      = "/**";
 

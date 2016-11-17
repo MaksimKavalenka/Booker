@@ -5,7 +5,7 @@
 	<groupId>by.training</groupId>
 	<artifactId>booker</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1</version>
+	<version>0.2</version>
 
 	<name>Booker</name>
 
@@ -53,15 +53,15 @@
 			<artifactId>epublib-core</artifactId>
 			<version>3.1</version>
 			<exclusions>
-				<exclusion> 
+				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-simple</artifactId>
 				</exclusion>
-				<exclusion> 
+				<exclusion>
 					<groupId>ch.qos.logback</groupId>
 					<artifactId>logback-classic</artifactId>
 				</exclusion>
-			</exclusions> 
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -139,11 +139,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

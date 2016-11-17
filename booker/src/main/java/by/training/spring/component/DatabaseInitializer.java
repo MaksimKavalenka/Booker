@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import by.training.constants.RoleConstants;
+import by.training.common.Role;
 import by.training.entity.RoleEntity;
 import by.training.service.dao.RoleServiceDAO;
 
@@ -23,7 +23,7 @@ public class DatabaseInitializer implements ApplicationListener<ContextRefreshed
     }
 
     private void roleInit() {
-        for (RoleConstants role : RoleConstants.values()) {
+        for (Role role : Role.values()) {
             if (roleService.getRoleByName(role.name()) == null) {
                 roleService.createRole(new RoleEntity(role.name()));
             }

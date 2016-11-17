@@ -1,6 +1,6 @@
 package by.training.controller.rest;
 
-import static by.training.constants.UrlConstants.Rest.USERS_URL;
+import static by.training.constants.URLConstants.Rest.USERS_URL;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import by.training.bean.ErrorMessage;
-import by.training.constants.RoleConstants;
+import by.training.common.Role;
 import by.training.dto.RegisterDTO;
 import by.training.entity.UserEntity;
 import by.training.exception.ValidationException;
@@ -72,7 +72,7 @@ public class UserRestController {
 
         try {
             Set<GrantedAuthority> roles = new HashSet<>(1);
-            roles.add(roleService.getRoleByName(RoleConstants.ROLE_USER.name()));
+            roles.add(roleService.getRoleByName(Role.ROLE_USER.name()));
 
             UserEntity user = new UserEntity(registerDto.getLogin(),
                     Secure.secureBySha(registerDto.getPassword(), registerDto.getLogin()), roles);

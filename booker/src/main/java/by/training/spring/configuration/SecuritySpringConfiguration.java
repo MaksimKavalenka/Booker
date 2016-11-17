@@ -1,7 +1,7 @@
 package by.training.spring.configuration;
 
-import static by.training.constants.RoleConstants.*;
-import static by.training.constants.UrlConstants.ANY;
+import static by.training.common.Role.*;
+import static by.training.constants.URLConstants.ANY;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,8 +22,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import by.training.constants.UrlConstants.Page;
-import by.training.constants.UrlConstants.Rest;
+import by.training.constants.URLConstants.Page;
+import by.training.constants.URLConstants.Rest;
 import by.training.spring.component.CsrfHeaderFilter;
 
 @Configuration
@@ -82,9 +82,9 @@ public class SecuritySpringConfiguration extends WebSecurityConfigurerAdapter {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry urlRegistry = http
                 .authorizeRequests();
 
+        urlRegistry.antMatchers("/cover" + ANY).permitAll();
         urlRegistry.antMatchers("/").permitAll();
         urlRegistry.antMatchers(Page.REGISTER_URL).permitAll();
-        urlRegistry.antMatchers("/book" + ANY).permitAll();
         urlRegistry.antMatchers(Page.BOOKS_URL + ANY).permitAll();
 
         urlRegistry.antMatchers(Rest.BOOKS_URL + ANY).permitAll();

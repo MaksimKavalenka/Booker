@@ -1,7 +1,7 @@
 package by.training.controller;
 
 import static by.training.constants.DefaultConstants.*;
-import static by.training.constants.UrlConstants.Page.*;
+import static by.training.constants.URLConstants.Page.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

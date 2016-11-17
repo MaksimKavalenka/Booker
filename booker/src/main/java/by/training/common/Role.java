@@ -1,12 +1,12 @@
-package by.training.constants;
+package by.training.common;
 
-public enum RoleConstants {
+public enum Role {
 
     ROLE_USER("USER");
 
     private String role;
 
-    private RoleConstants(String role) {
+    private Role(String role) {
         this.role = role;
     }
 

@@ -128,7 +128,7 @@ public class UserEntity extends AbstractEntity implements UserDetails {
 
     @Override
     public String toString() {
-        return "UserEntity [id=" + super.getId() + ", login=" + login + "]";
+        return getClass().getName() + "[id:" + super.getId() + ",login:" + login + "]";
     }
 
 }

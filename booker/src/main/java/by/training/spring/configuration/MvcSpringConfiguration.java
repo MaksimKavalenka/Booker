@@ -85,8 +85,8 @@ public class MvcSpringConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/**").addResourceLocations("/static/");
-        registry.addResourceHandler("/book/**")
-                .addResourceLocations("file:///" + UploadConstants.Path.BOOKS_ROOT + "/");
+        registry.addResourceHandler("/cover/**")
+                .addResourceLocations("file:///" + UploadConstants.Path.COVER_ROOT + "/");
     }
 
     @Override

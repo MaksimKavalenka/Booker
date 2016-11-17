@@ -1,8 +1,8 @@
 package by.training.controller.rest;
 
-import static by.training.constants.UrlConstants.PAGE_KEY;
-import static by.training.constants.UrlConstants.Rest.BOOKS_URL;
-import static by.training.constants.UrlConstants.Rest.JSON_EXT;
+import static by.training.constants.URLConstants.PAGE_KEY;
+import static by.training.constants.URLConstants.Rest.BOOKS_URL;
+import static by.training.constants.URLConstants.Rest.JSON_EXT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -4,7 +4,7 @@ app.service('UploadFactory', function($http, MESSAGE, REST) {
 	function uploadFile(file, callback) {
 		var formData = new FormData();
 		formData.append('file', file);
-		$http.post(REST.UPLOAD + '/epub', formData, {
+		$http.post(REST.UPLOAD, formData, {
 			transformRequest: angular.identity,
 			headers: {'Content-Type': undefined}
 		})
