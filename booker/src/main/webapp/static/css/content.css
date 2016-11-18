@@ -5,10 +5,11 @@
 	padding: 0;
 }
 .content li {
-	border: 2.5px solid #575757;
+	border: 1px solid #575757;
 	display: inline-block;
 	margin: 1px;
 	height: 306px;
+	width: 512px;
 }
 .content li > * {
 	display: inline-block;
@@ -20,7 +21,15 @@
 .content li img {
 	height: 100%;
 }
-.content li title {
+.content li .info {
+	margin: 10px;
 }
-.content li author {
+.content li .title {
+	font-size: 20px;
+	font-weight: bold;
+}
+.content li .author {
+	font-size: 15px;
+	font-style: italic;
+	margin: 5px 0;
 }

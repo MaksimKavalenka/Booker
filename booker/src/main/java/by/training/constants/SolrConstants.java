@@ -6,7 +6,7 @@ public abstract class SolrConstants {
 
         private static final String SOLR_URL          = "http://localhost:8983/solr";
 
-        public static final String  CONTENT_CORE_URI  = SOLR_URL + "/booker.content";
+        public static final String  CONTENT_CORE_URI  = SOLR_URL + "/booker_content";
         public static final String  METADATA_CORE_URI = SOLR_URL + "/booker_metadata";
 
     }
@@ -15,26 +15,25 @@ public abstract class SolrConstants {
 
         public static abstract class ContentFields {
 
-            public static final String ID            = "id";
-            public static final String METADATA_ID   = "metadata_id";
-            public static final String PLAIN_CONTENT = "plain_content";
-            public static final String VERSION       = "_version_";
+            public static final String CHAPTER     = "chapter";
+            public static final String CONTENT     = "content";
+            public static final String ID          = "id";
+            public static final String METADATA_ID = "metadata_id";
 
         }
 
         public static abstract class MetadataFields {
 
+            public static final String AUTHOR           = "author";
+            public static final String CREATION_DATE    = "creation_date";
+            public static final String DESCRIPTION      = "description";
             public static final String ID               = "id";
             public static final String ISBN             = "isbn";
-            public static final String TITLE            = "title";
-            public static final String DESCRIPTION      = "description";
-            public static final String AUTHOR           = "author";
-            public static final String PUBLISHER        = "publisher";
-            public static final String UPLOADER         = "uploader";
-            public static final String CREATION_DATE    = "creation_date";
             public static final String PUBLICATION_DATE = "publication_date";
+            public static final String PUBLISHER        = "publisher";
+            public static final String TITLE            = "title";
+            public static final String UPLOADER         = "uploader";
             public static final String UPLOADING_DATE   = "uploading_date";
-            public static final String VERSION          = "_version_";
 
         }
 
