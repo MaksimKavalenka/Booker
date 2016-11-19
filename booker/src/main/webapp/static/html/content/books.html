@@ -4,6 +4,8 @@
 		<div class="info">
 			<div class="title">{{book.title}}</div>
 			<div class="author" ng-repeat="author in book.author">{{author}}</div>
+			<hr class="hr-common">
+			<div ng-repeat="description in book.description">{{description}}</div>
 		</div>
 	</li>
 </ul>

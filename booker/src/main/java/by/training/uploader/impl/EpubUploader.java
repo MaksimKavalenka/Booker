@@ -1,12 +1,8 @@
-package by.training.utility;
+package by.training.uploader.impl;
 
-import static by.training.constants.SolrConstants.Cores.*;
-import static by.training.constants.SolrConstants.Fields.*;
+import static by.training.constants.SolrConstants.Core.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,24 +12,44 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
+import org.springframework.stereotype.Service;
 
+import com.github.mertakdut.Reader;
+import com.github.mertakdut.exception.OutOfPagesException;
+import com.github.mertakdut.exception.ReadingException;
+
+import by.training.constants.SolrConstants.Fields.ContentFields;
+import by.training.constants.SolrConstants.Fields.MetadataFields;
 import by.training.exception.ValidationException;
+import by.training.uploader.Uploadable;
+import by.training.utility.Parser;
 import nl.siegmann.epublib.domain.Author;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Date;
 import nl.siegmann.epublib.domain.Identifier;
-import nl.siegmann.epublib.domain.Resource;
 
-public abstract class EpubUploader {
+@Service("epubUploader")
+public class EpubUploader implements Uploadable {
 
-    public static void uploadBook(Book book, String id, String uploader)
-            throws ValidationException {
-        uploadMetadata(book, id, uploader);
-        uploadContent(book, id);
+    private int progress;
+
+    public EpubUploader() {
     }
 
-    public static void uploadMetadata(Book book, String id, String uploader)
+    @Override
+    public int getProgress() {
+        return progress;
+    }
+
+    @Override
+    public void uploadBook(Book book, String id, String uploader, String path)
             throws ValidationException {
+        uploadMetadata(book, id, uploader);
+        uploadContent(id, path);
+    }
+
+    @Override
+    public void uploadMetadata(Book book, String id, String uploader) throws ValidationException {
         try (SolrClient client = new HttpSolrClient(METADATA_CORE_URI)) {
             SolrInputDocument inputDocument = new SolrInputDocument();
 
@@ -43,7 +59,7 @@ public abstract class EpubUploader {
             inputDocument.setField(MetadataFields.DESCRIPTION,
                     book.getMetadata().getDescriptions());
             inputDocument.setField(MetadataFields.PUBLISHER, book.getMetadata().getPublishers());
-            inputDocument.setField(MetadataFields.UPLOADING_DATE, new java.util.Date());
+            inputDocument.setField(MetadataFields.UPLOAD_DATE, new java.util.Date());
 
             List<Identifier> identifiers = book.getMetadata().getIdentifiers();
             List<String> strIdentifiers = new ArrayList<>(identifiers.size());
@@ -71,11 +87,11 @@ public abstract class EpubUploader {
                 switch (event) {
                     case CREATION:
                         inputDocument.setField(MetadataFields.CREATION_DATE,
-                                Parser.parse(date.getValue()));
+                                Parser.parseToIso8601(date.getValue()));
                         break;
                     case PUBLICATION:
                         inputDocument.setField(MetadataFields.PUBLICATION_DATE,
-                                Parser.parse(date.getValue()));
+                                Parser.parseToIso8601(date.getValue()));
                         break;
                     default:
                         break;
@@ -89,39 +105,34 @@ public abstract class EpubUploader {
         }
     }
 
-    private static void uploadContent(Book book, String metadataId) throws ValidationException {
+    @Override
+    public void uploadContent(String metadataId, String path) throws ValidationException {
         try (SolrClient client = new HttpSolrClient(CONTENT_CORE_URI)) {
 
-            List<Resource> contents = book.getContents();
-            for (int chapter = 0; chapter < contents.size(); chapter++) {
+            Reader reader = new Reader();
+            reader.setFullContent(path);
+            reader.setMaxContentPerSection(1000);
+            reader.setIsIncludingTextContent(true);
+
+            int size = reader.getToc().getNavMap().getNavPoints().size();
+            for (int page = 0; page < size; page++) {
                 SolrInputDocument inputDocument = new SolrInputDocument();
 
+                String content = reader.readSection(page).getSectionTextContent();
+
+                inputDocument.setField(ContentFields.ID,
+                        UUID.nameUUIDFromBytes((metadataId + page + 1).getBytes()).toString());
                 inputDocument.setField(ContentFields.METADATA_ID, metadataId);
-
-                InputStream in = contents.get(chapter).getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                try {
-                    String line;
-                    StringBuilder content = new StringBuilder();
-
-                    while ((line = reader.readLine()) != null) {
-                        content.append(line + "\n").toString();
-                    }
-
-                    inputDocument.setField(ContentFields.CONTENT, content.toString());
-
-                    inputDocument.setField(ContentFields.ID, UUID
-                            .nameUUIDFromBytes((metadataId + chapter + 1).getBytes()).toString());
-                    inputDocument.setField(ContentFields.CHAPTER, chapter + 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                inputDocument.setField(ContentFields.PAGE, page + 1);
+                inputDocument.setField(ContentFields.CONTENT, content);
 
                 client.add(inputDocument);
+
+                progress = (int) Math.ceil((double) page * 100 / size);
             }
 
             client.commit(true, true);
-        } catch (IOException | SolrServerException e) {
+        } catch (IOException | OutOfPagesException | ReadingException | SolrServerException e) {
             throw new ValidationException(e.getMessage());
         }
     }

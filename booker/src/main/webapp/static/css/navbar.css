@@ -10,9 +10,6 @@
 	display: inline-block;
 	font-family: "Berlin Sans FB";
 }
-.navigation > li.main {
-	padding: 5px 0;
-}
 .navigation > li > a,
 .navigation > li > button.link {
 	display: inline-block;
@@ -23,16 +20,6 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.navigation > li.main > a,
-.navigation > li.main > button.link {
-	background-image: url('../img/icon/icon-512.png');
-	background-repeat: no-repeat;
-	background-size: 70px;
-	height: 70px;
-	margin-right: 25px;
-	padding: 0;
-	width: 70px;
-}
 .navbar-menu > li.main:hover {
 	background: transparent;
 }
@@ -40,14 +27,14 @@
 	background: transparent;
 }
 .navbar-menu > li:hover {
-	background: #eb0606;
+	background: #6b2f04;
 }
 .navbar-menu > li:active {
-	background: #eb0606;
+	background: #6b2f04;
 }
 .navbar-menu > li > a,
 .navbar-menu > li > button.link {
-	color: #eb0606;
+	color: #6b2f04;
 }
 .navbar-menu > li:hover > a,
 .navbar-menu > li:active > a,
@@ -56,14 +43,14 @@
 	color: #ffffff;
 }
 .navbar-user > li:hover {
-	background: #292929;
+	background: #ccad00;
 }
 .navbar-user > li:active {
-	background: #292929;
+	background: #ccad00;
 }
 .navbar-user > li > a,
 .navbar-user > li > button.link {
-	color: #292929;
+	color: #ccad00;
 }
 .navbar-user > li:hover > a,
 .navbar-user > li:active > a,

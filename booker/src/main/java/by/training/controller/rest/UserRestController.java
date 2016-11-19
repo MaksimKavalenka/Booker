@@ -65,8 +65,7 @@ public class UserRestController {
     public ResponseEntity<Object> createUser(@RequestBody @Valid RegisterDTO registerDto,
             Errors errors) {
         if (errors.hasErrors()) {
-            return new ResponseEntity<Object>(
-                    new ErrorMessage(Parser.getErrorsMessagesFromObjectError(errors)),
+            return new ResponseEntity<Object>(new ErrorMessage(Parser.getErrorsMessages(errors)),
                     HttpStatus.BAD_REQUEST);
         }
 

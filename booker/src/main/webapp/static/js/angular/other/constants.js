@@ -14,6 +14,7 @@ app.constant('MESSAGE', (function() {
 	return {
 		AUTHENTICATION_ERROR: 'Login or password is wrong',
 		GETTING_BOOKS_ERROR: gettingError + 'books',
+		GETTING_PROGRESS_ERROR: gettingError + 'progress',
 		GETTING_USER_ERROR: gettingError + 'user',
 		PASSWORDS_ERROR: 'Passwords do not match',
 		TAKEN_LOGIN_ERROR: 'This login is already taken',
@@ -35,6 +36,7 @@ app.constant('PATH', (function() {
 		REGISTER_FORM: formPath + '/register' + htmlExt,
 		UPLOAD_BOOKS_FORM: formPath + '/upload.books' + htmlExt,
 		BOOKS_CONTENT: contentPath + '/books' + htmlExt,
+		BOOK_CONTENT: contentPath + '/book' + htmlExt,
 		FOOTER: titlePath + '/footer' + htmlExt,
 		HEADER: titlePath + '/header' + htmlExt,
 		WELCOME_HEADER: titlePath + '/welcome.header' + htmlExt,
@@ -59,7 +61,8 @@ app.constant('STATE', (function() {
 		LOGIN: 'login',
 		REGISTER: 'register',
 		UPLOAD_BOOKS: 'upload_books',
-		BOOKS: 'books'
+		BOOKS: 'books',
+		BOOK: 'book'
 	}
 })());
 
@@ -68,7 +71,8 @@ app.constant('TITLE', (function() {
 		LOGIN: 'Login',
 		REGISTER: 'Register',
 		UPLOAD_BOOKS: 'Upload books',
-		BOOKS: 'Books'
+		BOOKS: 'Books',
+		BOOK: 'Book'
 	}
 })());
 
@@ -76,14 +80,15 @@ app.constant('URL', (function() {
 	var loginUrl = '/login';
 	var registerUrl = '/register';
 	var booksUrl = '/books';
+	var bookUrl = '/book';
 	var uploadOperation = '/upload';
-	var idKey = '{id:[0-9]{1,}}';
 	var pageKey = '{page:[0-9]{1,}}';
 	return {
 		HOME: booksUrl + '?page=1',
 		LOGIN: loginUrl,
 		REGISTER: registerUrl,
 		UPLOAD_BOOKS: booksUrl + uploadOperation,
-		BOOKS: booksUrl + '?' + pageKey
+		BOOKS: booksUrl + '?' + pageKey,
+		BOOK: bookUrl + '/{id}?' + pageKey
 	}
 })());

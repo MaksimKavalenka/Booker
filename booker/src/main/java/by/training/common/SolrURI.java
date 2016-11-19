@@ -12,7 +12,7 @@ public class SolrURI {
     private String              coreUri;
     private RequestHeader       requestHeader;
 
-    private Map<String, String> queries = new HashMap<>(5);
+    private Map<String, String> queries = new HashMap<>(8);
 
     public SolrURI(String coreUri, RequestHeader requestHeader) {
         this.coreUri = coreUri;
@@ -35,16 +35,47 @@ public class SolrURI {
         this.requestHeader = requestHeader;
     }
 
-    public String getQuery() {
-        return queries.get(QUERY);
+    public String getFieldList() {
+        return queries.get(FIELD_LIST);
     }
 
-    public void setQuery(String query) {
-        queries.put(QUERY, query);
+    public void setFieldList(String fieldList) {
+        queries.put(FIELD_LIST, fieldList);
     }
 
-    public void removeQuery() {
-        queries.remove(QUERY);
+    public void addFieldList(String fieldList) {
+        String _fieldList = queries.get(FIELD_LIST);
+        if (_fieldList != null) {
+            queries.put(FIELD_LIST, _fieldList + "," + fieldList);
+        } else {
+            setFieldList(fieldList);
+        }
+    }
+
+    public void removeFieldList() {
+        queries.remove(FIELD_LIST);
+    }
+
+    public String getFilterQuery() {
+        return queries.get(FILTER_QUERY);
+    }
+
+    public void setFilterQuery(String field, String condition) {
+        queries.put(FILTER_QUERY, field + ":" + condition);
+    }
+
+    public void addFilterQuery(String field, String condition) {
+        String filterQuery = queries.get(FILTER_QUERY);
+        if (filterQuery != null) {
+            queries.put(FILTER_QUERY,
+                    filterQuery + "&" + FILTER_QUERY + "=" + field + ":" + condition);
+        } else {
+            setFilterQuery(field, condition);
+        }
+    }
+
+    public void removeFilterQuery() {
+        queries.remove(FILTER_QUERY);
     }
 
     public boolean isIndent() {
@@ -59,17 +90,17 @@ public class SolrURI {
         queries.remove(INDENT);
     }
 
-    public long getStart() {
-        String start = queries.get(START);
-        return start != null ? Long.valueOf(start) : 0;
+    public long getRows() {
+        String rows = queries.get(ROWS);
+        return rows != null ? Long.valueOf(rows) : 0;
     }
 
-    public void setStart(long start) {
-        queries.put(START, String.valueOf(start));
+    public void setRows(long rows) {
+        queries.put(ROWS, String.valueOf(rows));
     }
 
-    public void removeStart() {
-        queries.remove(START);
+    public void removeRows() {
+        queries.remove(ROWS);
     }
 
     public String getSorting() {
@@ -85,12 +116,37 @@ public class SolrURI {
         if (sort != null) {
             queries.put(SORTING, sort + "," + field + " " + order.toString());
         } else {
-            queries.put(SORTING, field + " " + order.toString());
+            setSorting(field, order);
         }
     }
 
     public void removeSorting() {
         queries.remove(SORTING);
+    }
+
+    public long getStart() {
+        String start = queries.get(START);
+        return start != null ? Long.valueOf(start) : 0;
+    }
+
+    public void setStart(long start) {
+        queries.put(START, String.valueOf(start));
+    }
+
+    public void removeStart() {
+        queries.remove(START);
+    }
+
+    public String getQuery() {
+        return queries.get(QUERY);
+    }
+
+    public void setQuery(String query) {
+        queries.put(QUERY, query);
+    }
+
+    public void removeQuery() {
+        queries.remove(QUERY);
     }
 
     public WriterType getWriterType() {

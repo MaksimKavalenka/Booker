@@ -19,20 +19,17 @@ public abstract class Secure {
         return encoder.encodePassword(rawPass, salt);
     }
 
-    public static String encodeFileByMd5(InputStream inputStream)
+    public static String encodeFileByMd5(InputStream in)
             throws NoSuchAlgorithmException, IOException {
         MessageDigest digest = MessageDigest.getInstance("MD5");
         byte[] byteArray = new byte[1024];
         int bytesCount = 0;
 
-        while ((bytesCount = inputStream.read(byteArray)) != -1) {
+        while ((bytesCount = in.read(byteArray)) != -1) {
             digest.update(byteArray, 0, bytesCount);
         }
 
-        inputStream.close();
-
         byte[] bytes = digest.digest();
-
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
             sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));

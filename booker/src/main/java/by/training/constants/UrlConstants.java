@@ -2,10 +2,14 @@ package by.training.constants;
 
 public abstract class URLConstants {
 
-    public static final String ANY      = "/**";
+    public static final String ANY = "/**";
 
-    public static final String ID_KEY   = "/{id:[0-9]{1,}}";
-    public static final String PAGE_KEY = "/{page:[0-9]{1,}}";
+    public abstract class Key {
+
+        public static final String ID_KEY   = "/{id}";
+        public static final String PAGE_KEY = "/{page:[0-9]{1,}}";
+
+    }
 
     public abstract class Page {
 
@@ -15,6 +19,7 @@ public abstract class URLConstants {
         public static final String  REGISTER_URL     = "/register";
 
         public static final String  BOOKS_URL        = "/books";
+        public static final String  BOOK_URL         = "/book" + Key.ID_KEY;
 
         public static final String  UPLOAD_BOOKS_URL = BOOKS_URL + UPLOAD_OPERATION;
 

@@ -8,6 +8,7 @@
 		<div>
 			<button class="btn btn-success" ng-click="ctrl.uploadBooks()" ng-disabled="form.$invalid || form.name.$pending || ctrl.dataLoading">Submit</button>
 			<img ng-if="ctrl.dataLoading" src="/img/load.gif"/>
+			<div>Progress: {{ctrl.progress}}%</div>
 		</div>
 	</fieldset>
 </form>

@@ -1,4 +1,4 @@
-package by.training.spring.service;
+package by.training.spring.security;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

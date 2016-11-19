@@ -6,6 +6,7 @@ public abstract class UploadConstants {
 
         private static final String ROOT       = "C:/ServerData/booker";
         public static final String  COVER_ROOT = ROOT + "/cover";
+        public static final String  TEMP_ROOT  = ROOT + "/temp";
 
     }
 

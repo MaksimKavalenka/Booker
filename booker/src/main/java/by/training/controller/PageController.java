@@ -20,7 +20,7 @@ public class PageController {
         return DEFAULT_PATH;
     }
 
-    @RequestMapping(value = {BOOKS_URL}, params = "page", method = RequestMethod.GET)
+    @RequestMapping(value = {BOOKS_URL, BOOK_URL}, params = "page", method = RequestMethod.GET)
     public String booksPage() {
         return DEFAULT_PATH;
     }

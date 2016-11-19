@@ -50,9 +50,26 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		}
 	})
 
+	.state(STATE.UPLOAD_BOOKS, {
+		title: TITLE.UPLOAD_BOOKS,
+		url: URL.UPLOAD_BOOKS,
+		views: {
+			header: header,
+			content: {
+				controller: CONTROLLER.UPLOAD_CONTROLLER,
+				controllerAs: CONTROLLER.CTRL,
+				templateUrl: PATH.UPLOAD_BOOKS_FORM
+			},
+			footer: footer
+		}
+	})
+
 	.state(STATE.BOOKS, {
 		title: TITLE.BOOKS,
 		url: URL.BOOKS,
+		params: {
+			page: '1'
+		},
 		views: {
 			header: header,
 			pagination: pagination,
@@ -65,15 +82,18 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		}
 	})
 
-	.state(STATE.UPLOAD_BOOKS, {
-		title: TITLE.UPLOAD_BOOKS,
-		url: URL.UPLOAD_BOOKS,
+	.state(STATE.BOOK, {
+		title: TITLE.BOOK,
+		url: URL.BOOK,
+		params: {
+			page: '1'
+		},
 		views: {
 			header: header,
 			content: {
-				controller: CONTROLLER.UPLOAD_CONTROLLER,
+				controller: CONTROLLER.BOOKS_CONTROLLER,
 				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.UPLOAD_BOOKS_FORM
+				templateUrl: PATH.BOOK_CONTENT
 			},
 			footer: footer
 		}

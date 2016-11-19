@@ -12,7 +12,7 @@ import org.springframework.validation.ObjectError;
 
 public abstract class Parser {
 
-    public static String getErrorsMessagesFromObjectError(Errors errors) {
+    public static String getErrorsMessages(Errors errors) {
         StringBuilder errorsMessages = new StringBuilder();
         for (ObjectError error : errors.getAllErrors()) {
             errorsMessages.append(error.getDefaultMessage() + "; ");
@@ -20,7 +20,7 @@ public abstract class Parser {
         return errorsMessages.toString();
     }
 
-    public static Date parse(String input) throws ParseException {
+    public static Date parseToIso8601(String input) throws ParseException {
 
         if (YYYY_PATTERN.matcher(input).matches()) {
             input += YYYY_ADDING;

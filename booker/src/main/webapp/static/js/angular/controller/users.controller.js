@@ -10,7 +10,7 @@ app.controller('UsersController', function($rootScope, $state, STATE, UsersFacto
 		UsersFactory.authentication(self.user.login, self.user.password, function(response) {
 			if (response.success) {
 				$rootScope.user = {id: response.data.id};
-				$state.go(STATE.BOOKS, {page: 1});
+				$state.go(STATE.BOOKS);
 			} else {
 				FlashService.error(response.message);
 			}
@@ -23,7 +23,7 @@ app.controller('UsersController', function($rootScope, $state, STATE, UsersFacto
 		UsersFactory.logout();
 		switch ($state.current.name) {
 			case STATE.UPLOAD:
-				$state.go(STATE.BOOKS, {page: 1});
+				$state.go(STATE.BOOKS);
 				break;
 			default:
 				$state.reload();

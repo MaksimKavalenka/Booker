@@ -1,7 +1,6 @@
-<hr class="hr-header-user">
-<div class="container navbar justify">
+<div class="navbar justify">
 	<ul class="navigation navbar-menu">
-		<li class="main"><a ui-sref="books({page: 1})"></a>
+		<li><a ui-sref="books">Books</a>
 	</ul>
 	<ul class="navigation navbar-user" ng-if="!user">
 		<li><a ui-sref="login">Log in</a>
@@ -11,4 +10,4 @@
 		<li><a ng-controller="UsersController as ctrl" ng-click="ctrl.logout()">Log out</a>
 	</ul>
 </div>
-<hr class="hr-header-menu">
+<hr class="hr-menu">

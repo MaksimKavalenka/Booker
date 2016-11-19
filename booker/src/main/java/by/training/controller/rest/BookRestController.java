@@ -1,6 +1,7 @@
 package by.training.controller.rest;
 
-import static by.training.constants.URLConstants.PAGE_KEY;
+import static by.training.constants.URLConstants.Key.ID_KEY;
+import static by.training.constants.URLConstants.Key.PAGE_KEY;
 import static by.training.constants.URLConstants.Rest.BOOKS_URL;
 import static by.training.constants.URLConstants.Rest.JSON_EXT;
 
@@ -22,8 +23,15 @@ public class BookRestController {
     private BookServiceDAO bookService;
 
     @RequestMapping(value = PAGE_KEY + JSON_EXT, method = RequestMethod.GET)
-    public ResponseEntity<String> getBooks(@PathVariable("page") int page) {
+    public ResponseEntity<String> getBooks(@PathVariable("page") long page) {
         String books = bookService.getBooksJson(page);
+        return new ResponseEntity<String>(books, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = ID_KEY + PAGE_KEY + JSON_EXT, method = RequestMethod.GET)
+    public ResponseEntity<String> getBook(@PathVariable("id") String id,
+            @PathVariable("page") long page) {
+        String books = bookService.getBookJson(id, page);
         return new ResponseEntity<String>(books, HttpStatus.OK);
     }
 
