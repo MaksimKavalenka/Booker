@@ -47,7 +47,6 @@ app.constant('PATH', (function() {
 app.constant('REST', (function() {
 	var service = '/service';
 	return {
-		JSON_EXT: '.json',
 		BOOKS: service + '/books',
 		UPLOAD: service + '/upload',
 		USERS: service + '/users'
@@ -89,6 +88,6 @@ app.constant('URL', (function() {
 		REGISTER: registerUrl,
 		UPLOAD_BOOKS: booksUrl + uploadOperation,
 		BOOKS: booksUrl + '?' + pageKey,
-		BOOK: bookUrl + '/{id}?' + pageKey
+		BOOK: bookUrl + '/{id}'
 	}
 })());

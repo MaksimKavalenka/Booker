@@ -4,7 +4,6 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 	var self = this;
 	self.books = [];
 	self.book;
-	self.content = [];
 
 	function init(state) {
 		switch (state) {
@@ -13,8 +12,8 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 				getBooks(page, state);
 				break;
 			case STATE.BOOK:
-				self.book = ePub("http://92f8aa73.ngrok.io/cover/123.epub");
-				self.book.renderTo("area");
+				var id = $state.params.id;
+				getBook(id);
 				break;
 		}
 	}
@@ -31,14 +30,20 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 		});
 	}
 
-	function getBook(id, page) {
-		BooksFactory.getBook(id, page, function(response) {
+	function getBook(id) {
+		BooksFactory.getBook(id, function(response) {
 			if (response.success) {
-				self.content = response.data;
+				var data = response.data;
+				read(data.id, data.file_name);
 			} else {
 				FlashService.error(response.message);
 			}
 		});
+	}
+
+	function read(id, file) {
+		self.book = ePub('book/' + id + '/' + file);
+		self.book.renderTo('area');
 	}
 
 	init($state.current.name);

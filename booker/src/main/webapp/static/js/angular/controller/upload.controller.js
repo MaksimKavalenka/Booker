@@ -4,7 +4,8 @@ app.controller('UploadController', function($scope, MESSAGE, UploadFactory, Flas
 	var self = this;
 	self.progress = 0;
 
-	self.uploadBooks = function(state, page) {
+	self.uploadBooks = function() {
+		self.dataLoading = true;
 		UploadFactory.uploadFile($scope.bookFile, function(response) {
 			var refreshIntervalId = setInterval(getProgress(), 1);
 			if (response.success) {
@@ -14,6 +15,7 @@ app.controller('UploadController', function($scope, MESSAGE, UploadFactory, Flas
 				FlashService.error(response.message);
 			}
 			clearInterval(refreshIntervalId);
+			self.dataLoading = false;
 		});
 	};
 

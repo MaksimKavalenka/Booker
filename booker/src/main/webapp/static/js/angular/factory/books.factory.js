@@ -6,7 +6,7 @@ app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
 			return;
 		}
 
-		$http.get(REST.BOOKS + '/' + page + REST.JSON_EXT)
+		$http.get(REST.BOOKS + '?page=' + page)
 		.success(function(response) {
 			var data = {success: true, data: response};
 			callback(data);
@@ -17,12 +17,12 @@ app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
-	function getBook(id, page, callback) {
-		if (!ValidatorService.allNotEmpty(callback, page)) {
+	function getBook(id, callback) {
+		if (!ValidatorService.allNotEmpty(callback, id)) {
 			return;
 		}
 
-		$http.get(REST.BOOKS + '/' + id + '/' + page + REST.JSON_EXT)
+		$http.get(REST.BOOKS + '/' + id)
 		.success(function(response) {
 			var data = {success: true, data: response};
 			callback(data);

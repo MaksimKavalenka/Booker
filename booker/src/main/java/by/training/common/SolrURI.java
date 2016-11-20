@@ -39,14 +39,36 @@ public class SolrURI {
         return queries.get(FIELD_LIST);
     }
 
-    public void setFieldList(String fieldList) {
-        queries.put(FIELD_LIST, fieldList);
+    public void setFieldList(String... fieldList) {
+        StringBuilder _fieldList = new StringBuilder();
+
+        int size = fieldList.length;
+        for (int i = 0; i < size; i++) {
+            _fieldList.append(fieldList[i]);
+
+            if ((i + 1) < size) {
+                _fieldList.append(",");
+            }
+        }
+
+        queries.put(FIELD_LIST, _fieldList.toString());
     }
 
-    public void addFieldList(String fieldList) {
+    public void addFieldList(String... fieldList) {
         String _fieldList = queries.get(FIELD_LIST);
         if (_fieldList != null) {
-            queries.put(FIELD_LIST, _fieldList + "," + fieldList);
+            StringBuilder __fieldList = new StringBuilder();
+
+            int size = fieldList.length;
+            for (int i = 0; i < size; i++) {
+                __fieldList.append(fieldList[i]);
+
+                if ((i + 1) < size) {
+                    __fieldList.append(",");
+                }
+            }
+
+            queries.put(FIELD_LIST, _fieldList + "," + __fieldList);
         } else {
             setFieldList(fieldList);
         }

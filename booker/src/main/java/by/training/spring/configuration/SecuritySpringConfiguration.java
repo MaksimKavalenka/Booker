@@ -82,7 +82,6 @@ public class SecuritySpringConfiguration extends WebSecurityConfigurerAdapter {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry urlRegistry = http
                 .authorizeRequests();
 
-        urlRegistry.antMatchers("/cover" + ANY).permitAll();
         urlRegistry.antMatchers("/").permitAll();
         urlRegistry.antMatchers(Page.REGISTER_URL).permitAll();
         urlRegistry.antMatchers(Page.BOOKS_URL + ANY).permitAll();

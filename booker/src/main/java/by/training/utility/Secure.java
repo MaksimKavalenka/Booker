@@ -1,5 +1,6 @@
 package by.training.utility;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import by.training.entity.UserEntity;
+import by.training.exception.SecureException;
 
 public abstract class Secure {
 
@@ -19,23 +21,28 @@ public abstract class Secure {
         return encoder.encodePassword(rawPass, salt);
     }
 
-    public static String encodeFileByMd5(InputStream in)
-            throws NoSuchAlgorithmException, IOException {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        byte[] byteArray = new byte[1024];
-        int bytesCount = 0;
+    public static String encodeFilePassword(String filePath) throws SecureException {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] byteArray = new byte[1024];
+            int bytesCount = 0;
 
-        while ((bytesCount = in.read(byteArray)) != -1) {
-            digest.update(byteArray, 0, bytesCount);
+            try (InputStream in = new FileInputStream(filePath)) {
+                while ((bytesCount = in.read(byteArray)) != -1) {
+                    digest.update(byteArray, 0, bytesCount);
+                }
+            }
+
+            byte[] bytes = digest.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return sb.toString();
+        } catch (IOException | NoSuchAlgorithmException e) {
+            throw new SecureException(e.getMessage());
         }
-
-        byte[] bytes = digest.digest();
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return sb.toString();
     }
 
     public static UserEntity getLoggedUser() {

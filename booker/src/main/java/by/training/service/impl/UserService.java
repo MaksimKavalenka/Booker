@@ -1,4 +1,4 @@
-package by.training.service.implementation;
+package by.training.service.impl;
 
 import static by.training.constants.MessageConstants.TAKEN_LOGIN_MESSAGE;
 

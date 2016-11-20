@@ -13,12 +13,12 @@ public abstract class JSONParser {
         JSONObject response = jsonObject.getJSONObject(RESPONSE_KEY);
 
         int page = response.getInt(START_KEY) / DEFAULT_ROWS_COUNT + 1;
-        response.append(PAGE_KEY, page);
+        response.put(PAGE_KEY, page);
         response.remove(START_KEY);
 
         int pagesCount = (int) Math
                 .ceil((double) response.getInt(NUM_FOUND_KEY) / DEFAULT_ROWS_COUNT);
-        response.append(PAGES_COUNT_KEY, pagesCount);
+        response.put(PAGES_COUNT_KEY, pagesCount);
         response.remove(NUM_FOUND_KEY);
 
         return response.toString();
@@ -28,7 +28,7 @@ public abstract class JSONParser {
         JSONObject jsonObject = new JSONObject(json);
         JSONObject response = jsonObject.getJSONObject(RESPONSE_KEY);
         JSONArray docs = response.getJSONArray(DOCS_KEY);
-        return docs.toString();
+        return docs.get(0).toString();
     }
 
 }

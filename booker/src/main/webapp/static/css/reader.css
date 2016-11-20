@@ -1,0 +1,22 @@
+.reader {
+	display: flex;
+	flex-direction: row;
+	height: 85%;
+	width: 100%;
+}
+.reader > * {
+	display: inline-block;
+	margin: 30px;
+	vertical-align: middle;
+}
+.action {
+	cursor: pointer;
+	font-size: 50px;
+	height: 0;
+}
+.area {
+	flex-grow: 1;
+}
+.highlight {
+	font-weight: bold;
+}

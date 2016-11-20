@@ -6,8 +6,7 @@ public abstract class URLConstants {
 
     public abstract class Key {
 
-        public static final String ID_KEY   = "/{id}";
-        public static final String PAGE_KEY = "/{page:[0-9]{1,}}";
+        public static final String ID_KEY = "/{id}";
 
     }
 
@@ -28,8 +27,6 @@ public abstract class URLConstants {
     public abstract class Rest {
 
         private static final String SERVICE    = "/service";
-
-        public static final String  JSON_EXT   = ".json";
 
         public static final String  BOOKS_URL  = SERVICE + "/books";
         public static final String  UPLOAD_URL = SERVICE + "/upload";

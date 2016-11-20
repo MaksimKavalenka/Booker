@@ -23,9 +23,9 @@ import by.training.constants.UploadConstants;
 import by.training.service.dao.BookServiceDAO;
 import by.training.service.dao.RoleServiceDAO;
 import by.training.service.dao.UserServiceDAO;
-import by.training.service.implementation.BookService;
-import by.training.service.implementation.RoleService;
-import by.training.service.implementation.UserService;
+import by.training.service.impl.BookService;
+import by.training.service.impl.RoleService;
+import by.training.service.impl.UserService;
 
 @Configuration
 @ComponentScan("by.training.spring.component")
@@ -85,8 +85,8 @@ public class MvcSpringConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/**").addResourceLocations("/static/");
-        registry.addResourceHandler("/cover/**")
-                .addResourceLocations("file:///" + UploadConstants.Path.COVER_ROOT + "/");
+        registry.addResourceHandler("/book/**")
+                .addResourceLocations("file:///" + UploadConstants.Path.BOOKS + "/");
     }
 
     @Override

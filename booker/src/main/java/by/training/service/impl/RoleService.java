@@ -1,4 +1,4 @@
-package by.training.service.implementation;
+package by.training.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

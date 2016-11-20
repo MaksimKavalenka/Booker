@@ -18,7 +18,6 @@ public abstract class SolrConstants {
             public static final String CONTENT     = "content";
             public static final String ID          = "id";
             public static final String METADATA_ID = "metadata_id";
-            public static final String PAGE        = "page";
 
         }
 
@@ -27,6 +26,7 @@ public abstract class SolrConstants {
             public static final String AUTHOR           = "author";
             public static final String CREATION_DATE    = "creation_date";
             public static final String DESCRIPTION      = "description";
+            public static final String FILE_NAME        = "file_name";
             public static final String ID               = "id";
             public static final String ISBN             = "isbn";
             public static final String PUBLICATION_DATE = "publication_date";

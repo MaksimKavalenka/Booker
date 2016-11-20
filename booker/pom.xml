@@ -5,7 +5,7 @@
 	<groupId>by.training</groupId>
 	<artifactId>booker</artifactId>
 	<packaging>jar</packaging>
-	<version>0.4</version>
+	<version>0.5</version>
 
 	<name>Booker</name>
 
@@ -61,6 +61,12 @@
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>1.14</version>
 		</dependency>
 
 		<dependency>

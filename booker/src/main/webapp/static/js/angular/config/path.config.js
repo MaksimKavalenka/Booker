@@ -85,9 +85,6 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 	.state(STATE.BOOK, {
 		title: TITLE.BOOK,
 		url: URL.BOOK,
-		params: {
-			page: '1'
-		},
 		views: {
 			header: header,
 			content: {
