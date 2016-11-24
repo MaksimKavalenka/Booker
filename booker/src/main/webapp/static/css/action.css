@@ -1,0 +1,9 @@
+.action-book-viewer {
+	background-image: url('../img/action/book-viewer.svg');
+	background-repeat: no-repeat;
+}
+.action-book-viewer:hover,
+.action-book-viewer:active {
+	background-image: url('../img/action/book-viewer-active.svg');
+	background-repeat: no-repeat;
+}

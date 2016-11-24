@@ -100,16 +100,20 @@ public class SolrURI {
         queries.remove(FILTER_QUERY);
     }
 
-    public boolean isIndent() {
-        return queries.get(INDENT) != null;
+    public boolean isHighlight() {
+        return Boolean.valueOf(queries.get(HIGHLIGHT));
     }
 
-    public void setIndent(boolean indent) {
-        queries.put(INDENT, String.valueOf(indent));
+    public void setHighlight(boolean highlight) {
+        if (highlight) {
+            queries.put(HIGHLIGHT, String.valueOf(highlight));
+        } else {
+            removeHighlight();
+        }
     }
 
-    public void removeIndent() {
-        queries.remove(INDENT);
+    public void removeHighlight() {
+        queries.remove(HIGHLIGHT);
     }
 
     public long getRows() {
@@ -123,6 +127,49 @@ public class SolrURI {
 
     public void removeRows() {
         queries.remove(ROWS);
+    }
+
+    public String getShards() {
+        return queries.get(SHARDS);
+    }
+
+    public void setShards(String... shards) {
+        StringBuilder _shards = new StringBuilder();
+
+        int size = shards.length;
+        for (int i = 0; i < size; i++) {
+            _shards.append(shards[i]);
+
+            if ((i + 1) < size) {
+                _shards.append(",");
+            }
+        }
+
+        queries.put(SHARDS, _shards.toString());
+    }
+
+    public void addShards(String... fieldList) {
+        String _shards = queries.get(SHARDS);
+        if (_shards != null) {
+            StringBuilder __shards = new StringBuilder();
+
+            int size = fieldList.length;
+            for (int i = 0; i < size; i++) {
+                __shards.append(fieldList[i]);
+
+                if ((i + 1) < size) {
+                    __shards.append(",");
+                }
+            }
+
+            queries.put(SHARDS, _shards + "," + __shards);
+        } else {
+            setFieldList(fieldList);
+        }
+    }
+
+    public void removeShards() {
+        queries.remove(SHARDS);
     }
 
     public String getSorting() {

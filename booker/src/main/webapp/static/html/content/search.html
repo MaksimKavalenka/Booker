@@ -1,0 +1,35 @@
+<form class="form-search" ng-submit="ctrl.search()">
+	<input type="text" class="input-search" ng-model="ctrl.search.query" placeholder="Search">
+	<div ng-if="ctrl.results.numFound">Results: {{ctrl.results.numFound}}</div>
+</form>
+<ul class="container content">
+	<li ng-repeat="result in ctrl.results.docs">
+		<div class="body" ng-if="!result.metadataId">
+			<a ui-sref="book_standard({id: result.id})"><img ng-src="book/{{result.id}}/{{result.id}}"></a>
+			<div class="body-link">
+				<div class="link link-action action-book-viewer" ui-sref="book_custom({id: result.id})"></div>
+				<div class="link link-action link-empty"></div>
+				<div class="link link-action link-empty"></div>
+				<div class="link link-action link-empty"></div>
+			</div>
+		</div>
+		<div class="info" ng-if="!result.metadataId">
+			<div class="title">{{result.title}}</div>
+			<div class="author" ng-repeat="author in result.author">{{author}}</div>
+			<hr class="hr-common">
+			<div ng-repeat="description in result.description">{{description}}</div>
+		</div>
+		<div class="body" ng-if="result.metadataId">
+			<a ui-sref="book_standard({id: result.metadataId})"><img ng-src="book/{{result.metadataId}}/{{result.metadataId}}"></a>
+			<div class="body-link">
+				<div class="link link-action action-book-viewer" ui-sref="book_custom({id: result.metadataId, page: result.page})"></div>
+				<div class="link link-action link-empty"></div>
+				<div class="link link-action link-empty"></div>
+				<div class="link link-action link-empty"></div>
+			</div>
+		</div>
+		<div class="info" ng-if="result.metadataId">
+			<div>{{result.content}}</div>
+		</div>
+	</li>
+</ul>

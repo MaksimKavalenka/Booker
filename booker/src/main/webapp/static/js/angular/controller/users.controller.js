@@ -2,7 +2,6 @@
 app.controller('UsersController', function($rootScope, $state, STATE, UsersFactory, FlashService) {
 
 	var self = this;
-	self.user = {};
 	var currentLogin = "";
 
 	self.login = function() {
@@ -22,7 +21,7 @@ app.controller('UsersController', function($rootScope, $state, STATE, UsersFacto
 		$rootScope.user = null;
 		UsersFactory.logout();
 		switch ($state.current.name) {
-			case STATE.UPLOAD:
+			case STATE.UPLOAD_BOOKS:
 				$state.go(STATE.BOOKS);
 				break;
 			default:

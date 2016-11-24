@@ -35,6 +35,7 @@ app.constant('PATH', (function() {
 		BOOK_CUSTOM_CONTENT: contentPath + '/book.custom' + htmlExt,
 		BOOK_STANDARD_CONTENT: contentPath + '/book.standard' + htmlExt,
 		BOOKS_CONTENT: contentPath + '/books' + htmlExt,
+		SEARCH_CONTENT: contentPath + '/search' + htmlExt,
 		LOGIN_FORM: formPath + '/login' + htmlExt,
 		REGISTER_FORM: formPath + '/register' + htmlExt,
 		UPLOAD_BOOKS_FORM: formPath + '/upload.books' + htmlExt,
@@ -63,6 +64,7 @@ app.constant('STATE', (function() {
 		BOOKS: 'books',
 		LOGIN: 'login',
 		REGISTER: 'register',
+		SEARCH: 'search',
 		UPLOAD_BOOKS: 'upload_books'
 	}
 })());
@@ -73,6 +75,7 @@ app.constant('TITLE', (function() {
 		BOOKS: 'Books',
 		LOGIN: 'Login',
 		REGISTER: 'Register',
+		SEARCH: 'Search',
 		UPLOAD_BOOKS: 'Upload books'
 	}
 })());
@@ -83,6 +86,7 @@ app.constant('URL', (function() {
 	var uploadOperation = '/upload';
 	var idKey = '{id}';
 	var pageKey = '{page:[0-9]{1,}}';
+	var queryKey = '{query}';
 	return {
 		HOME: booksUrl + '?page=1',
 		BOOK_CUSTOM: bookUrl + '/viewer/' + idKey + '?' + pageKey,
@@ -90,6 +94,7 @@ app.constant('URL', (function() {
 		BOOKS: booksUrl + '?' + pageKey,
 		LOGIN: '/login',
 		REGISTER: '/register',
+		SEARCH: '/search?' + queryKey + '&' + pageKey,
 		UPLOAD_BOOKS: booksUrl + uploadOperation
 	}
 })());

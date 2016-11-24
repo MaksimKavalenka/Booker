@@ -40,4 +40,11 @@ public class BookRestController {
         return new ResponseEntity<String>(book, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/search", params = {"query", "page"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getSearchResult(@Param("query") String query,
+            @Param("page") long page) {
+        String book = bookService.getSearchResultJson(query, page);
+        return new ResponseEntity<String>(book, HttpStatus.OK);
+    }
+
 }

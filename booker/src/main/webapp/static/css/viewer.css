@@ -1,10 +1,10 @@
-.reader {
+.viewer {
 	display: flex;
 	flex-direction: row;
 	height: 85%;
 	width: 100%;
 }
-.reader > * {
+.viewer > * {
 	display: inline-block;
 	margin: 30px;
 	vertical-align: middle;
@@ -17,6 +17,10 @@
 .area {
 	flex-grow: 1;
 }
-.highlight {
-	font-weight: bold;
+.pages > * {
+	display: inline-block;
+	padding: 20px;
+	text-align: justify;
+	vertical-align: top;
+	width: 46%;
 }

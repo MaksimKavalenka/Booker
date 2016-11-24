@@ -41,7 +41,8 @@ public class BookService implements BookServiceDAO {
         }
 
         SolrURI solrMetadataUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
-        solrMetadataUri.setFieldList(MetadataFields.ID, MetadataFields.TITLE);
+        solrMetadataUri.setFieldList(MetadataFields.ID, MetadataFields.TITLE,
+                MetadataFields.PAGES_COUNT);
         solrMetadataUri.setFilterQuery(MetadataFields.ID, id);
         solrMetadataUri.setQuery(DEFAULT_QUERY);
         solrMetadataUri.setWriterType(WriterType.JSON);
@@ -71,6 +72,23 @@ public class BookService implements BookServiceDAO {
 
         RestTemplate restTemplate = new RestTemplate();
         return SolrJSONParser.getBookStandardResponse(
+                restTemplate.getForObject(solrUri.toString(), String.class));
+    }
+
+    @Override
+    public String getSearchResultJson(String query, long page) {
+        SolrURI solrUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
+        solrUri.setFieldList(ContentFields.CONTENT, ContentFields.METADATA_ID, ContentFields.PAGE,
+                MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
+                MetadataFields.TITLE);
+        solrUri.setHighlight(true);
+        solrUri.setShards(CONTENT_CORE_URI, METADATA_CORE_URI);
+        solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
+        solrUri.setQuery(query);
+        solrUri.setWriterType(WriterType.JSON);
+
+        RestTemplate restTemplate = new RestTemplate();
+        return SolrJSONParser.getSearchResultResponse(
                 restTemplate.getForObject(solrUri.toString(), String.class));
     }
 

@@ -64,15 +64,15 @@ public class EpubSolrUploader implements SolrUploadable {
                 Utility.uploadFile(book.getCoverImage().getInputStream(), directoryPath + "/" + id);
             }
 
-            uploadMetadata(book, id, fileName, uploader);
-            uploadContent(id, filePath);
+            long pagesCount = uploadContent(id, filePath);
+            uploadMetadata(book, id, fileName, pagesCount, uploader);
         } catch (IOException | ValidationException e) {
             throw new UploadException(e.getMessage());
         }
     }
 
-    private void uploadMetadata(Book book, String id, String fileName, String uploader)
-            throws UploadException {
+    private void uploadMetadata(Book book, String id, String fileName, long pagesCount,
+            String uploader) throws UploadException {
         try (SolrClient client = new HttpSolrClient(METADATA_CORE_URI)) {
             SolrInputDocument inputDocument = new SolrInputDocument();
 
@@ -80,6 +80,7 @@ public class EpubSolrUploader implements SolrUploadable {
                     book.getMetadata().getDescriptions());
             inputDocument.setField(MetadataFields.FILE_NAME, fileName);
             inputDocument.setField(MetadataFields.ID, id);
+            inputDocument.setField(MetadataFields.PAGES_COUNT, pagesCount);
             inputDocument.setField(MetadataFields.PUBLISHER, book.getMetadata().getPublishers());
             inputDocument.setField(MetadataFields.TITLE, book.getTitle());
             inputDocument.setField(MetadataFields.UPLOAD_DATE, new java.util.Date());
@@ -123,8 +124,9 @@ public class EpubSolrUploader implements SolrUploadable {
         }
     }
 
-    private void uploadContent(String id, String filePath) throws UploadException {
+    private long uploadContent(String id, String filePath) throws UploadException {
         try (SolrClient client = new HttpSolrClient(CONTENT_CORE_URI)) {
+            long page = 0;
 
             Tika tika = new Tika();
             org.apache.tika.parser.Parser parser = new AdvancedEpubParser();
@@ -136,7 +138,6 @@ public class EpubSolrUploader implements SolrUploadable {
                 parser.parse(in, handler, metadata, new ParseContext());
 
                 int index = 0;
-                long page = 0;
                 while (index < handler.toString().length()) {
                     ++page;
 
@@ -165,6 +166,7 @@ public class EpubSolrUploader implements SolrUploadable {
             }
 
             client.commit(true, true);
+            return page;
         } catch (IOException | SAXException | SolrServerException | TikaException e) {
             throw new UploadException(e.getMessage());
         }

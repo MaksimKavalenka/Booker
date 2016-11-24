@@ -8,9 +8,8 @@ app.service('PaginationService', function($rootScope) {
 		}
 
 		var currentPage = parseInt(page);
-		var from = (currentPage <= 3) ? 1 : (currentPage - 2);
+		var from = ((currentPage <= 3) || (count <= 5)) ? 1 : (((currentPage + 2) >= count) ? (count - 4) : (currentPage - 2));
 		var to = (currentPage <= 3) ? 5 : (currentPage + 2);
-		from = (count <= 5) ? 1 : from;
 		to = (to <= count) ? to : count;
 
 		for (var i = from; i <= to; i++) {

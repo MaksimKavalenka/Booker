@@ -49,10 +49,27 @@ app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
+	function getSearchResult(query, page, callback) {
+		if (!ValidatorService.allNotEmpty(callback, query, page)) {
+			return;
+		}
+
+		$http.get(REST.BOOKS + '/search?query=' + query + '&page=' + page)
+		.success(function(response) {
+			var data = {success: true, data: response};
+			callback(data);
+		})
+		.error(function(response) {
+			response = {success: false, message: MESSAGE.GETTING_BOOKS_ERROR};
+			callback(response);
+		});
+	}
+
 	return {
 		getBooks: getBooks,
 		getBookCustom: getBookCustom,
-		getBookStandard: getBookStandard
+		getBookStandard: getBookStandard,
+		getSearchResult: getSearchResult
 	};
 
 });

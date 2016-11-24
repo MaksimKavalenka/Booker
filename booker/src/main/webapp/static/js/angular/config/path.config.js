@@ -13,8 +13,46 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		templateUrl: PATH.WELCOME_HEADER
 	};
 
-	var search = {
-		templateUrl: PATH.SEARCH_TOOL
+	var loginForm = {
+		controller: CONTROLLER.USERS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.LOGIN_FORM
+	};
+
+	var uploadBooksForm = {
+		controller: CONTROLLER.UPLOAD_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.UPLOAD_BOOKS_FORM
+	};
+
+	var registerForm = {
+		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.RESULT_CONTENT
+	};
+
+	var bookCustomContent = {
+		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.BOOK_CUSTOM_CONTENT
+	};
+
+	var bookStandardContent = {
+		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.BOOK_STANDARD_CONTENT
+	};
+
+	var booksContent = {
+		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.BOOKS_CONTENT
+	};
+
+	var searchContent = {
+		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.SEARCH_CONTENT
 	};
 
 	var pagination = {
@@ -27,11 +65,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		url: URL.LOGIN,
 		views: {
 			header: welcomeHeader,
-			content: {
-				controller: CONTROLLER.USERS_CONTROLLER,
-				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.LOGIN_FORM
-			},
+			content: loginForm,
 			footer: footer
 		}
 	})
@@ -41,11 +75,22 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		url: URL.REGISTER,
 		views: {
 			header: welcomeHeader,
-			content: {
-				controller: CONTROLLER.USERS_CONTROLLER,
-				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.REGISTER_FORM
-			},
+			content: registerForm,
+			footer: footer
+		}
+	})
+
+	.state(STATE.SEARCH, {
+		title: TITLE.SEARCH,
+		url: URL.SEARCH,
+		params: {
+			page: '1',
+			query: ''
+		},
+		views: {
+			header: header,
+			tool: pagination,
+			content: searchContent,
 			footer: footer
 		}
 	})
@@ -55,11 +100,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		url: URL.UPLOAD_BOOKS,
 		views: {
 			header: header,
-			content: {
-				controller: CONTROLLER.UPLOAD_CONTROLLER,
-				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.UPLOAD_BOOKS_FORM
-			},
+			content: uploadBooksForm,
 			footer: footer
 		}
 	})
@@ -73,11 +114,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		views: {
 			header: header,
 			tool: pagination,
-			content: {
-				controller: CONTROLLER.BOOKS_CONTROLLER,
-				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.BOOKS_CONTENT
-			},
+			content: booksContent,
 			footer: footer
 		}
 	})
@@ -90,11 +127,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		},
 		views: {
 			header: header,
-			content: {
-				controller: CONTROLLER.BOOKS_CONTROLLER,
-				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.BOOK_CUSTOM_CONTENT
-			},
+			content: bookCustomContent,
 			footer: footer
 		}
 	})
@@ -104,11 +137,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		url: URL.BOOK_STANDARD,
 		views: {
 			header: header,
-			content: {
-				controller: CONTROLLER.BOOKS_CONTROLLER,
-				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.BOOK_STANDARD_CONTENT
-			},
+			content: bookStandardContent,
 			footer: footer
 		}
 	});

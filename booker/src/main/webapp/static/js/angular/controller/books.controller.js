@@ -3,11 +3,41 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 
 	var self = this;
 
-	function init(state) {
-		switch (state) {
+	self.prevPage = function() {
+		var id = $state.params.id;
+		var page = self.book.content[0].page - 1;
+		if (page > 0) {
+			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page});
+		}
+	}
+
+	self.nextPage = function() {
+		var id = $state.params.id;
+		var page = self.book.content[self.book.content.length - 1].page + 1;
+		if (page <= self.book.pagesCount) {
+			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page});
+		}
+	}
+
+	self.search = function() {
+		var page = 1;
+		var query = self.search.query;
+		$state.go(STATE.SEARCH, {query: query, page: page});
+	}
+
+	function init() {
+		switch ($state.current.name) {
+			case STATE.SEARCH:
+				var page = $state.params.page;
+				var query = $state.params.query;
+				if (query !== '') {
+					self.search.query = query;
+					getSearchResult(query, page);
+				}
+				break;
 			case STATE.BOOKS:
 				var page = $state.params.page;
-				getBooks(page, state);
+				getBooks(page);
 				break;
 			case STATE.BOOK_CUSTOM:
 				var id = $state.params.id;
@@ -21,12 +51,12 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 		}
 	}
 
-	function getBooks(page, state) {
+	function getBooks(page) {
 		BooksFactory.getBooks(page, function(response) {
 			if (response.success) {
 				var resp = response.data;
 				self.books = resp.docs;
-				PaginationService.setPages(state, resp.page, resp.pagesCount);
+				PaginationService.setPages($state.current.name, resp.page, resp.pagesCount);
 			} else {
 				FlashService.error(response.message);
 			}
@@ -50,7 +80,19 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 			if (response.success) {
 				var data = response.data;
 				$state.current.title = data.title;
-				read(data.id, data.file_name);
+				read(data.id, data.fileName);
+			} else {
+				FlashService.error(response.message);
+			}
+		});
+	}
+
+	function getSearchResult(query, page) {
+		BooksFactory.getSearchResult(query, page, function(response) {
+			if (response.success) {
+				var resp = response.data;
+				self.results = resp;
+				PaginationService.setPages($state.current.name, resp.page, resp.pagesCount);
 			} else {
 				FlashService.error(response.message);
 			}
@@ -62,6 +104,6 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 		self.book.renderTo('area');
 	}
 
-	init($state.current.name);
+	init();
 
 });

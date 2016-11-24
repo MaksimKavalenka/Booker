@@ -1,7 +1,7 @@
-<div class="reader">
-	<div class="action" ui-sref="book_custom({id: ctrl.book.id, page: ctrl.book.content[0].page - 1})">‹</div>
-	<div class="area">
+<div class="viewer">
+	<div class="action" ng-click="ctrl.prevPage()">‹</div>
+	<div class="area pages justify">
 		<div ng-repeat="content in ctrl.book.content">{{content.content}}</div>
 	</div>
-	<div class="action" ui-sref="book_custom({id: ctrl.book.id, page: ctrl.book.content[ctrl.book.content.length - 1].page + 1})">›</div>
+	<div class="action" ng-click="ctrl.nextPage()">›</div>
 </div>

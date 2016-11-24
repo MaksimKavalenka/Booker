@@ -13,11 +13,13 @@ public abstract class SolrConstants {
 
     public static abstract class Fields {
 
+        public static final String SCORE = "score";
+
         public static abstract class ContentFields {
 
             public static final String CONTENT     = "content";
             public static final String ID          = "id";
-            public static final String METADATA_ID = "metadata_id";
+            public static final String METADATA_ID = "metadataId";
             public static final String PAGE        = "page";
 
         }
@@ -25,16 +27,17 @@ public abstract class SolrConstants {
         public static abstract class MetadataFields {
 
             public static final String AUTHOR           = "author";
-            public static final String CREATION_DATE    = "creation_date";
+            public static final String CREATION_DATE    = "creationDate";
             public static final String DESCRIPTION      = "description";
-            public static final String FILE_NAME        = "file_name";
+            public static final String FILE_NAME        = "fileName";
             public static final String ID               = "id";
             public static final String ISBN             = "isbn";
-            public static final String PUBLICATION_DATE = "publication_date";
+            public static final String PAGES_COUNT      = "pagesCount";
+            public static final String PUBLICATION_DATE = "publicationDate";
             public static final String PUBLISHER        = "publisher";
             public static final String TITLE            = "title";
             public static final String UPLOADER         = "uploader";
-            public static final String UPLOAD_DATE      = "upload_date";
+            public static final String UPLOAD_DATE      = "uploadDate";
 
         }
 
@@ -42,11 +45,12 @@ public abstract class SolrConstants {
 
     public static abstract class Key {
 
-        public static final String DOCS_KEY        = "docs";
-        public static final String NUM_FOUND_KEY   = "numFound";
-        public static final String PAGES_COUNT_KEY = "pagesCount";
-        public static final String RESPONSE_KEY    = "response";
-        public static final String START_KEY       = "start";
+        public static final String DOCS_KEY         = "docs";
+        public static final String HIGHLIGHTING_KEY = "highlighting";
+        public static final String MAX_SCORE        = "maxScore";
+        public static final String NUM_FOUND_KEY    = "numFound";
+        public static final String RESPONSE_KEY     = "response";
+        public static final String START_KEY        = "start";
 
     }
 
@@ -54,8 +58,9 @@ public abstract class SolrConstants {
 
         public static final String FIELD_LIST   = "fl";
         public static final String FILTER_QUERY = "fq";
-        public static final String INDENT       = "indent";
+        public static final String HIGHLIGHT    = "hl";
         public static final String ROWS         = "rows";
+        public static final String SHARDS       = "shards";
         public static final String SORTING      = "sort";
         public static final String START        = "start";
         public static final String QUERY        = "q";
