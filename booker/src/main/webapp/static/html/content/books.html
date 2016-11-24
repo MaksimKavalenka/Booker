@@ -1,6 +1,6 @@
 <ul class="container content">
 	<li ng-repeat="book in ctrl.books">
-		<a ui-sref="book({id: book.id})"><img ng-src="book/{{book.id}}/{{book.id}}"></a>
+		<a ui-sref="book_standard({id: book.id})"><img ng-src="book/{{book.id}}/{{book.id}}"></a>
 		<div class="info">
 			<div class="title">{{book.title}}</div>
 			<div class="author" ng-repeat="author in book.author">{{author}}</div>

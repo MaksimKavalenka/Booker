@@ -5,7 +5,7 @@
 	<groupId>by.training</groupId>
 	<artifactId>booker</artifactId>
 	<packaging>jar</packaging>
-	<version>0.5</version>
+	<version>0.6</version>
 
 	<name>Booker</name>
 
@@ -31,9 +31,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.mertakdut</groupId>
-			<artifactId>EpubParser</artifactId>
-			<version>1.0.87</version>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
 		</dependency>
 
 		<dependency>
@@ -133,6 +133,15 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

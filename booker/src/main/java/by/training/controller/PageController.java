@@ -16,12 +16,13 @@ public class PageController {
     }
 
     @RequestMapping(value = {LOGIN_URL, REGISTER_URL, UPLOAD_BOOKS_URL,
-            BOOK_URL}, method = RequestMethod.GET)
+            BOOK_STANDARD_URL}, method = RequestMethod.GET)
     public String editPages() {
         return DEFAULT_PATH;
     }
 
-    @RequestMapping(value = {BOOKS_URL}, params = "page", method = RequestMethod.GET)
+    @RequestMapping(value = {BOOKS_URL,
+            BOOK_CUSTOM_URL}, params = "page", method = RequestMethod.GET)
     public String booksPage() {
         return DEFAULT_PATH;
     }

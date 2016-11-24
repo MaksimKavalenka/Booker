@@ -1,11 +1,13 @@
 package by.training.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import by.training.entity.RoleEntity;
 import by.training.jpa.repository.RoleRepository;
 import by.training.service.dao.RoleServiceDAO;
 
+@Service("roleService")
 public class RoleService implements RoleServiceDAO {
 
     @Autowired

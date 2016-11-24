@@ -17,7 +17,23 @@ app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
-	function getBook(id, callback) {
+	function getBookCustom(id, page, callback) {
+		if (!ValidatorService.allNotEmpty(callback, id, page)) {
+			return;
+		}
+
+		$http.get(REST.BOOKS + '/' + id + '?page=' + page)
+		.success(function(response) {
+			var data = {success: true, data: response};
+			callback(data);
+		})
+		.error(function(response) {
+			response = {success: false, message: MESSAGE.GETTING_BOOKS_ERROR};
+			callback(response);
+		});
+	}
+
+	function getBookStandard(id, callback) {
 		if (!ValidatorService.allNotEmpty(callback, id)) {
 			return;
 		}
@@ -35,7 +51,8 @@ app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
 
 	return {
 		getBooks: getBooks,
-		getBook: getBook
+		getBookCustom: getBookCustom,
+		getBookStandard: getBookStandard
 	};
 
 });

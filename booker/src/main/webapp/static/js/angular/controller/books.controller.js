@@ -2,8 +2,6 @@
 app.controller('BooksController', function($state, STATE, BooksFactory, FlashService, PaginationService) {
 
 	var self = this;
-	self.books = [];
-	self.book;
 
 	function init(state) {
 		switch (state) {
@@ -11,9 +9,14 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 				var page = $state.params.page;
 				getBooks(page, state);
 				break;
-			case STATE.BOOK:
+			case STATE.BOOK_CUSTOM:
 				var id = $state.params.id;
-				getBook(id);
+				var page = $state.params.page;
+				getBookCustom(id, page);
+				break;
+			case STATE.BOOK_STANDARD:
+				var id = $state.params.id;
+				getBookStandard(id);
 				break;
 		}
 	}
@@ -30,10 +33,23 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 		});
 	}
 
-	function getBook(id) {
-		BooksFactory.getBook(id, function(response) {
+	function getBookCustom(id, page) {
+		BooksFactory.getBookCustom(id, page, function(response) {
 			if (response.success) {
 				var data = response.data;
+				$state.current.title = data.title;
+				self.book = data;
+			} else {
+				FlashService.error(response.message);
+			}
+		});
+	}
+
+	function getBookStandard(id) {
+		BooksFactory.getBookStandard(id, function(response) {
+			if (response.success) {
+				var data = response.data;
+				$state.current.title = data.title;
 				read(data.id, data.file_name);
 			} else {
 				FlashService.error(response.message);

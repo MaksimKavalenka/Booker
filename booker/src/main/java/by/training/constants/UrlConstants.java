@@ -12,15 +12,17 @@ public abstract class URLConstants {
 
     public abstract class Page {
 
-        private static final String UPLOAD_OPERATION = "/upload";
+        private static final String UPLOAD_OPERATION  = "/upload";
 
-        public static final String  LOGIN_URL        = "/login";
-        public static final String  REGISTER_URL     = "/register";
+        public static final String  LOGIN_URL         = "/login";
+        public static final String  REGISTER_URL      = "/register";
 
-        public static final String  BOOKS_URL        = "/books";
-        public static final String  BOOK_URL         = "/book" + Key.ID_KEY;
+        public static final String  BOOKS_URL         = "/books";
+        public static final String  BOOK_URL          = "/book";
+        public static final String  BOOK_CUSTOM_URL   = BOOK_URL + "/viewer" + Key.ID_KEY;
+        public static final String  BOOK_STANDARD_URL = BOOK_URL + Key.ID_KEY;
 
-        public static final String  UPLOAD_BOOKS_URL = BOOKS_URL + UPLOAD_OPERATION;
+        public static final String  UPLOAD_BOOKS_URL  = BOOKS_URL + UPLOAD_OPERATION;
 
     }
 

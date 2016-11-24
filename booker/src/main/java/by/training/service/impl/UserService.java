@@ -3,12 +3,14 @@ package by.training.service.impl;
 import static by.training.constants.MessageConstants.TAKEN_LOGIN_MESSAGE;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import by.training.entity.UserEntity;
 import by.training.exception.ValidationException;
 import by.training.jpa.repository.UserRepository;
 import by.training.service.dao.UserServiceDAO;
 
+@Service("userService")
 public class UserService implements UserServiceDAO {
 
     @Autowired

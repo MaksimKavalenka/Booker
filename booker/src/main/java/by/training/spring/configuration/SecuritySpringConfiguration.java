@@ -4,7 +4,6 @@ import static by.training.common.Role.*;
 import static by.training.constants.URLConstants.ANY;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,8 +29,7 @@ import by.training.spring.component.CsrfHeaderFilter;
 public class SecuritySpringConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    @Qualifier("userDetailsServiceSecurity")
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsSecurityService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,7 +39,7 @@ public class SecuritySpringConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(userDetailsSecurityService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         ReflectionSaltSource saltSource = new ReflectionSaltSource();

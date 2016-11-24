@@ -1,4 +1,4 @@
-package by.training.utility;
+package by.training.parser;
 
 import static by.training.constants.ISO8601DateConstants.Adding.*;
 import static by.training.constants.ISO8601DateConstants.Pattern.*;

@@ -1,19 +1,22 @@
 package by.training.service.impl;
 
+import static by.training.constants.DefaultConstants.DEFAULT_PAGES_COUNT;
 import static by.training.constants.DefaultConstants.DEFAULT_ROWS_COUNT;
 import static by.training.constants.DefaultConstants.DEFAULT_QUERY;
 import static by.training.constants.SolrConstants.Core.*;
 import static by.training.constants.SolrConstants.Fields.*;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import by.training.common.Order;
 import by.training.common.RequestHeader;
 import by.training.common.SolrURI;
 import by.training.common.WriterType;
+import by.training.parser.SolrJSONParser;
 import by.training.service.dao.BookServiceDAO;
-import by.training.utility.JSONParser;
 
+@Service("bookService")
 public class BookService implements BookServiceDAO {
 
     @Override
@@ -27,21 +30,48 @@ public class BookService implements BookServiceDAO {
         solrUri.setWriterType(WriterType.JSON);
 
         RestTemplate restTemplate = new RestTemplate();
-        return JSONParser
+        return SolrJSONParser
                 .getBooksResponse(restTemplate.getForObject(solrUri.toString(), String.class));
     }
 
     @Override
-    public String getBookJson(String id) {
+    public String getBookCustomJson(String id, long page) {
+        if ((page % DEFAULT_PAGES_COUNT) == 0) {
+            --page;
+        }
+
+        SolrURI solrMetadataUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
+        solrMetadataUri.setFieldList(MetadataFields.ID, MetadataFields.TITLE);
+        solrMetadataUri.setFilterQuery(MetadataFields.ID, id);
+        solrMetadataUri.setQuery(DEFAULT_QUERY);
+        solrMetadataUri.setWriterType(WriterType.JSON);
+
+        SolrURI solrContentUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
+        solrContentUri.setFieldList(ContentFields.CONTENT, ContentFields.PAGE);
+        solrContentUri.addFilterQuery(ContentFields.METADATA_ID, id);
+        solrContentUri.addFilterQuery(ContentFields.PAGE, "(" + page + " " + (page + 1) + ")");
+        solrContentUri.setQuery(DEFAULT_QUERY);
+        solrContentUri.setWriterType(WriterType.JSON);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String metadataResponse = restTemplate.getForObject(solrMetadataUri.toString(),
+                String.class);
+        String contentResponse = restTemplate.getForObject(solrContentUri.toString(), String.class);
+
+        return SolrJSONParser.getBookCustomResponse(metadataResponse, contentResponse);
+    }
+
+    @Override
+    public String getBookStandardJson(String id) {
         SolrURI solrUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
-        solrUri.setFieldList(MetadataFields.FILE_NAME, MetadataFields.ID);
+        solrUri.setFieldList(MetadataFields.FILE_NAME, MetadataFields.ID, MetadataFields.TITLE);
         solrUri.setFilterQuery(MetadataFields.ID, id);
         solrUri.setQuery(DEFAULT_QUERY);
         solrUri.setWriterType(WriterType.JSON);
 
         RestTemplate restTemplate = new RestTemplate();
-        return JSONParser
-                .getBookResponse(restTemplate.getForObject(solrUri.toString(), String.class));
+        return SolrJSONParser.getBookStandardResponse(
+                restTemplate.getForObject(solrUri.toString(), String.class));
     }
 
 }

@@ -5,7 +5,6 @@ import static by.training.constants.URLConstants.Rest.UPLOAD_URL;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -43,13 +42,8 @@ public class UploadRestController {
             @RequestParam(value = "file") MultipartFile multipartFile) {
         try {
             String fileName = multipartFile.getOriginalFilename();
-            String tempFilePath = Path.TEMP_BOOKS + "/" + fileName;
 
-            try (BufferedInputStream in = new BufferedInputStream(multipartFile.getInputStream())) {
-                Utility.uploadFile(in, tempFilePath);
-            }
-
-            String id = Secure.encodeFilePassword(tempFilePath);
+            String id = Secure.encodeFilePassword(multipartFile.getInputStream());
             String directoryPath = Path.BOOKS + "/" + id;
             String filePath = directoryPath + "/" + fileName;
 
@@ -58,11 +52,9 @@ public class UploadRestController {
                 directory.mkdir();
             }
 
-            try (BufferedInputStream in = new BufferedInputStream(
-                    new FileInputStream(tempFilePath))) {
+            try (BufferedInputStream in = new BufferedInputStream(multipartFile.getInputStream())) {
                 Utility.uploadFile(in, filePath);
             }
-            new File(tempFilePath).delete();
 
             uploadable.upload(directoryPath, fileName, id, Secure.getLoggedUser().getLogin());
 

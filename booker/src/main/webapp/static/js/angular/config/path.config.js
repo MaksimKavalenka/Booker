@@ -72,7 +72,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		},
 		views: {
 			header: header,
-			pagination: pagination,
+			tool: pagination,
 			content: {
 				controller: CONTROLLER.BOOKS_CONTROLLER,
 				controllerAs: CONTROLLER.CTRL,
@@ -82,15 +82,32 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		}
 	})
 
-	.state(STATE.BOOK, {
+	.state(STATE.BOOK_CUSTOM, {
 		title: TITLE.BOOK,
-		url: URL.BOOK,
+		url: URL.BOOK_CUSTOM,
+		params: {
+			page: '1'
+		},
 		views: {
 			header: header,
 			content: {
 				controller: CONTROLLER.BOOKS_CONTROLLER,
 				controllerAs: CONTROLLER.CTRL,
-				templateUrl: PATH.BOOK_CONTENT
+				templateUrl: PATH.BOOK_CUSTOM_CONTENT
+			},
+			footer: footer
+		}
+	})
+
+	.state(STATE.BOOK_STANDARD, {
+		title: TITLE.BOOK,
+		url: URL.BOOK_STANDARD,
+		views: {
+			header: header,
+			content: {
+				controller: CONTROLLER.BOOKS_CONTROLLER,
+				controllerAs: CONTROLLER.CTRL,
+				templateUrl: PATH.BOOK_STANDARD_CONTENT
 			},
 			footer: footer
 		}

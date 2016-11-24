@@ -1,13 +1,13 @@
 package by.training.constants;
 
 public abstract class ISO8601DateConstants {
-    
+
     private static final String COLON  = ":";
     private static final String HYPHEN = "-";
     private static final String TIME   = "T";
-    
+
     public static abstract class Adding {
-        
+
         public static final String YYYY_MM_DD_HH_MM_SS_MM_ADDING = Default.GMT;
         public static final String YYYY_MM_DD_HH_MM_SS_ADDING    = Default.GMT;
         public static final String YYYY_MM_DD_HH_MM_ADDING       = COLON + Default.SECOND + YYYY_MM_DD_HH_MM_SS_ADDING;
@@ -16,7 +16,7 @@ public abstract class ISO8601DateConstants {
         public static final String YYYY_ADDING                   = HYPHEN + Default.MONTH + YYYY_MM_ADDING;
 
     }
-    
+
     public static abstract class Default {
 
         public static final String DAY    = "01";
@@ -27,7 +27,7 @@ public abstract class ISO8601DateConstants {
         public static final String SECOND = "00";
 
     }
-    
+
     public static abstract class Pattern {
 
         public static final java.util.regex.Pattern YYYY_PATTERN                       = java.util.regex.Pattern.compile(Regex.YYYY);
@@ -37,11 +37,11 @@ public abstract class ISO8601DateConstants {
         public static final java.util.regex.Pattern YYYY_MM_DD_HH_MM_SS_PATTERN        = java.util.regex.Pattern.compile(Regex.YYYY_MM_DD_HH_MM_SS);
         public static final java.util.regex.Pattern YYYY_MM_DD_HH_MM_SS_MM_PATTERN     = java.util.regex.Pattern.compile(Regex.YYYY_MM_DD_HH_MM_SS_MS);
         public static final java.util.regex.Pattern YYYY_MM_DD_HH_MM_SS_MM_GMT_PATTERN = java.util.regex.Pattern.compile(Regex.YYYY_MM_DD_HH_MM_SS_MS_GMT);
-        
+
     }
     
     public static abstract class Regex {
-        
+
         private static final String END                       = "$";
         private static final String START                     = "^";
 
@@ -65,7 +65,7 @@ public abstract class ISO8601DateConstants {
         public static final String YYYY_MM_DD_HH_MM_SS        = START + YEAR + HYPHEN_REGEX + MONTH + HYPHEN_REGEX + DAY + TIME_REGEX + HOUR + COLON_REGEX + MINUTE + COLON_REGEX + SECOND + END;
         public static final String YYYY_MM_DD_HH_MM_SS_MS     = START + YEAR + HYPHEN_REGEX + MONTH + HYPHEN_REGEX + DAY + TIME_REGEX + HOUR + COLON_REGEX + MINUTE + COLON_REGEX + SECOND + MILLISECOND + END;
         public static final String YYYY_MM_DD_HH_MM_SS_MS_GMT = START + YEAR + HYPHEN_REGEX + MONTH + HYPHEN_REGEX + DAY + TIME_REGEX + HOUR + COLON_REGEX + MINUTE + COLON_REGEX + SECOND + "(" + MILLISECOND + "|)" + GMT + END;
-        
+
     }
 
 }

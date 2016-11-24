@@ -1,4 +1,4 @@
-package by.training.spring.security;
+package by.training.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import by.training.entity.UserEntity;
 import by.training.service.dao.UserServiceDAO;
 
-@Service("userDetailsServiceSecurity")
-public class UserDetailsServiceSecurity implements UserDetailsService {
+@Service("userDetailsSecurityService")
+public class UserDetailsSecurityService implements UserDetailsService {
 
     private UserServiceDAO userService;
 
-    public UserDetailsServiceSecurity(UserServiceDAO userService) {
+    public UserDetailsSecurityService(UserServiceDAO userService) {
         this.userService = userService;
     }
 

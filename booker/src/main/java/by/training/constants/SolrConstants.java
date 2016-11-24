@@ -18,6 +18,7 @@ public abstract class SolrConstants {
             public static final String CONTENT     = "content";
             public static final String ID          = "id";
             public static final String METADATA_ID = "metadata_id";
+            public static final String PAGE        = "page";
 
         }
 
@@ -43,7 +44,6 @@ public abstract class SolrConstants {
 
         public static final String DOCS_KEY        = "docs";
         public static final String NUM_FOUND_KEY   = "numFound";
-        public static final String PAGE_KEY        = "page";
         public static final String PAGES_COUNT_KEY = "pagesCount";
         public static final String RESPONSE_KEY    = "response";
         public static final String START_KEY       = "start";

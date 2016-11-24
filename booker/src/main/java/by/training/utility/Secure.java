@@ -1,6 +1,5 @@
 package by.training.utility;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -21,16 +20,14 @@ public abstract class Secure {
         return encoder.encodePassword(rawPass, salt);
     }
 
-    public static String encodeFilePassword(String filePath) throws SecureException {
+    public static String encodeFilePassword(InputStream in) throws SecureException {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             byte[] byteArray = new byte[1024];
             int bytesCount = 0;
 
-            try (InputStream in = new FileInputStream(filePath)) {
-                while ((bytesCount = in.read(byteArray)) != -1) {
-                    digest.update(byteArray, 0, bytesCount);
-                }
+            while ((bytesCount = in.read(byteArray)) != -1) {
+                digest.update(byteArray, 0, bytesCount);
             }
 
             byte[] bytes = digest.digest();

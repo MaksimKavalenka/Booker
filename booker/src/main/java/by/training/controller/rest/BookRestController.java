@@ -3,9 +3,8 @@ package by.training.controller.rest;
 import static by.training.constants.URLConstants.Key.ID_KEY;
 import static by.training.constants.URLConstants.Rest.BOOKS_URL;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +22,21 @@ public class BookRestController {
     private BookServiceDAO bookService;
 
     @RequestMapping(value = "", params = "page", method = RequestMethod.GET)
-    public ResponseEntity<String> getBooks(@PathParam("page") long page) {
+    public ResponseEntity<String> getBooks(@Param("page") long page) {
         String books = bookService.getBooksJson(page);
         return new ResponseEntity<String>(books, HttpStatus.OK);
     }
 
+    @RequestMapping(value = ID_KEY, params = "page", method = RequestMethod.GET)
+    public ResponseEntity<String> getBookCustom(@PathVariable("id") String id,
+            @Param("page") long page) {
+        String book = bookService.getBookCustomJson(id, page);
+        return new ResponseEntity<String>(book, HttpStatus.OK);
+    }
+
     @RequestMapping(value = ID_KEY, method = RequestMethod.GET)
-    public ResponseEntity<String> getBook(@PathVariable("id") String id) {
-        String book = bookService.getBookJson(id);
+    public ResponseEntity<String> getBookStandard(@PathVariable("id") String id) {
+        String book = bookService.getBookStandardJson(id);
         return new ResponseEntity<String>(book, HttpStatus.OK);
     }
 

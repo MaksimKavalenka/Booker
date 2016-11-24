@@ -13,12 +13,12 @@ app.constant('MESSAGE', (function() {
 	var gettingError = 'Error while getting ';
 	return {
 		AUTHENTICATION_ERROR: 'Login or password is wrong',
+		FILE_UPLOADING_SUCCESS: 'File has been uploaded successfully',
 		GETTING_BOOKS_ERROR: gettingError + 'books',
 		GETTING_PROGRESS_ERROR: gettingError + 'progress',
 		GETTING_USER_ERROR: gettingError + 'user',
 		PASSWORDS_ERROR: 'Passwords do not match',
 		TAKEN_LOGIN_ERROR: 'This login is already taken',
-		FILE_UPLOADING_SUCCESS: 'File has been uploaded successfully',
 		VALIDATION_ERROR: 'All required attributes must be filled'
 	}
 })());
@@ -32,11 +32,12 @@ app.constant('PATH', (function() {
 	var toolPath = path + '/tool';
 	var htmlExt = '.html';
 	return {
+		BOOK_CUSTOM_CONTENT: contentPath + '/book.custom' + htmlExt,
+		BOOK_STANDARD_CONTENT: contentPath + '/book.standard' + htmlExt,
+		BOOKS_CONTENT: contentPath + '/books' + htmlExt,
 		LOGIN_FORM: formPath + '/login' + htmlExt,
 		REGISTER_FORM: formPath + '/register' + htmlExt,
 		UPLOAD_BOOKS_FORM: formPath + '/upload.books' + htmlExt,
-		BOOKS_CONTENT: contentPath + '/books' + htmlExt,
-		BOOK_CONTENT: contentPath + '/book' + htmlExt,
 		FOOTER: titlePath + '/footer' + htmlExt,
 		HEADER: titlePath + '/header' + htmlExt,
 		WELCOME_HEADER: titlePath + '/welcome.header' + htmlExt,
@@ -54,40 +55,41 @@ app.constant('REST', (function() {
 })());
 
 app.constant('STATE', (function() {
-	var profile = 'profile';
-	var topic = 'topic';
+	var delimiter = '_';
+	var book = 'book';
 	return {
+		BOOK_CUSTOM: book + delimiter + 'custom',
+		BOOK_STANDARD: book + delimiter + 'standard',
+		BOOKS: 'books',
 		LOGIN: 'login',
 		REGISTER: 'register',
-		UPLOAD_BOOKS: 'upload_books',
-		BOOKS: 'books',
-		BOOK: 'book'
+		UPLOAD_BOOKS: 'upload_books'
 	}
 })());
 
 app.constant('TITLE', (function() {
 	return {
+		BOOK: 'Book',
+		BOOKS: 'Books',
 		LOGIN: 'Login',
 		REGISTER: 'Register',
-		UPLOAD_BOOKS: 'Upload books',
-		BOOKS: 'Books',
-		BOOK: 'Book'
+		UPLOAD_BOOKS: 'Upload books'
 	}
 })());
 
 app.constant('URL', (function() {
-	var loginUrl = '/login';
-	var registerUrl = '/register';
 	var booksUrl = '/books';
 	var bookUrl = '/book';
 	var uploadOperation = '/upload';
+	var idKey = '{id}';
 	var pageKey = '{page:[0-9]{1,}}';
 	return {
 		HOME: booksUrl + '?page=1',
-		LOGIN: loginUrl,
-		REGISTER: registerUrl,
-		UPLOAD_BOOKS: booksUrl + uploadOperation,
+		BOOK_CUSTOM: bookUrl + '/viewer/' + idKey + '?' + pageKey,
+		BOOK_STANDARD: bookUrl + '/' + idKey,
 		BOOKS: booksUrl + '?' + pageKey,
-		BOOK: bookUrl + '/{id}'
+		LOGIN: '/login',
+		REGISTER: '/register',
+		UPLOAD_BOOKS: booksUrl + uploadOperation
 	}
 })());

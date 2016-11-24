@@ -29,9 +29,9 @@ import by.training.common.Role;
 import by.training.dto.RegisterDTO;
 import by.training.entity.UserEntity;
 import by.training.exception.ValidationException;
+import by.training.parser.Parser;
 import by.training.service.dao.RoleServiceDAO;
 import by.training.service.dao.UserServiceDAO;
-import by.training.utility.Parser;
 import by.training.utility.Secure;
 
 @RestController

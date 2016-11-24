@@ -1,5 +1,9 @@
 package by.training.spring.configuration;
 
+import static by.training.constants.MultipartConstants.*;
+import static by.training.constants.UploadConstants.Path.*;
+
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -8,24 +12,18 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
-import by.training.constants.UploadConstants;
-import by.training.service.dao.BookServiceDAO;
-import by.training.service.dao.RoleServiceDAO;
-import by.training.service.dao.UserServiceDAO;
-import by.training.service.impl.BookService;
-import by.training.service.impl.RoleService;
-import by.training.service.impl.UserService;
 
 @Configuration
 @ComponentScan("by.training.spring.component")
@@ -44,8 +42,14 @@ public class MvcSpringConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public StandardServletMultipartResolver multipartResolver() {
-        return new StandardServletMultipartResolver();
+    public MultipartResolver multipartResolver() throws IOException {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        FileSystemResource fileSystemResource = new FileSystemResource(TEMP_BOOKS);
+        resolver.setMaxInMemorySize(MAX_IN_MEMORY_SIZE);
+        resolver.setMaxUploadSize(MAX_UPLOAD_SIZE);
+        resolver.setMaxUploadSizePerFile(MAX_UPLOAD_SIZE_PER_FILE);
+        resolver.setUploadTempDir(fileSystemResource);
+        return resolver;
     }
 
     @Bean
@@ -65,28 +69,12 @@ public class MvcSpringConfiguration extends WebMvcConfigurationSupport {
         return transactionManager;
     }
 
-    @Bean
-    public BookServiceDAO bookService() {
-        return new BookService();
-    }
-
-    @Bean
-    public RoleServiceDAO roleService() {
-        return new RoleService();
-    }
-
-    @Bean
-    public UserServiceDAO userService() {
-        return new UserService();
-    }
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/**").addResourceLocations("/static/");
-        registry.addResourceHandler("/book/**")
-                .addResourceLocations("file:///" + UploadConstants.Path.BOOKS + "/");
+        registry.addResourceHandler("/book/**").addResourceLocations("file:///" + BOOKS + "/");
     }
 
     @Override

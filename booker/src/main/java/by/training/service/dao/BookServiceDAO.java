@@ -4,6 +4,8 @@ public interface BookServiceDAO {
 
     String getBooksJson(long page);
 
-    String getBookJson(String id);
+    String getBookCustomJson(String id, long page);
+
+    String getBookStandardJson(String id);
 
 }
