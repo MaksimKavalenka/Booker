@@ -9,7 +9,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 		if (page > 0) {
 			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page});
 		}
-	}
+	};
 
 	self.nextPage = function() {
 		var id = $state.params.id;
@@ -17,13 +17,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 		if (page <= self.book.pagesCount) {
 			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page});
 		}
-	}
-
-	self.search = function() {
-		var page = 1;
-		var query = self.search.query;
-		$state.go(STATE.SEARCH, {query: query, page: page});
-	}
+	};
 
 	function init() {
 		switch ($state.current.name) {
@@ -31,7 +25,6 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 				var page = $state.params.page;
 				var query = $state.params.query;
 				if (query !== '') {
-					self.search.query = query;
 					getSearchResult(query, page);
 				}
 				break;

@@ -50,21 +50,25 @@ public abstract class SolrConstants {
         public static final String MAX_SCORE        = "maxScore";
         public static final String NUM_FOUND_KEY    = "numFound";
         public static final String RESPONSE_KEY     = "response";
+        public static final String SPELLCHECK_KEY   = "spellcheck";
         public static final String START_KEY        = "start";
+        public static final String SUGGESTION_KEY   = "suggestion";
+        public static final String SUGGESTIONS_KEY  = "suggestions";
 
     }
 
     public static abstract class Query {
 
-        public static final String FIELD_LIST   = "fl";
-        public static final String FILTER_QUERY = "fq";
-        public static final String HIGHLIGHT    = "hl";
-        public static final String ROWS         = "rows";
-        public static final String SHARDS       = "shards";
-        public static final String SORTING      = "sort";
-        public static final String START        = "start";
-        public static final String QUERY        = "q";
-        public static final String WRITER_TYPE  = "wt";
+        public static final String FIELD_LIST         = "fl";
+        public static final String FILTER_QUERY       = "fq";
+        public static final String HIGHLIGHT          = "hl";
+        public static final String HIGHLIGHTED_FIELDS = HIGHLIGHT + ".fl";
+        public static final String ROWS               = "rows";
+        public static final String SHARDS             = "shards";
+        public static final String SORTING            = "sort";
+        public static final String START              = "start";
+        public static final String QUERY              = "q";
+        public static final String WRITER_TYPE        = "wt";
 
     }
 

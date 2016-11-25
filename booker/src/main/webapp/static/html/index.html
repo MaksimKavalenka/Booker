@@ -22,6 +22,7 @@
 		<script type="text/javascript" src="/js/angular/config/config.js"></script>
 		<script type="text/javascript" src="/js/angular/config/path.config.js"></script>
 		<script type="text/javascript" src="/js/angular/controller/books.controller.js"></script>
+		<script type="text/javascript" src="/js/angular/controller/search.controller.js"></script>
 		<script type="text/javascript" src="/js/angular/controller/upload.controller.js"></script>
 		<script type="text/javascript" src="/js/angular/controller/users.controller.js"></script>
 		<script type="text/javascript" src="/js/angular/factory/books.factory.js"></script>
@@ -39,8 +40,7 @@
 		<div ui-view="header"></div>
 		<div ng-class="{'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error'}" ng-bind="flash.message"></div>
 		<div ui-view="search"></div>
-		<div ui-view="tool"></div>
-		<div ui-view="info"></div>
+		<div ui-view="pagination"></div>
 		<div ui-view="content"></div>
 		<div class="flex"></div>
 		<div ui-view="footer"></div>

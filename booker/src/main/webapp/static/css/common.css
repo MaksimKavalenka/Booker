@@ -34,6 +34,11 @@ hr.hr-menu {
 	margin-bottom: 20px;
 	text-align: center;
 }
+.highlight {
+	color: #ccad00;
+	display: inline;
+	font-weight: bold;
+}
 .justify {
 	display: flex;
 	justify-content: space-between;

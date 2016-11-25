@@ -116,6 +116,49 @@ public class SolrURI {
         queries.remove(HIGHLIGHT);
     }
 
+    public String getHighlightedFields() {
+        return queries.get(HIGHLIGHTED_FIELDS);
+    }
+
+    public void setHighlightedFields(String... highlightedFields) {
+        StringBuilder _highlightedFields = new StringBuilder();
+
+        int size = highlightedFields.length;
+        for (int i = 0; i < size; i++) {
+            _highlightedFields.append(highlightedFields[i]);
+
+            if ((i + 1) < size) {
+                _highlightedFields.append(",");
+            }
+        }
+
+        queries.put(HIGHLIGHTED_FIELDS, _highlightedFields.toString());
+    }
+
+    public void addHighlightedFields(String... highlightedFields) {
+        String _highlightedFields = queries.get(HIGHLIGHTED_FIELDS);
+        if (_highlightedFields != null) {
+            StringBuilder __highlightedFields = new StringBuilder();
+
+            int size = highlightedFields.length;
+            for (int i = 0; i < size; i++) {
+                __highlightedFields.append(highlightedFields[i]);
+
+                if ((i + 1) < size) {
+                    __highlightedFields.append(",");
+                }
+            }
+
+            queries.put(HIGHLIGHTED_FIELDS, _highlightedFields + "," + __highlightedFields);
+        } else {
+            setFieldList(highlightedFields);
+        }
+    }
+
+    public void removeHighlightedFields() {
+        queries.remove(HIGHLIGHTED_FIELDS);
+    }
+
     public long getRows() {
         String rows = queries.get(ROWS);
         return rows != null ? Long.valueOf(rows) : 0;

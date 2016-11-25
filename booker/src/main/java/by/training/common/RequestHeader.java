@@ -2,7 +2,7 @@ package by.training.common;
 
 public enum RequestHeader {
 
-    SELECT("/select?"), UPDATE("/update?");
+    SELECT("/select?"), SUGGEST("/suggest?"), UPDATE("/update?");
 
     private String requestHeader;
 

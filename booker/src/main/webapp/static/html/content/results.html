@@ -1,7 +1,7 @@
-<form class="form-search" ng-submit="ctrl.search()">
-	<input type="text" class="input-search" ng-model="ctrl.search.query" placeholder="Search">
+<div class="container">
 	<div ng-if="ctrl.results.numFound">Results: {{ctrl.results.numFound}}</div>
-</form>
+	<hr class="hr-common">
+</div>
 <ul class="container content">
 	<li ng-repeat="result in ctrl.results.docs">
 		<div class="body" ng-if="!result.metadataId">
@@ -14,10 +14,10 @@
 			</div>
 		</div>
 		<div class="info" ng-if="!result.metadataId">
-			<div class="title">{{result.title}}</div>
-			<div class="author" ng-repeat="author in result.author">{{author}}</div>
+			<div class="title" ng-bind-html="result.title"></div>
+			<div class="author" ng-bind-html="result.author"></div>
 			<hr class="hr-common">
-			<div ng-repeat="description in result.description">{{description}}</div>
+			<div ng-bind-html="result.description"></div>
 		</div>
 		<div class="body" ng-if="result.metadataId">
 			<a ui-sref="book_standard({id: result.metadataId})"><img ng-src="book/{{result.metadataId}}/{{result.metadataId}}"></a>
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 		<div class="info" ng-if="result.metadataId">
-			<div>{{result.content}}</div>
+			<div ng-bind-html="result.content"></div>
 		</div>
 	</li>
 </ul>

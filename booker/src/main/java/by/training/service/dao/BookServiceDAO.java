@@ -10,4 +10,6 @@ public interface BookServiceDAO {
 
     String getSearchResultJson(String query, long page);
 
+    String getSuggestionsJson(String query);
+
 }

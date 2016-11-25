@@ -3,6 +3,7 @@ app.constant('CONTROLLER', (function() {
 	return {
 		CTRL: 'ctrl',
 		BOOKS_CONTROLLER: 'BooksController',
+		SEARCH_CONTROLLER: 'SearchController',
 		UPLOAD_CONTROLLER: 'UploadController',
 		USERS_CONTROLLER: 'UsersController'
 	}
@@ -35,14 +36,15 @@ app.constant('PATH', (function() {
 		BOOK_CUSTOM_CONTENT: contentPath + '/book.custom' + htmlExt,
 		BOOK_STANDARD_CONTENT: contentPath + '/book.standard' + htmlExt,
 		BOOKS_CONTENT: contentPath + '/books' + htmlExt,
-		SEARCH_CONTENT: contentPath + '/search' + htmlExt,
+		RESULTS_CONTENT: contentPath + '/results' + htmlExt,
 		LOGIN_FORM: formPath + '/login' + htmlExt,
 		REGISTER_FORM: formPath + '/register' + htmlExt,
 		UPLOAD_BOOKS_FORM: formPath + '/upload.books' + htmlExt,
 		FOOTER: titlePath + '/footer' + htmlExt,
 		HEADER: titlePath + '/header' + htmlExt,
 		WELCOME_HEADER: titlePath + '/welcome.header' + htmlExt,
-		PAGINATION_TOOL: toolPath + '/pagination' + htmlExt
+		PAGINATION_TOOL: toolPath + '/pagination' + htmlExt,
+		SEARCH_TOOL: toolPath + '/search' + htmlExt
 	}
 })());
 

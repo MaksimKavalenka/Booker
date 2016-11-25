@@ -64,19 +64,55 @@ public abstract class SolrJSONParser {
         for (int i = 0; i < docs.length(); i++) {
             JSONObject doc = docs.getJSONObject(i);
 
-            if (doc.getString(ContentFields.METADATA_ID) != null) {
+            if (!doc.isNull(ContentFields.METADATA_ID)) {
                 String id = doc.getString(ContentFields.ID);
-                System.err.println(id);
-                System.err.println(highlighting);
-                System.err.println(docs);
                 JSONObject highlight = highlighting.getJSONObject(id);
-                JSONObject content = highlight.getJSONArray(ContentFields.CONTENT).getJSONObject(0);
-                doc.put(ContentFields.CONTENT, content);
-            }
 
+                if (!highlight.isNull(ContentFields.CONTENT)) {
+                    String content = highlight.getJSONArray(ContentFields.CONTENT).getString(0);
+                    doc.put(ContentFields.CONTENT, content);
+                }
+
+            } else {
+                String id = doc.getString(MetadataFields.ID);
+                JSONObject highlight = highlighting.getJSONObject(id);
+
+                if (!highlight.isNull(MetadataFields.AUTHOR)) {
+                    String author = highlight.getJSONArray(MetadataFields.AUTHOR).getString(0);
+                    doc.put(MetadataFields.AUTHOR, author);
+                }
+
+                if (!highlight.isNull(MetadataFields.DESCRIPTION)) {
+                    String description = highlight.getJSONArray(MetadataFields.DESCRIPTION)
+                            .getString(0);
+                    doc.put(MetadataFields.DESCRIPTION, description);
+                }
+
+                if (!highlight.isNull(MetadataFields.TITLE)) {
+                    String title = highlight.getJSONArray(MetadataFields.TITLE).getString(0);
+                    doc.put(MetadataFields.TITLE, title);
+                }
+            }
         }
 
         return response.toString();
+    }
+
+    public static String getSuggestionsResponse(String json) {
+        String response = "";
+        JSONObject jsonObject = new JSONObject(json);
+
+        if (!jsonObject.isNull(SPELLCHECK_KEY)) {
+            JSONObject spellcheck = jsonObject.getJSONObject(SPELLCHECK_KEY);
+
+            if (spellcheck.getJSONArray(SUGGESTIONS_KEY).length() > 0) {
+                JSONObject suggestions = spellcheck.getJSONArray(SUGGESTIONS_KEY).getJSONObject(1);
+                JSONArray suggestionList = suggestions.getJSONArray(SUGGESTION_KEY);
+                response = suggestionList.toString();
+            }
+        }
+
+        return response;
     }
 
 }

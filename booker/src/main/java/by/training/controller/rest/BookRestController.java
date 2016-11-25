@@ -47,4 +47,10 @@ public class BookRestController {
         return new ResponseEntity<String>(book, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/suggest", params = "query", method = RequestMethod.GET)
+    public ResponseEntity<String> getSuggestions(@Param("query") String query) {
+        String book = bookService.getSuggestionsJson(query);
+        return new ResponseEntity<String>(book, HttpStatus.OK);
+    }
+
 }

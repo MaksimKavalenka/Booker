@@ -82,6 +82,8 @@ public class BookService implements BookServiceDAO {
                 MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
                 MetadataFields.TITLE);
         solrUri.setHighlight(true);
+        solrUri.setHighlightedFields(ContentFields.CONTENT, MetadataFields.AUTHOR,
+                MetadataFields.DESCRIPTION, MetadataFields.TITLE);
         solrUri.setShards(CONTENT_CORE_URI, METADATA_CORE_URI);
         solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
         solrUri.setQuery(query);
@@ -89,6 +91,17 @@ public class BookService implements BookServiceDAO {
 
         RestTemplate restTemplate = new RestTemplate();
         return SolrJSONParser.getSearchResultResponse(
+                restTemplate.getForObject(solrUri.toString(), String.class));
+    }
+
+    @Override
+    public String getSuggestionsJson(String query) {
+        SolrURI solrUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SUGGEST);
+        solrUri.setQuery(query);
+        solrUri.setWriterType(WriterType.JSON);
+
+        RestTemplate restTemplate = new RestTemplate();
+        return SolrJSONParser.getSuggestionsResponse(
                 restTemplate.getForObject(solrUri.toString(), String.class));
     }
 

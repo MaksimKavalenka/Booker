@@ -65,11 +65,28 @@ app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
+	function getSuggestions(query, callback) {
+		if (!ValidatorService.allNotEmpty(callback, query)) {
+			return;
+		}
+
+		$http.get(REST.BOOKS + '/suggest?query=' + query)
+		.success(function(response) {
+			var data = {success: true, data: response};
+			callback(data);
+		})
+		.error(function(response) {
+			response = {success: false, message: MESSAGE.GETTING_BOOKS_ERROR};
+			callback(response);
+		});
+	}
+
 	return {
 		getBooks: getBooks,
 		getBookCustom: getBookCustom,
 		getBookStandard: getBookStandard,
-		getSearchResult: getSearchResult
+		getSearchResult: getSearchResult,
+		getSuggestions: getSuggestions
 	};
 
 });

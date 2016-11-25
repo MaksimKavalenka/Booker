@@ -1,0 +1,6 @@
+<form class="form-search" ng-keyup="ctrl.search($event.keyCode)" ng-blur="ctrl.show(false)">
+	<input type="text" class="input-search" ng-model="ctrl.search.query" ng-click="ctrl.show(true)" placeholder="Search">
+	<div class="suggestions">
+		<div class="suggestion" ng-repeat="suggestion in ctrl.suggestions" ui-sref="search({query: suggestion})">{{suggestion}}</div>
+	</div>
+</form>

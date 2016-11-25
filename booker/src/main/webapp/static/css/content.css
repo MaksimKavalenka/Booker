@@ -56,17 +56,6 @@
 .content li .body > .body-link .link-empty {
 	cursor: auto;
 }
-.link {
-	border: 2.5px solid #6699cc;
-	font-weight: bold;
-	margin: 10px 0;
-	padding: 5px 0;
-	text-align: center;
-	width: 100%;
-}
-.link a {
-	background: #6699cc;
-}
 .content li .info {
 	flex-grow: 1;
 	margin: 10px;

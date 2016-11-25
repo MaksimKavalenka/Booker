@@ -3,6 +3,7 @@ form {
 }
 .form-search {
 	margin: 20px;
+	position: relative;
 }
 .form-search * {
 	display: inline;
@@ -11,6 +12,25 @@ form {
 	font-size: 18px;
 	padding: 9px;
 	width: 100%;
+}
+.form-search .suggestions {
+	left: 0;
+	position: absolute;
+	right: 0;
+	z-index: 1;
+}
+.form-search .suggestion {
+	background: #ffffff;
+	border: 1px solid #cccccc;
+	cursor: pointer;
+	display: block;
+	margin-top: -1px;
+	padding: 9px 15px;
+}
+.form-search .suggestion:hover,
+.form-search .suggestion:active {
+	background: #ccad00;
+	color: #ffffff;
 }
 .form-submit {
 	margin: 50px 0;

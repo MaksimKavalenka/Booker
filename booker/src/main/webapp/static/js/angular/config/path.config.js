@@ -49,14 +49,20 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		templateUrl: PATH.BOOKS_CONTENT
 	};
 
-	var searchContent = {
+	var resultsContent = {
 		controller: CONTROLLER.BOOKS_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
-		templateUrl: PATH.SEARCH_CONTENT
+		templateUrl: PATH.RESULTS_CONTENT
 	};
 
-	var pagination = {
+	var paginationTool = {
 		templateUrl: PATH.PAGINATION_TOOL
+	};
+
+	var searchTool = {
+		controller: CONTROLLER.SEARCH_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.SEARCH_TOOL
 	};
 
 	$stateProvider
@@ -89,8 +95,9 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		},
 		views: {
 			header: header,
-			tool: pagination,
-			content: searchContent,
+			search: searchTool,
+			pagination: paginationTool,
+			content: resultsContent,
 			footer: footer
 		}
 	})
@@ -113,7 +120,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		},
 		views: {
 			header: header,
-			tool: pagination,
+			pagination: paginationTool,
 			content: booksContent,
 			footer: footer
 		}
