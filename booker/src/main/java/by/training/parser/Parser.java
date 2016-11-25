@@ -10,6 +10,8 @@ import java.util.Date;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
+import nl.siegmann.epublib.domain.Author;
+
 public abstract class Parser {
 
     public static String getErrorsMessages(Errors errors) {
@@ -40,6 +42,10 @@ public abstract class Parser {
         }
 
         return java.util.Date.from(ZonedDateTime.parse(input).toInstant());
+    }
+
+    public static String parseAuthor(Author author) {
+        return author.getFirstname() + " " + author.getLastname();
     }
 
 }

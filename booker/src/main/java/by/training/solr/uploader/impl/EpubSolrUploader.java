@@ -93,7 +93,7 @@ public class EpubSolrUploader implements SolrUploadable {
             }
 
             for (Author author : book.getMetadata().getAuthors()) {
-                inputDocument.addField(MetadataFields.AUTHOR, author.toString());
+                inputDocument.addField(MetadataFields.AUTHOR, Parser.parseAuthor(author));
             }
 
             for (Date date : book.getMetadata().getDates()) {
