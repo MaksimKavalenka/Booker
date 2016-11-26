@@ -1,5 +1,5 @@
 'use strict';
-app.controller('SearchController', function($state, STATE, BooksFactory, FlashService) {
+app.controller('SearchController', function($state, STATE, SearchFactory, FlashService) {
 
 	var self = this;
 
@@ -35,15 +35,26 @@ app.controller('SearchController', function($state, STATE, BooksFactory, FlashSe
 	function init() {
 		switch ($state.current.name) {
 			case STATE.SEARCH:
+				getFacets();
 				self.search.query = $state.params.query;
 				break;
 		}
 	}
 
 	function getSuggestions(query) {
-		BooksFactory.getSuggestions(query, function(response) {
+		SearchFactory.getSuggestions(query, function(response) {
 			if (response.success) {
 				self.suggestions = response.data;
+			} else {
+				FlashService.error(response.message);
+			}
+		});
+	}
+
+	function getFacets() {
+		SearchFactory.getFacets(function(response) {
+			if (response.success) {
+				self.facets = response.data;
 			} else {
 				FlashService.error(response.message);
 			}

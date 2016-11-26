@@ -1,7 +1,7 @@
 package by.training.solr.uploader.impl;
 
-import static by.training.constants.DefaultConstants.DEFAULT_DELIMITER;
 import static by.training.constants.DefaultConstants.DEFAULT_SYMBOLS_COUNT;
+import static by.training.constants.DelimiterConstants.SPACE_DELIMITER;
 import static by.training.constants.SolrConstants.Core.*;
 
 import java.io.BufferedInputStream;
@@ -41,14 +41,7 @@ import nl.siegmann.epublib.epub.EpubReader;
 @Service("epubSolrUploader")
 public class EpubSolrUploader implements SolrUploadable {
 
-    private int progress;
-
     public EpubSolrUploader() {
-    }
-
-    @Override
-    public int getProgress() {
-        return progress;
     }
 
     @Override
@@ -56,7 +49,7 @@ public class EpubSolrUploader implements SolrUploadable {
             throws UploadException {
         String filePath = directoryPath + "/" + fileName;
 
-        try (InputStream in = new FileInputStream(filePath)) {
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(filePath))) {
             EpubReader epubReader = new EpubReader();
             Book book = epubReader.readEpub(in);
 
@@ -64,110 +57,102 @@ public class EpubSolrUploader implements SolrUploadable {
                 Utility.uploadFile(book.getCoverImage().getInputStream(), directoryPath + "/" + id);
             }
 
-            long pagesCount = uploadContent(id, filePath);
-            uploadMetadata(book, id, fileName, pagesCount, uploader);
-        } catch (IOException | ValidationException e) {
-            throw new UploadException(e.getMessage());
-        }
-    }
+            try (SolrClient contentClient = new HttpSolrClient(CONTENT_CORE_URI);
+                    SolrClient metadataClient = new HttpSolrClient(METADATA_CORE_URI)) {
+                long pagesCount = 0;
 
-    private void uploadMetadata(Book book, String id, String fileName, long pagesCount,
-            String uploader) throws UploadException {
-        try (SolrClient client = new HttpSolrClient(METADATA_CORE_URI)) {
-            SolrInputDocument inputDocument = new SolrInputDocument();
+                {
+                    Tika tika = new Tika();
+                    org.apache.tika.parser.Parser parser = new AdvancedEpubParser();
+                    Metadata metadata = new Metadata();
+                    ContentHandler handler = new BodyContentHandler(-1);
 
-            inputDocument.setField(MetadataFields.DESCRIPTION,
-                    book.getMetadata().getDescriptions());
-            inputDocument.setField(MetadataFields.FILE_NAME, fileName);
-            inputDocument.setField(MetadataFields.ID, id);
-            inputDocument.setField(MetadataFields.PAGES_COUNT, pagesCount);
-            inputDocument.setField(MetadataFields.PUBLISHER, book.getMetadata().getPublishers());
-            inputDocument.setField(MetadataFields.TITLE, book.getTitle());
-            inputDocument.setField(MetadataFields.UPLOAD_DATE, new java.util.Date());
-            inputDocument.setField(MetadataFields.UPLOADER, uploader);
+                    try (BufferedInputStream bin = new BufferedInputStream(
+                            new FileInputStream(filePath))) {
+                        metadata.set(HttpHeaders.CONTENT_TYPE, tika.detect(in));
+                        parser.parse(bin, handler, metadata, new ParseContext());
 
-            for (Identifier identifier : book.getMetadata().getIdentifiers()) {
-                if (Identifier.Scheme.ISBN.equals(identifier.getScheme())) {
-                    inputDocument.addField(MetadataFields.ISBN, identifier.getValue());
+                        int index = 0;
+                        while (index < handler.toString().length()) {
+                            ++pagesCount;
+
+                            SolrInputDocument inputDocument = new SolrInputDocument();
+
+                            int lastIndex = index;
+                            int size = handler.toString().length();
+                            if ((index + DEFAULT_SYMBOLS_COUNT) < size) {
+                                index = handler.toString().lastIndexOf(SPACE_DELIMITER,
+                                        index + DEFAULT_SYMBOLS_COUNT);
+                            } else {
+                                index = size - 1;
+                            }
+                            inputDocument.setField(ContentFields.CONTENT,
+                                    handler.toString().substring(lastIndex, index).trim());
+                            ++index;
+
+                            inputDocument.setField(ContentFields.ID, id + pagesCount);
+                            inputDocument.setField(ContentFields.METADATA_ID, id);
+                            inputDocument.setField(ContentFields.PAGE, pagesCount);
+
+                            contentClient.add(inputDocument);
+                        }
+                    }
                 }
-            }
 
-            for (Author author : book.getMetadata().getAuthors()) {
-                inputDocument.addField(MetadataFields.AUTHOR, Parser.parseAuthor(author));
-            }
-
-            for (Date date : book.getMetadata().getDates()) {
-                Date.Event event = date.getEvent();
-
-                if (event == null) {
-                    event = Date.Event.CREATION;
-                }
-
-                switch (event) {
-                    case CREATION:
-                        inputDocument.setField(MetadataFields.CREATION_DATE,
-                                Parser.parseToIso8601(date.getValue()));
-                        break;
-                    case PUBLICATION:
-                        inputDocument.setField(MetadataFields.PUBLICATION_DATE,
-                                Parser.parseToIso8601(date.getValue()));
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            client.add(inputDocument);
-            client.commit(true, true);
-        } catch (IOException | ParseException | SolrServerException e) {
-            throw new UploadException(e.getMessage());
-        }
-    }
-
-    private long uploadContent(String id, String filePath) throws UploadException {
-        try (SolrClient client = new HttpSolrClient(CONTENT_CORE_URI)) {
-            long page = 0;
-
-            Tika tika = new Tika();
-            org.apache.tika.parser.Parser parser = new AdvancedEpubParser();
-            Metadata metadata = new Metadata();
-            ContentHandler handler = new BodyContentHandler(-1);
-
-            try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(filePath))) {
-                metadata.set(HttpHeaders.CONTENT_TYPE, tika.detect(in));
-                parser.parse(in, handler, metadata, new ParseContext());
-
-                int index = 0;
-                while (index < handler.toString().length()) {
-                    ++page;
-
+                {
                     SolrInputDocument inputDocument = new SolrInputDocument();
 
-                    int lastIndex = index;
-                    int size = handler.toString().length();
-                    if ((index + DEFAULT_SYMBOLS_COUNT) < size) {
-                        index = handler.toString().lastIndexOf(DEFAULT_DELIMITER,
-                                index + DEFAULT_SYMBOLS_COUNT);
-                    } else {
-                        index = size - 1;
+                    inputDocument.setField(MetadataFields.DESCRIPTION,
+                            book.getMetadata().getDescriptions());
+                    inputDocument.setField(MetadataFields.FILE_NAME, fileName);
+                    inputDocument.setField(MetadataFields.ID, id);
+                    inputDocument.setField(MetadataFields.PAGES_COUNT, pagesCount);
+                    inputDocument.setField(MetadataFields.PUBLISHER,
+                            book.getMetadata().getPublishers());
+                    inputDocument.setField(MetadataFields.TITLE, book.getTitle());
+                    inputDocument.setField(MetadataFields.UPLOAD_DATE, new java.util.Date());
+                    inputDocument.setField(MetadataFields.UPLOADER, uploader);
+
+                    for (Identifier identifier : book.getMetadata().getIdentifiers()) {
+                        if (Identifier.Scheme.ISBN.equals(identifier.getScheme())) {
+                            inputDocument.addField(MetadataFields.ISBN, identifier.getValue());
+                        }
                     }
-                    inputDocument.setField(ContentFields.CONTENT,
-                            handler.toString().substring(lastIndex, index).trim());
-                    ++index;
 
-                    inputDocument.setField(ContentFields.ID, id + page);
-                    inputDocument.setField(ContentFields.METADATA_ID, id);
-                    inputDocument.setField(ContentFields.PAGE, page);
+                    for (Author author : book.getMetadata().getAuthors()) {
+                        inputDocument.addField(MetadataFields.AUTHOR, Parser.parseAuthor(author));
+                    }
 
-                    client.add(inputDocument);
+                    for (Date date : book.getMetadata().getDates()) {
+                        Date.Event event = date.getEvent();
 
-                    progress = (int) Math.ceil((double) index * 100 / size);
+                        if (event == null) {
+                            event = Date.Event.CREATION;
+                        }
+
+                        switch (event) {
+                            case CREATION:
+                                inputDocument.setField(MetadataFields.CREATION_DATE,
+                                        Parser.parseToIso8601(date.getValue()));
+                                break;
+                            case PUBLICATION:
+                                inputDocument.setField(MetadataFields.PUBLICATION_DATE,
+                                        Parser.parseToIso8601(date.getValue()));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    metadataClient.add(inputDocument);
                 }
+
+                contentClient.commit(true, true);
+                metadataClient.commit(true, true);
             }
 
-            client.commit(true, true);
-            return page;
-        } catch (IOException | SAXException | SolrServerException | TikaException e) {
+        } catch (IOException | ParseException | SAXException | SolrServerException | TikaException
+                | ValidationException e) {
             throw new UploadException(e.getMessage());
         }
     }

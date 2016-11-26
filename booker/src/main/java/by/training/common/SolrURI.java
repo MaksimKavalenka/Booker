@@ -1,5 +1,6 @@
 package by.training.common;
 
+import static by.training.constants.DelimiterConstants.*;
 import static by.training.constants.SolrConstants.Query.*;
 
 import java.util.HashMap;
@@ -35,20 +36,69 @@ public class SolrURI {
         this.requestHeader = requestHeader;
     }
 
+    public boolean isFaceted() {
+        return Boolean.valueOf(queries.get(FACET));
+    }
+
+    public void setFacet(boolean facet) {
+        if (facet) {
+            queries.put(FACET, String.valueOf(facet));
+        } else {
+            removeFacet();
+        }
+    }
+
+    public void removeFacet() {
+        queries.remove(FACET);
+    }
+
+    public String getFacetedFields() {
+        return queries.get(FACETED_FIELDS);
+    }
+
+    public void setFacetedFields(String... facetedFields) {
+        StringBuilder _facetedFields = new StringBuilder(facetedFields[0]);
+
+        int size = facetedFields.length;
+        for (int i = 1; i < size; i++) {
+            _facetedFields.append(AMPERSAND_DELIMITER).append(FACETED_FIELDS)
+                    .append(EQUAL_DELIMITER).append(facetedFields[i]);
+        }
+
+        queries.put(FACETED_FIELDS, _facetedFields.toString());
+    }
+
+    public void addFacetedFields(String... facetedFields) {
+        String _facetedFields = queries.get(FACETED_FIELDS);
+        if (_facetedFields != null) {
+            StringBuilder __facetedFields = new StringBuilder();
+
+            int size = facetedFields.length;
+            for (int i = 0; i < size; i++) {
+                __facetedFields.append(AMPERSAND_DELIMITER).append(FACETED_FIELDS)
+                        .append(EQUAL_DELIMITER).append(facetedFields[i]);
+            }
+
+            queries.put(FACETED_FIELDS, _facetedFields + __facetedFields);
+        } else {
+            setFacetedFields(facetedFields);
+        }
+    }
+
+    public void removeFacetedFields() {
+        queries.remove(FACETED_FIELDS);
+    }
+
     public String getFieldList() {
         return queries.get(FIELD_LIST);
     }
 
     public void setFieldList(String... fieldList) {
-        StringBuilder _fieldList = new StringBuilder();
+        StringBuilder _fieldList = new StringBuilder(fieldList[0]);
 
         int size = fieldList.length;
         for (int i = 0; i < size; i++) {
-            _fieldList.append(fieldList[i]);
-
-            if ((i + 1) < size) {
-                _fieldList.append(",");
-            }
+            _fieldList.append(COMMA_DELIMITER).append(fieldList[i]);
         }
 
         queries.put(FIELD_LIST, _fieldList.toString());
@@ -61,14 +111,10 @@ public class SolrURI {
 
             int size = fieldList.length;
             for (int i = 0; i < size; i++) {
-                __fieldList.append(fieldList[i]);
-
-                if ((i + 1) < size) {
-                    __fieldList.append(",");
-                }
+                __fieldList.append(COMMA_DELIMITER).append(fieldList[i]);
             }
 
-            queries.put(FIELD_LIST, _fieldList + "," + __fieldList);
+            queries.put(FIELD_LIST, _fieldList + __fieldList);
         } else {
             setFieldList(fieldList);
         }
@@ -83,14 +129,14 @@ public class SolrURI {
     }
 
     public void setFilterQuery(String field, String condition) {
-        queries.put(FILTER_QUERY, field + ":" + condition);
+        queries.put(FILTER_QUERY, field + COLON_DELIMITER + condition);
     }
 
     public void addFilterQuery(String field, String condition) {
         String filterQuery = queries.get(FILTER_QUERY);
         if (filterQuery != null) {
-            queries.put(FILTER_QUERY,
-                    filterQuery + "&" + FILTER_QUERY + "=" + field + ":" + condition);
+            queries.put(FILTER_QUERY, filterQuery + AMPERSAND_DELIMITER + FILTER_QUERY
+                    + EQUAL_DELIMITER + field + COLON_DELIMITER + condition);
         } else {
             setFilterQuery(field, condition);
         }
@@ -100,7 +146,7 @@ public class SolrURI {
         queries.remove(FILTER_QUERY);
     }
 
-    public boolean isHighlight() {
+    public boolean isHighlighted() {
         return Boolean.valueOf(queries.get(HIGHLIGHT));
     }
 
@@ -121,15 +167,11 @@ public class SolrURI {
     }
 
     public void setHighlightedFields(String... highlightedFields) {
-        StringBuilder _highlightedFields = new StringBuilder();
+        StringBuilder _highlightedFields = new StringBuilder(highlightedFields[0]);
 
         int size = highlightedFields.length;
-        for (int i = 0; i < size; i++) {
-            _highlightedFields.append(highlightedFields[i]);
-
-            if ((i + 1) < size) {
-                _highlightedFields.append(",");
-            }
+        for (int i = 1; i < size; i++) {
+            _highlightedFields.append(COMMA_DELIMITER).append(highlightedFields[i]);
         }
 
         queries.put(HIGHLIGHTED_FIELDS, _highlightedFields.toString());
@@ -142,16 +184,12 @@ public class SolrURI {
 
             int size = highlightedFields.length;
             for (int i = 0; i < size; i++) {
-                __highlightedFields.append(highlightedFields[i]);
-
-                if ((i + 1) < size) {
-                    __highlightedFields.append(",");
-                }
+                __highlightedFields.append(COMMA_DELIMITER).append(highlightedFields[i]);
             }
 
-            queries.put(HIGHLIGHTED_FIELDS, _highlightedFields + "," + __highlightedFields);
+            queries.put(HIGHLIGHTED_FIELDS, _highlightedFields + __highlightedFields);
         } else {
-            setFieldList(highlightedFields);
+            setHighlightedFields(highlightedFields);
         }
     }
 
@@ -177,37 +215,29 @@ public class SolrURI {
     }
 
     public void setShards(String... shards) {
-        StringBuilder _shards = new StringBuilder();
+        StringBuilder _shards = new StringBuilder(shards[0]);
 
         int size = shards.length;
         for (int i = 0; i < size; i++) {
-            _shards.append(shards[i]);
-
-            if ((i + 1) < size) {
-                _shards.append(",");
-            }
+            _shards.append(COMMA_DELIMITER).append(shards[i]);
         }
 
         queries.put(SHARDS, _shards.toString());
     }
 
-    public void addShards(String... fieldList) {
+    public void addShards(String... shards) {
         String _shards = queries.get(SHARDS);
         if (_shards != null) {
             StringBuilder __shards = new StringBuilder();
 
-            int size = fieldList.length;
+            int size = shards.length;
             for (int i = 0; i < size; i++) {
-                __shards.append(fieldList[i]);
-
-                if ((i + 1) < size) {
-                    __shards.append(",");
-                }
+                __shards.append(COMMA_DELIMITER).append(shards[i]);
             }
 
-            queries.put(SHARDS, _shards + "," + __shards);
+            queries.put(SHARDS, _shards + __shards);
         } else {
-            setFieldList(fieldList);
+            setShards(shards);
         }
     }
 
@@ -220,13 +250,14 @@ public class SolrURI {
     }
 
     public void setSorting(String field, Order order) {
-        queries.put(SORTING, field + " " + order.toString());
+        queries.put(SORTING, field + SPACE_DELIMITER + order.toString());
     }
 
     public void addSorting(String field, Order order) {
         String sort = queries.get(SORTING);
         if (sort != null) {
-            queries.put(SORTING, sort + "," + field + " " + order.toString());
+            queries.put(SORTING,
+                    sort + COMMA_DELIMITER + field + SPACE_DELIMITER + order.toString());
         } else {
             setSorting(field, order);
         }
@@ -282,10 +313,10 @@ public class SolrURI {
         while (entries.hasNext()) {
 
             Entry<String, String> entry = entries.next();
-            uri.append(entry.getKey() + "=" + entry.getValue());
+            uri.append(entry.getKey()).append(EQUAL_DELIMITER).append(entry.getValue());
 
             if (entries.hasNext()) {
-                uri.append("&");
+                uri.append(AMPERSAND_DELIMITER);
             }
         }
 

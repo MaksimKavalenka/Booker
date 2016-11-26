@@ -2,7 +2,6 @@ package by.training.constants;
 
 public abstract class DefaultConstants {
 
-    public static final String DEFAULT_DELIMITER     = " ";
     public static final String DEFAULT_PAGE          = "page=1";
     public static final String DEFAULT_PATH          = "/index";
     public static final int    DEFAULT_PAGES_COUNT   = 2;

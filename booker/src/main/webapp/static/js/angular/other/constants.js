@@ -17,6 +17,7 @@ app.constant('MESSAGE', (function() {
 		FILE_UPLOADING_SUCCESS: 'File has been uploaded successfully',
 		GETTING_BOOKS_ERROR: gettingError + 'books',
 		GETTING_PROGRESS_ERROR: gettingError + 'progress',
+		GETTING_RESULTS_ERROR: gettingError + 'results',
 		GETTING_USER_ERROR: gettingError + 'user',
 		PASSWORDS_ERROR: 'Passwords do not match',
 		TAKEN_LOGIN_ERROR: 'This login is already taken',
@@ -52,6 +53,7 @@ app.constant('REST', (function() {
 	var service = '/service';
 	return {
 		BOOKS: service + '/books',
+		SEARCH: service + '/search',
 		UPLOAD: service + '/upload',
 		USERS: service + '/users'
 	}

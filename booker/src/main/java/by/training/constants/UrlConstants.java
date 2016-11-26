@@ -32,6 +32,7 @@ public abstract class URLConstants {
         private static final String SERVICE    = "/service";
 
         public static final String  BOOKS_URL  = SERVICE + "/books";
+        public static final String  SEARCH_URL = SERVICE + "/search";
         public static final String  UPLOAD_URL = SERVICE + "/upload";
         public static final String  USERS_URL  = SERVICE + "/users";
 

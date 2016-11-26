@@ -1,5 +1,5 @@
 'use strict';
-app.controller('BooksController', function($state, STATE, BooksFactory, FlashService, PaginationService) {
+app.controller('BooksController', function($state, STATE, BooksFactory, SearchFactory, FlashService, PaginationService) {
 
 	var self = this;
 
@@ -81,7 +81,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, FlashSer
 	}
 
 	function getSearchResult(query, page) {
-		BooksFactory.getSearchResult(query, page, function(response) {
+		SearchFactory.getSearchResult(query, page, function(response) {
 			if (response.success) {
 				var resp = response.data;
 				self.results = resp;

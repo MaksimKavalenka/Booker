@@ -89,6 +89,7 @@ public class SecuritySpringConfiguration extends WebSecurityConfigurerAdapter {
         urlRegistry.antMatchers(Page.UPLOAD_BOOKS_URL).hasRole(ROLE_USER.toString());
 
         urlRegistry.antMatchers(Rest.BOOKS_URL + ANY).permitAll();
+        urlRegistry.antMatchers(Rest.SEARCH_URL + ANY).permitAll();
         urlRegistry.antMatchers(Rest.UPLOAD_URL + ANY).hasRole(ROLE_USER.toString());
         urlRegistry.antMatchers(Rest.USERS_URL + ANY).permitAll();
 

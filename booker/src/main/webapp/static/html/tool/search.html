@@ -1,5 +1,29 @@
 <form class="form-search" ng-keyup="ctrl.search($event.keyCode)" ng-blur="ctrl.show(false)">
 	<input type="text" class="input-search" ng-model="ctrl.search.query" ng-click="ctrl.show(true)" placeholder="Search">
+	<input type="checkbox" ng-model="ctrl.facet"/>
+	<div ng-show="ctrl.facet">
+		<div class="facet">
+			<div class="title">Authors</div>
+			<div ng-repeat="author in ctrl.facets.author">
+				<input type="checkbox" ng-model="ctrl.query.facet.author" value="{{author.name}}"/>
+				<label>{{author.name}}</label>
+			</div>
+		</div>
+		<div class="facet">
+			<div class="title">Publishers</div>
+			<div ng-repeat="publisher in ctrl.facets.publisher">
+				<input type="checkbox" ng-model="ctrl.query.facet.publisher" value="publisher.name"/>
+				<label>{{publisher.name}}</label>
+			</div>
+		</div>
+		<div class="facet">
+			<div class="title">Uploaders</div>
+			<div ng-repeat="uploader in ctrl.facets.uploader">
+				<input type="checkbox" ng-model="ctrl.query.facet.uploader" value="uploader.name"/>
+				<label>{{uploader.name}}</label>
+			</div>
+		</div>
+	</div>
 	<div class="suggestions">
 		<div class="suggestion" ng-repeat="suggestion in ctrl.suggestions" ui-sref="search({query: suggestion})">{{suggestion}}</div>
 	</div>

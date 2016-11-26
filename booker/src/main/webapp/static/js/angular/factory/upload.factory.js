@@ -19,21 +19,8 @@ app.service('UploadFactory', function($http, MESSAGE, REST) {
 		});
 	}
 
-	function getProgress(callback) {
-		$http.post(REST.UPLOAD + '/progress')
-		.success(function(response) {
-			var data = {success: true, data: response};
-			callback(data);
-		})
-		.error(function(response) {
-			response = {success: false, message: MESSAGE.GETTING_PROGRESS_ERROR};
-			callback(response);
-		});
-	}
-
 	return {
-		uploadFile: uploadFile,
-		getProgress: getProgress
+		uploadFile: uploadFile
 	};
 
 });

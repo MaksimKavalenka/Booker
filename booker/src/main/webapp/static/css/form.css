@@ -32,6 +32,18 @@ form {
 	background: #ccad00;
 	color: #ffffff;
 }
+.form-search .facet {
+	display: table-cell;
+	padding: 20px 50px;
+}
+.form-search .facet > * {
+	display: block;
+}
+.form-search .facet .title {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 8px 0;
+}
 .form-submit {
 	margin: 50px 0;
 	text-align: center;

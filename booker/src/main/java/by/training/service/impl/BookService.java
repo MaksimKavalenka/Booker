@@ -13,7 +13,7 @@ import by.training.common.Order;
 import by.training.common.RequestHeader;
 import by.training.common.SolrURI;
 import by.training.common.WriterType;
-import by.training.parser.SolrJSONParser;
+import by.training.parser.solr.json.SolrJSONBookParser;
 import by.training.service.dao.BookServiceDAO;
 
 @Service("bookService")
@@ -30,7 +30,7 @@ public class BookService implements BookServiceDAO {
         solrUri.setWriterType(WriterType.JSON);
 
         RestTemplate restTemplate = new RestTemplate();
-        return SolrJSONParser
+        return SolrJSONBookParser
                 .getBooksResponse(restTemplate.getForObject(solrUri.toString(), String.class));
     }
 
@@ -59,7 +59,7 @@ public class BookService implements BookServiceDAO {
                 String.class);
         String contentResponse = restTemplate.getForObject(solrContentUri.toString(), String.class);
 
-        return SolrJSONParser.getBookCustomResponse(metadataResponse, contentResponse);
+        return SolrJSONBookParser.getBookCustomResponse(metadataResponse, contentResponse);
     }
 
     @Override
@@ -71,37 +71,7 @@ public class BookService implements BookServiceDAO {
         solrUri.setWriterType(WriterType.JSON);
 
         RestTemplate restTemplate = new RestTemplate();
-        return SolrJSONParser.getBookStandardResponse(
-                restTemplate.getForObject(solrUri.toString(), String.class));
-    }
-
-    @Override
-    public String getSearchResultJson(String query, long page) {
-        SolrURI solrUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
-        solrUri.setFieldList(ContentFields.CONTENT, ContentFields.METADATA_ID, ContentFields.PAGE,
-                MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
-                MetadataFields.TITLE);
-        solrUri.setHighlight(true);
-        solrUri.setHighlightedFields(ContentFields.CONTENT, MetadataFields.AUTHOR,
-                MetadataFields.DESCRIPTION, MetadataFields.TITLE);
-        solrUri.setShards(CONTENT_CORE_URI, METADATA_CORE_URI);
-        solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
-        solrUri.setQuery(query);
-        solrUri.setWriterType(WriterType.JSON);
-
-        RestTemplate restTemplate = new RestTemplate();
-        return SolrJSONParser.getSearchResultResponse(
-                restTemplate.getForObject(solrUri.toString(), String.class));
-    }
-
-    @Override
-    public String getSuggestionsJson(String query) {
-        SolrURI solrUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SUGGEST);
-        solrUri.setQuery(query);
-        solrUri.setWriterType(WriterType.JSON);
-
-        RestTemplate restTemplate = new RestTemplate();
-        return SolrJSONParser.getSuggestionsResponse(
+        return SolrJSONBookParser.getBookStandardResponse(
                 restTemplate.getForObject(solrUri.toString(), String.class));
     }
 

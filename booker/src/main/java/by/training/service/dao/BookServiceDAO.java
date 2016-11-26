@@ -8,8 +8,4 @@ public interface BookServiceDAO {
 
     String getBookStandardJson(String id);
 
-    String getSearchResultJson(String query, long page);
-
-    String getSuggestionsJson(String query);
-
 }

@@ -1,4 +1,4 @@
-package by.training.controller.rest;
+package by.training.controller;
 
 import static by.training.constants.UploadConstants.*;
 import static by.training.constants.URLConstants.Rest.UPLOAD_URL;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import by.training.bean.ErrorMessage;
@@ -28,10 +27,9 @@ import by.training.solr.uploader.SolrUploadable;
 import by.training.utility.Secure;
 import by.training.utility.Utility;
 
-@RestController
 @MultipartConfig
 @RequestMapping(UPLOAD_URL)
-public class UploadRestController {
+public class UploadController {
 
     @Autowired
     @Qualifier("epubSolrUploader")
@@ -63,11 +61,6 @@ public class UploadRestController {
             return new ResponseEntity<Object>(new ErrorMessage(e.getMessage()),
                     HttpStatus.CONFLICT);
         }
-    }
-
-    @RequestMapping(value = "/progress", method = RequestMethod.POST)
-    public ResponseEntity<Integer> getUploadProgress() {
-        return new ResponseEntity<Integer>(uploadable.getProgress(), HttpStatus.OK);
     }
 
 }

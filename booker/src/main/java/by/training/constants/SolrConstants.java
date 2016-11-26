@@ -46,6 +46,8 @@ public abstract class SolrConstants {
     public static abstract class Key {
 
         public static final String DOCS_KEY         = "docs";
+        public static final String FACET_COUNTS_KEY = "facet_counts";
+        public static final String FACET_FIELDS_KEY = "facet_fields";
         public static final String HIGHLIGHTING_KEY = "highlighting";
         public static final String MAX_SCORE        = "maxScore";
         public static final String NUM_FOUND_KEY    = "numFound";
@@ -59,6 +61,8 @@ public abstract class SolrConstants {
 
     public static abstract class Query {
 
+        public static final String FACET              = "facet";
+        public static final String FACETED_FIELDS     = FACET + ".field";
         public static final String FIELD_LIST         = "fl";
         public static final String FILTER_QUERY       = "fq";
         public static final String HIGHLIGHT          = "hl";
