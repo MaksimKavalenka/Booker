@@ -82,12 +82,14 @@ public class SecuritySpringConfiguration extends WebSecurityConfigurerAdapter {
 
         urlRegistry.antMatchers("/").permitAll();
         urlRegistry.antMatchers(Page.REGISTER_URL).permitAll();
-        urlRegistry.antMatchers(Page.SEARCH_URL).permitAll();
+        urlRegistry.antMatchers(Page.SEARCH_URL + ANY).permitAll();
+        urlRegistry.antMatchers(Page.UPLOADS_URL + ANY).hasRole(ROLE_USER.toString());
 
         urlRegistry.antMatchers(Page.BOOKS_URL).permitAll();
         urlRegistry.antMatchers(Page.BOOK_URL + ANY).permitAll();
         urlRegistry.antMatchers(Page.UPLOAD_BOOKS_URL).hasRole(ROLE_USER.toString());
 
+        urlRegistry.antMatchers(Rest.BOOK_STATUS_URL + ANY).hasRole(ROLE_USER.toString());
         urlRegistry.antMatchers(Rest.BOOKS_URL + ANY).permitAll();
         urlRegistry.antMatchers(Rest.SEARCH_URL + ANY).permitAll();
         urlRegistry.antMatchers(Rest.UPLOAD_URL + ANY).hasRole(ROLE_USER.toString());

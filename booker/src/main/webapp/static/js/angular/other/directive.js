@@ -1,6 +1,6 @@
 'use strict';
-var fileRequired = 'fileRequired';
-var fileModel = 'fileModel';
+var ngFileRequired = 'ngFileRequired';
+var ngFileModel = 'ngFileModel';
 var ngMatch = 'ngMatch';
 var ngModel = 'ngModel';
 var ngCheckLogin = 'ngCheckLogin';
@@ -45,7 +45,7 @@ app.directive(ngMatch, function() {
 	};
 });
 
-app.directive(fileRequired, function() {
+app.directive(ngFileRequired, function() {
 	return {
 		require: ngModel,
 		link: function(scope, element, attributes, controller) {
@@ -59,15 +59,30 @@ app.directive(fileRequired, function() {
 	}
 });
 
-app.directive(fileModel, ['$parse', function($parse) {
+app.directive(ngFileModel, ['$parse', function($parse) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attributes) {
-			var model = $parse(attributes.fileModel);
+			var model = $parse(attributes.ngFileModel);
+			var isMultiple = attributes.multiple;
 			var modelSetter = model.assign;
 			element.bind('change', function() {
+				var values = [];
+				angular.forEach(element[0].files, function(item) {
+					var value = {
+						name: item.name,
+						size: item.size,
+						url: URL.createObjectURL(item),
+						file: item
+					};
+					values.push(value);
+				});
 				scope.$apply(function() {
-					modelSetter(scope, element[0].files[0]);
+					if (isMultiple) {
+						modelSetter(scope, values);
+					} else {
+						modelSetter(scope, values[0]);
+					}
 				});
 			});
 		}

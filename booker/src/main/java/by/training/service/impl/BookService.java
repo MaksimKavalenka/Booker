@@ -2,6 +2,7 @@ package by.training.service.impl;
 
 import static by.training.constants.DefaultConstants.DEFAULT_PAGES_COUNT;
 import static by.training.constants.DefaultConstants.DEFAULT_ROWS_COUNT;
+import static by.training.constants.DelimiterConstants.SPACE_DELIMITER;
 import static by.training.constants.DefaultConstants.DEFAULT_QUERY;
 import static by.training.constants.SolrConstants.Core.*;
 import static by.training.constants.SolrConstants.Fields.*;
@@ -51,7 +52,8 @@ public class BookService implements BookServiceDAO {
         SolrURI solrContentUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
         solrContentUri.setFieldList(ContentFields.CONTENT, ContentFields.PAGE);
         solrContentUri.addFilterQuery(ContentFields.METADATA_ID, id);
-        solrContentUri.addFilterQuery(ContentFields.PAGE, "(" + page + " " + (page + 1) + ")");
+        solrContentUri.addFilterQuery(ContentFields.PAGE,
+                "(" + page + SPACE_DELIMITER + (page + 1) + ")");
         solrContentUri.setQuery(DEFAULT_QUERY);
         solrContentUri.setWriterType(WriterType.JSON);
 

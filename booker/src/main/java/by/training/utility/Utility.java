@@ -3,6 +3,7 @@ package by.training.utility;
 import static by.training.constants.MessageConstants.UPLOAD_FILE_ERROR_MESSAGE;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +27,16 @@ public abstract class Utility {
         } catch (IOException e) {
             throw new ValidationException(e.getMessage());
         }
+    }
+
+    public static void deleteFolder(String path) {
+        File folder = new File(path);
+        String[] entries = folder.list();
+        for (String entry : entries) {
+            File currentFile = new File(folder.getPath(), entry);
+            currentFile.delete();
+        }
+        folder.delete();
     }
 
 }

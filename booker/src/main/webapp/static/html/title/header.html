@@ -2,12 +2,19 @@
 	<ul class="navigation navbar-menu">
 		<li><a ui-sref="books">Books</a>
 		<li><a ui-sref="search">Search</a>
+		<li><a ui-sref="faceted_search">Faceted search</a>
 	</ul>
 	<ul class="navigation navbar-user" ng-if="!user">
 		<li><a ui-sref="login">Log in</a>
 	</ul>
 	<ul class="navigation navbar-user" ng-if="user">
 		<li><a ui-sref="upload_books">Upload books</a>
+		<li><a ui-href="#">My uploads</a>
+			<ul class="navigation navbar-user submenu">
+				<li><a ui-sref="successful_uploads">Successful</a></li>
+				<li><a ui-sref="unsuccessful_uploads">Unuccessful</a></li>
+			</ul>
+		</li>
 		<li><a ng-controller="UsersController as ctrl" ng-click="ctrl.logout()">Log out</a>
 	</ul>
 </div>

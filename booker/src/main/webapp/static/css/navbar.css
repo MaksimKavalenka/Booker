@@ -6,9 +6,11 @@
 	padding: 0;
 }
 .navigation > li {
+	background: #ffffff;
 	cursor: pointer;
 	display: inline-block;
 	font-family: "Berlin Sans FB";
+	position: relative;
 }
 .navigation > li > a,
 .navigation > li > button.link {
@@ -57,4 +59,12 @@
 .navbar-user > li:hover > button.link,
 .navbar-user > li:active > button.link {
 	color: #ffffff;
+}
+.navigation li > .submenu {
+	display: none;
+	position: absolute;
+}
+.navigation li:hover > .submenu,
+.navigation li:active > .submenu {
+	display: block;
 }

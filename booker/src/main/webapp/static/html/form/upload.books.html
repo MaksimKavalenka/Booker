@@ -2,12 +2,15 @@
 	<fieldset>
 		<legend>Upload books</legend>
 		<div class="field">
-			<label class="required" for="book">Book</label>
-			<input type="file" id="book" name="book" ng-model="ctrl.book" file-model="bookFile" required file-required/>
+			<label class="required" for="books">Book</label>
+			<input type="file" id="books" name="books" ng-model="ctrl.books" ng-file-model="bookFiles" ng-file-required required multiple/>
 		</div>
 		<div>
 			<button class="btn btn-success" ng-click="ctrl.uploadBooks()" ng-disabled="form.$invalid || form.name.$pending || ctrl.dataLoading">Submit</button>
 			<img ng-if="ctrl.dataLoading" src="/img/load.gif"/>
+			<div>Uploaded {{ctrl.filesUploaded}} of {{ctrl.filesCount}}</div>
+			<div>Successful uploads {{ctrl.successfulUploads}}</div>
+			<div>Unsuccessful uploads {{ctrl.unsuccessfulUploads}}</div>
 		</div>
 	</fieldset>
 </form>

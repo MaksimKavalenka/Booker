@@ -55,6 +55,18 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		templateUrl: PATH.RESULTS_CONTENT
 	};
 
+	var uploadsContent = {
+		controller: CONTROLLER.BOOK_STATUS_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.UPLOADS_CONTENT
+	};
+
+	var facetedSearchTool = {
+		controller: CONTROLLER.SEARCH_CONTROLLER,
+		controllerAs: CONTROLLER.CTRL,
+		templateUrl: PATH.FACETED_SEARCH_TOOL
+	};
+
 	var paginationTool = {
 		templateUrl: PATH.PAGINATION_TOOL
 	};
@@ -90,15 +102,30 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		title: TITLE.SEARCH,
 		url: URL.SEARCH,
 		params: {
-			chosenFacets: undefined,
-			facets: undefined,
 			page: '1',
-			query: '',
-			queryFacets: undefined
+			query: ''
 		},
 		views: {
 			header: header,
 			search: searchTool,
+			pagination: paginationTool,
+			content: resultsContent,
+			footer: footer
+		}
+	})
+
+	.state(STATE.FACETED_SEARCH, {
+		title: TITLE.FACETED_SEARCH,
+		url: URL.FACETED_SEARCH,
+		params: {
+			chosenFacets: undefined,
+			facets: undefined,
+			page: '1',
+			queryFacets: undefined
+		},
+		views: {
+			header: header,
+			search: facetedSearchTool,
 			pagination: paginationTool,
 			content: resultsContent,
 			footer: footer
@@ -111,6 +138,26 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		views: {
 			header: header,
 			content: uploadBooksForm,
+			footer: footer
+		}
+	})
+
+	.state(STATE.SUCCESSFUL_UPLOADS, {
+		title: TITLE.SUCCESSFUL_UPLOADS,
+		url: URL.SUCCESSFUL_UPLOADS,
+		views: {
+			header: header,
+			content: uploadsContent,
+			footer: footer
+		}
+	})
+
+	.state(STATE.UNSUCCESSFUL_UPLOADS, {
+		title: TITLE.UNSUCCESSFUL_UPLOADS,
+		url: URL.UNSUCCESSFUL_UPLOADS,
+		views: {
+			header: header,
+			content: uploadsContent,
 			footer: footer
 		}
 	})

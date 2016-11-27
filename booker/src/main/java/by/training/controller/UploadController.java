@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import by.training.bean.ErrorMessage;
+import by.training.entity.BookStatusEntity;
 import by.training.exception.SecureException;
 import by.training.exception.UploadException;
 import by.training.exception.ValidationException;
+import by.training.service.dao.BookStatusServiceDAO;
 import by.training.solr.uploader.SolrUploadable;
 import by.training.utility.Secure;
 import by.training.utility.Utility;
@@ -34,16 +36,20 @@ import by.training.utility.Utility;
 public class UploadController {
 
     @Autowired
+    private BookStatusServiceDAO bookStatusServise;
+
+    @Autowired
     @Qualifier("epubSolrUploader")
-    private SolrUploadable uploadable;
+    private SolrUploadable       uploadable;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Object> uploadFile(
             @RequestParam(value = "file") MultipartFile multipartFile) {
-        try {
-            String fileName = multipartFile.getOriginalFilename();
+        String id = "";
+        String fileName = multipartFile.getOriginalFilename();
 
-            String id = Secure.encodeFilePassword(multipartFile.getInputStream());
+        try {
+            id = Secure.encodeFilePassword(multipartFile.getInputStream());
             String directoryPath = Path.BOOKS + "/" + id;
             String filePath = directoryPath + "/" + fileName;
 
@@ -57,9 +63,15 @@ public class UploadController {
             }
 
             uploadable.upload(directoryPath, fileName, id, Secure.getLoggedUser().getLogin());
+            bookStatusServise
+                    .createBookStatus(new BookStatusEntity(fileName, true, Secure.getLoggedUser()));
 
             return new ResponseEntity<Object>(HttpStatus.OK);
         } catch (IOException | SecureException | UploadException | ValidationException e) {
+            Utility.deleteFolder(Path.BOOKS + "/" + id);
+            bookStatusServise.createBookStatus(
+                    new BookStatusEntity(fileName, false, e.getMessage(), Secure.getLoggedUser()));
+
             return new ResponseEntity<Object>(new ErrorMessage(e.getMessage()),
                     HttpStatus.CONFLICT);
         }

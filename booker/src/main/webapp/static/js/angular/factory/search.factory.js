@@ -17,12 +17,12 @@ app.factory('SearchFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
-	function getFacetedSearchResult(query, page, facets, callback) {
-		if (!ValidatorService.allNotEmpty(callback, query, page, facets)) {
+	function getFacetedSearchResult(page, facets, callback) {
+		if (!ValidatorService.allNotEmpty(callback, page, facets)) {
 			return;
 		}
 
-		$http.get(REST.SEARCH + '/faceted?query=' + query + '&page=' + page + '&facets=' + facets)
+		$http.get(REST.SEARCH + '/faceted?&page=' + page + '&facets=' + facets)
 		.success(function(response) {
 			var data = {success: true, data: response};
 			callback(data);

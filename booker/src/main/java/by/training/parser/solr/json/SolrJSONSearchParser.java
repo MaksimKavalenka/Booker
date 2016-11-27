@@ -1,11 +1,13 @@
 package by.training.parser.solr.json;
 
 import static by.training.constants.DefaultConstants.DEFAULT_ROWS_COUNT;
+import static by.training.constants.DelimiterConstants.SPACE_DELIMITER;
 import static by.training.constants.SolrConstants.Key.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import by.training.common.SolrURI;
 import by.training.constants.SolrConstants.Fields.ContentFields;
 import by.training.constants.SolrConstants.Fields.MetadataFields;
 
@@ -75,6 +77,21 @@ public class SolrJSONSearchParser {
         setFacetArray(facetFields, MetadataFields.UPLOADER);
 
         return facetFields.toString();
+    }
+
+    public static void addFacetToSolrUri(SolrURI solrUri, String facetsJson, String field) {
+        JSONObject jsonObject = new JSONObject(facetsJson);
+
+        if (!jsonObject.isNull(field) && jsonObject.getJSONArray(field).length() > 0) {
+            JSONArray jsonArray = jsonObject.getJSONArray(field);
+
+            StringBuilder condition = new StringBuilder(jsonArray.getString(0));
+            for (int i = 1; i < jsonArray.length(); i++) {
+                condition.append(SPACE_DELIMITER).append(jsonArray.getString(i));
+            }
+
+            solrUri.addFilterQuery(field, condition.toString());
+        }
     }
 
     private static void setHighlight(JSONObject doc, JSONObject highlight, String field) {

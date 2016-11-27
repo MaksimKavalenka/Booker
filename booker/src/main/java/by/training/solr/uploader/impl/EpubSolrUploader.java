@@ -2,6 +2,7 @@ package by.training.solr.uploader.impl;
 
 import static by.training.constants.DefaultConstants.DEFAULT_SYMBOLS_COUNT;
 import static by.training.constants.DelimiterConstants.SPACE_DELIMITER;
+import static by.training.constants.MessageConstants.NO_COVER_IMAGE_MESSAGE;
 import static by.training.constants.SolrConstants.Core.*;
 
 import java.io.BufferedInputStream;
@@ -55,6 +56,8 @@ public class EpubSolrUploader implements SolrUploadable {
 
             try (InputStream bookInputStream = book.getCoverImage().getInputStream()) {
                 Utility.uploadFile(book.getCoverImage().getInputStream(), directoryPath + "/" + id);
+            } catch (NullPointerException e) {
+                throw new ValidationException(NO_COVER_IMAGE_MESSAGE);
             }
 
             try (SolrClient contentClient = new HttpSolrClient(CONTENT_CORE_URI);

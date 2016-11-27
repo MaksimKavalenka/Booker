@@ -14,6 +14,13 @@ app.controller('SearchController', function($state, STATE, SearchFactory, FlashS
 		}
 	};
 
+	self.facetedSearch = function() {
+		var facets = getChosenFasets();
+		if (facets !== undefined) {
+			$state.go(STATE.FACETED_SEARCH, {facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
+		}
+	};
+
 	self.show = function(show) {
 		if (show) {
 			if (self.suggestions !== undefined) {
@@ -42,9 +49,10 @@ app.controller('SearchController', function($state, STATE, SearchFactory, FlashS
 		switch ($state.current.name) {
 			case STATE.SEARCH:
 				self.search.query = $state.params.query;
+				break;
+			case STATE.FACETED_SEARCH:
 				if ($state.params.facets !== undefined) {
 					self.facets = $state.params.queryFacets;
-					self.facetEnable = true;
 					self.chosenFacets = $state.params.chosenFacets;
 				} else {
 					getFacets();
