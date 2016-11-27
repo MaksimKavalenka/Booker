@@ -24,6 +24,7 @@ public class BookService implements BookServiceDAO {
         SolrURI solrUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
         solrUri.setFieldList(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
                 MetadataFields.TITLE);
+        solrUri.setRows(DEFAULT_ROWS_COUNT);
         solrUri.setSorting(MetadataFields.UPLOAD_DATE, Order.DESC);
         solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
         solrUri.setQuery(DEFAULT_QUERY);

@@ -28,6 +28,7 @@ public class SearchService implements SearchServiceDAO {
         solrUri.setHighlight(true);
         solrUri.setHighlightedFields(ContentFields.CONTENT, MetadataFields.AUTHOR,
                 MetadataFields.DESCRIPTION, MetadataFields.TITLE);
+        solrUri.setRows(DEFAULT_ROWS_COUNT);
         solrUri.setShards(CONTENT_CORE_URI, METADATA_CORE_URI);
         solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
         solrUri.setQuery(query);

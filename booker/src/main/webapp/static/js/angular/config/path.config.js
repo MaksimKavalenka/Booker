@@ -90,8 +90,11 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		title: TITLE.SEARCH,
 		url: URL.SEARCH,
 		params: {
+			chosenFacets: undefined,
+			facets: undefined,
 			page: '1',
-			query: ''
+			query: '',
+			queryFacets: undefined
 		},
 		views: {
 			header: header,

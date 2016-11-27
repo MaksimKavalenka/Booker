@@ -17,6 +17,22 @@ app.factory('SearchFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
+	function getFacetedSearchResult(query, page, facets, callback) {
+		if (!ValidatorService.allNotEmpty(callback, query, page, facets)) {
+			return;
+		}
+
+		$http.get(REST.SEARCH + '/faceted?query=' + query + '&page=' + page + '&facets=' + facets)
+		.success(function(response) {
+			var data = {success: true, data: response};
+			callback(data);
+		})
+		.error(function(response) {
+			response = {success: false, message: MESSAGE.GETTING_RESULTS_ERROR};
+			callback(response);
+		});
+	}
+
 	function getSuggestions(query, callback) {
 		if (!ValidatorService.allNotEmpty(callback, query)) {
 			return;
@@ -47,6 +63,7 @@ app.factory('SearchFactory', function($http, MESSAGE, REST, ValidatorService) {
 
 	return {
 		getSearchResult: getSearchResult,
+		getFacetedSearchResult: getFacetedSearchResult,
 		getSuggestions: getSuggestions,
 		getFacets: getFacets
 	};

@@ -85,21 +85,11 @@ public class SolrJSONSearchParser {
     }
 
     private static void setFacetArray(JSONObject facetFields, String field) {
-        final String NAME = "name";
-        final String VALUE = "value";
-
         if (!facetFields.isNull(field)) {
-            JSONArray jsonArray = new JSONArray();
-
-            JSONArray authors = facetFields.getJSONArray(field);
-            for (int i = 0; i < authors.length(); i = i + 2) {
-                JSONObject author = new JSONObject();
-                author.put(NAME, authors.getString(i));
-                author.put(VALUE, authors.getLong(i + 1));
-                jsonArray.put(author);
+            JSONArray array = facetFields.getJSONArray(field);
+            for (int i = 1; i < array.length(); i++) {
+                array.remove(i);
             }
-
-            facetFields.put(field, jsonArray);
         }
     }
 

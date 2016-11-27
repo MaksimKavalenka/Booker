@@ -97,7 +97,7 @@ public class SolrURI {
         StringBuilder _fieldList = new StringBuilder(fieldList[0]);
 
         int size = fieldList.length;
-        for (int i = 0; i < size; i++) {
+        for (int i = 1; i < size; i++) {
             _fieldList.append(COMMA_DELIMITER).append(fieldList[i]);
         }
 
@@ -218,7 +218,7 @@ public class SolrURI {
         StringBuilder _shards = new StringBuilder(shards[0]);
 
         int size = shards.length;
-        for (int i = 0; i < size; i++) {
+        for (int i = 1; i < size; i++) {
             _shards.append(COMMA_DELIMITER).append(shards[i]);
         }
 
