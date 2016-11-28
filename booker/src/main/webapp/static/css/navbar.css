@@ -11,6 +11,7 @@
 	display: inline-block;
 	font-family: "Berlin Sans FB";
 	position: relative;
+	z-index: 10;
 }
 .navigation > li > a,
 .navigation > li > button.link {
