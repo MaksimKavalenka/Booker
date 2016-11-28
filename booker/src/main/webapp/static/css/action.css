@@ -7,3 +7,12 @@
 	background-image: url('../img/action/book-viewer-active.svg');
 	background-repeat: no-repeat;
 }
+.action-download {
+	background-image: url('../img/action/download.svg');
+	background-repeat: no-repeat;
+}
+.action-download:hover,
+.action-download:active {
+	background-image: url('../img/action/download-active.svg');
+	background-repeat: no-repeat;
+}

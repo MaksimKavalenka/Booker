@@ -50,6 +50,21 @@ public class SolrJSONSearchParser {
         return response.toString();
     }
 
+    public static String getFacetedSearchResultResponse(String json) {
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject response = jsonObject.getJSONObject(RESPONSE_KEY);
+
+        int page = response.getInt(START_KEY) / DEFAULT_ROWS_COUNT + 1;
+        response.put(ContentFields.PAGE, page);
+        response.remove(START_KEY);
+
+        int pagesCount = (int) Math
+                .ceil((double) response.getInt(NUM_FOUND_KEY) / DEFAULT_ROWS_COUNT);
+        response.put(MetadataFields.PAGES_COUNT, pagesCount);
+
+        return response.toString();
+    }
+
     public static String getSuggestionsResponse(String json) {
         String response = "";
         JSONObject jsonObject = new JSONObject(json);

@@ -9,6 +9,7 @@ app.controller('UploadController', function($scope, UploadFactory) {
 		self.successfulUploads = 0;
 		self.unsuccessfulUploads = 0;
 		self.dataLoading = true;
+		self.status = true;
 
 		for (var i = 0; i < self.filesCount; i++) {
 			uploadFile($scope.bookFiles[i].file);
@@ -18,16 +19,17 @@ app.controller('UploadController', function($scope, UploadFactory) {
 	function uploadFile(file) {
 		UploadFactory.uploadFile(file, function(response) {
 			if (response.success) {
+				++self.filesUploaded;
 				++self.successfulUploads;
 			} else {
+				++self.filesUploaded;
 				++self.unsuccessfulUploads;
 			}
-		});
-		++self.filesUploaded;
 
-		if (self.filesUploaded === self.filesCount) {
-			self.dataLoading = false;
-		}
+			if (self.filesUploaded === self.filesCount) {
+				self.dataLoading = false;
+			}
+		});
 	}
 
 });

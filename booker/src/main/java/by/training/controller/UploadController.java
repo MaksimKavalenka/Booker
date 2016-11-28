@@ -1,5 +1,6 @@
 package by.training.controller;
 
+import static by.training.constants.MessageConstants.UPLOAD_BOOK_ERROR_MESSAGE;
 import static by.training.constants.UploadConstants.*;
 import static by.training.constants.URLConstants.Rest.UPLOAD_URL;
 
@@ -50,6 +51,10 @@ public class UploadController {
 
         try {
             id = Secure.encodeFilePassword(multipartFile.getInputStream());
+            if (bookStatusServise.checkBookStatuses(id)) {
+                throw new ValidationException(UPLOAD_BOOK_ERROR_MESSAGE);
+            }
+
             String directoryPath = Path.BOOKS + "/" + id;
             String filePath = directoryPath + "/" + fileName;
 
@@ -63,14 +68,22 @@ public class UploadController {
             }
 
             uploadable.upload(directoryPath, fileName, id, Secure.getLoggedUser().getLogin());
-            bookStatusServise
-                    .createBookStatus(new BookStatusEntity(fileName, true, Secure.getLoggedUser()));
+            bookStatusServise.createBookStatus(
+                    new BookStatusEntity(id, fileName, true, null, Secure.getLoggedUser()));
 
             return new ResponseEntity<Object>(HttpStatus.OK);
-        } catch (IOException | SecureException | UploadException | ValidationException e) {
+
+        } catch (IOException | SecureException | UploadException e) {
             Utility.deleteFolder(Path.BOOKS + "/" + id);
-            bookStatusServise.createBookStatus(
-                    new BookStatusEntity(fileName, false, e.getMessage(), Secure.getLoggedUser()));
+            bookStatusServise.createBookStatus(new BookStatusEntity(id, fileName, false,
+                    e.getMessage(), Secure.getLoggedUser()));
+
+            return new ResponseEntity<Object>(new ErrorMessage(e.getMessage()),
+                    HttpStatus.CONFLICT);
+
+        } catch (ValidationException e) {
+            bookStatusServise.createBookStatus(new BookStatusEntity(id, fileName, false,
+                    e.getMessage(), Secure.getLoggedUser()));
 
             return new ResponseEntity<Object>(new ErrorMessage(e.getMessage()),
                     HttpStatus.CONFLICT);

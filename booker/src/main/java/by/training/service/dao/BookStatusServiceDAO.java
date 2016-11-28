@@ -8,8 +8,12 @@ public interface BookStatusServiceDAO {
 
     BookStatusEntity createBookStatus(BookStatusEntity bookStatus);
 
+    void deleteUnsuccessfulBookStatuses(long uploaderId);
+
     List<BookStatusEntity> getSuccessfulBookStatuses(long uploaderId);
 
     List<BookStatusEntity> getUnsuccessfulBookStatuses(long uploaderId);
+
+    boolean checkBookStatuses(String id);
 
 }

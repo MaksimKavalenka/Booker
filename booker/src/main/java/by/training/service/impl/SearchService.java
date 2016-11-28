@@ -42,12 +42,8 @@ public class SearchService implements SearchServiceDAO {
     @Override
     public String getFacetedSearchResultJson(long page, String facets) {
         SolrURI solrUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
-        solrUri.setFieldList(ContentFields.CONTENT, ContentFields.METADATA_ID, ContentFields.PAGE,
-                MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
+        solrUri.setFieldList(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
                 MetadataFields.TITLE);
-        solrUri.setHighlight(true);
-        solrUri.setHighlightedFields(ContentFields.CONTENT, MetadataFields.AUTHOR,
-                MetadataFields.DESCRIPTION, MetadataFields.TITLE);
         solrUri.setRows(DEFAULT_ROWS_COUNT);
         solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
         solrUri.setQuery(DEFAULT_QUERY);
@@ -58,7 +54,7 @@ public class SearchService implements SearchServiceDAO {
         SolrJSONSearchParser.addFacetToSolrUri(solrUri, facets, MetadataFields.UPLOADER);
 
         RestTemplate restTemplate = new RestTemplate();
-        return SolrJSONSearchParser.getSearchResultResponse(
+        return SolrJSONSearchParser.getFacetedSearchResultResponse(
                 restTemplate.getForObject(solrUri.toString(), String.class));
     }
 

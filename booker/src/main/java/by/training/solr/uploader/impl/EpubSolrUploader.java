@@ -14,6 +14,7 @@ import java.text.ParseException;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
@@ -154,8 +155,8 @@ public class EpubSolrUploader implements SolrUploadable {
                 metadataClient.commit(true, true);
             }
 
-        } catch (IOException | ParseException | SAXException | SolrServerException | TikaException
-                | ValidationException e) {
+        } catch (IOException | ParseException | RemoteSolrException | SAXException
+                | SolrServerException | TikaException | ValidationException e) {
             throw new UploadException(e.getMessage());
         }
     }

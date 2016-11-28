@@ -2,20 +2,22 @@
 app.constant('CONTROLLER', (function() {
 	return {
 		CTRL: 'ctrl',
+		BOOK_CONTROLLER: 'BookController',
 		BOOK_STATUS_CONTROLLER: 'BookStatusController',
-		BOOKS_CONTROLLER: 'BooksController',
 		SEARCH_CONTROLLER: 'SearchController',
 		UPLOAD_CONTROLLER: 'UploadController',
-		USERS_CONTROLLER: 'UsersController'
+		USER_CONTROLLER: 'UserController'
 	}
 })());
 
 app.constant('MESSAGE', (function() {
 	var creatingError = 'Error while creating ';
+	var deletingError = 'Error while deleting ';
 	var gettingError = 'Error while getting ';
 	return {
 		AUTHENTICATION_ERROR: 'Login or password is wrong',
 		CREATING_BOOK_STATUS_ERROR: creatingError + 'book status',
+		DELETING_BOOK_STATUS_ERROR: deletingError + 'book status',
 		FILE_UPLOADING_SUCCESS: 'File has been uploaded successfully',
 		GETTING_BOOK_STATUS_ERROR: gettingError + 'book status',
 		GETTING_BOOKS_ERROR: gettingError + 'books',

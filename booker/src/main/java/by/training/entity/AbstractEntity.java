@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
-    private static final long serialVersionUID = 3264493145457775657L;
+    private static final long serialVersionUID = -6107927586005815990L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +19,10 @@ public abstract class AbstractEntity implements Serializable {
     private long              id;
 
     public AbstractEntity() {
+    }
+
+    public AbstractEntity(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -31,9 +35,9 @@ public abstract class AbstractEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = (int) (prime * result + (id ^ (id >>> 32)));
+        result = prime * result + (int) (id ^ (id >>> 32));
         return result;
     }
 

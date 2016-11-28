@@ -1,7 +1,7 @@
 <div class="viewer">
 	<div class="action" ng-click="ctrl.prevPage()">‹</div>
 	<div class="area pages justify">
-		<div ng-repeat="content in ctrl.book.content">{{content.content}}</div>
+		<div ng-repeat="content in ctrl.book.content" ng-bind-html="content.content"></div>
 	</div>
 	<div class="action" ng-click="ctrl.nextPage()">›</div>
 </div>

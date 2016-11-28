@@ -4,6 +4,7 @@ app.controller('BookStatusController', function($state, STATE, BookStatusFactory
 	var self = this;
 
 	self.clear = function() {
+		deleteUnsuccessfulBookStatuses();
 	};
 
 	function init() {
@@ -12,9 +13,20 @@ app.controller('BookStatusController', function($state, STATE, BookStatusFactory
 				getSuccessfulBookStatuses();
 				break;
 			case STATE.UNSUCCESSFUL_UPLOADS:
+				self.unsuccessful = true;
 				getUnsuccessfulBookStatuses();
 				break;
 		}
+	}
+
+	function deleteUnsuccessfulBookStatuses() {
+		BookStatusFactory.deleteUnsuccessfulBookStatuses(function(response) {
+			if (response.success) {
+				self.uploads = undefined;
+			} else {
+				FlashService.error(response.message);
+			}
+		});
 	}
 
 	function getSuccessfulBookStatuses() {

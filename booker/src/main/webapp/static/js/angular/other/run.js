@@ -1,5 +1,5 @@
 'use strict';
-app.run(function($cookies, $rootScope, $state, STATE, UsersFactory, FlashService) {
+app.run(function($cookies, $rootScope, $state, STATE, UserFactory, FlashService) {
 
 	$rootScope.$state = $state;
 
@@ -7,7 +7,7 @@ app.run(function($cookies, $rootScope, $state, STATE, UsersFactory, FlashService
 		FlashService.clearFlashMessage(0);
 	});
 
-	UsersFactory.getUser(function(response) {
+	UserFactory.getUser(function(response) {
 		if (response.success) {
 			if (response.data !== null) {
 				$rootScope.user = {id: response.data.id};

@@ -1,12 +1,12 @@
 'use strict';
-app.controller('UsersController', function($rootScope, $state, STATE, UsersFactory, FlashService) {
+app.controller('UserController', function($rootScope, $state, STATE, UserFactory, FlashService) {
 
 	var self = this;
 	var currentLogin = "";
 
 	self.login = function() {
 		self.dataLoading = true;
-		UsersFactory.authentication(self.user.login, self.user.password, function(response) {
+		UserFactory.authentication(self.user.login, self.user.password, function(response) {
 			if (response.success) {
 				$rootScope.user = {id: response.data.id};
 				$state.go(STATE.BOOKS);
@@ -19,9 +19,11 @@ app.controller('UsersController', function($rootScope, $state, STATE, UsersFacto
 
 	self.logout = function() {
 		$rootScope.user = null;
-		UsersFactory.logout();
+		UserFactory.logout();
 		switch ($state.current.name) {
 			case STATE.UPLOAD_BOOKS:
+			case STATE.SUCCESSFUL_UPLOADS:
+			case STATE.UNSUCCESSFUL_UPLOADS:
 				$state.go(STATE.BOOKS);
 				break;
 			default:
@@ -31,7 +33,7 @@ app.controller('UsersController', function($rootScope, $state, STATE, UsersFacto
 
 	self.register = function() {
 		self.dataLoading = true;
-		UsersFactory.createUser(self.user.login, self.user.password, self.user.confirmPassword, function(response) {
+		UserFactory.createUser(self.user.login, self.user.password, self.user.confirmPassword, function(response) {
 			if (response.success) {
 				self.login();
 			} else {

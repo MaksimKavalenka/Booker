@@ -23,6 +23,18 @@ app.factory('BookStatusFactory', function($http, MESSAGE, REST, ValidatorService
 		});
 	}
 
+	function deleteUnsuccessfulBookStatuses(callback) {
+		$http.delete(REST.BOOK_STATUS + '/unsuccessful')
+		.success(function(response) {
+			var data = {success: true, data: response};
+			callback(data);
+		})
+		.error(function(response) {
+			response = {success: false, message: MESSAGE.DELETING_BOOK_STATUS_ERROR};
+			callback(response);
+		});
+	}
+
 	function getSuccessfulBookStatuses(callback) {
 		$http.get(REST.BOOK_STATUS + '/successful')
 		.success(function(response) {
@@ -49,6 +61,7 @@ app.factory('BookStatusFactory', function($http, MESSAGE, REST, ValidatorService
 
 	return {
 		createBookStatus: createBookStatus,
+		deleteUnsuccessfulBookStatuses: deleteUnsuccessfulBookStatuses,
 		getSuccessfulBookStatuses: getSuccessfulBookStatuses,
 		getUnsuccessfulBookStatuses: getUnsuccessfulBookStatuses
 	};

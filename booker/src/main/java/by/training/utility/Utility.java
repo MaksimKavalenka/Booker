@@ -9,11 +9,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import by.training.exception.ValidationException;
+import by.training.exception.UploadException;
 
 public abstract class Utility {
 
-    public static void uploadFile(InputStream in, String path) throws ValidationException {
+    public static void uploadFile(InputStream in, String path) throws UploadException {
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(path))) {
             int read = 0;
             byte[] bytes = new byte[1024];
@@ -23,9 +23,9 @@ public abstract class Utility {
             }
 
         } catch (FileNotFoundException e) {
-            throw new ValidationException(UPLOAD_FILE_ERROR_MESSAGE);
+            throw new UploadException(UPLOAD_FILE_ERROR_MESSAGE);
         } catch (IOException e) {
-            throw new ValidationException(e.getMessage());
+            throw new UploadException(e.getMessage());
         }
     }
 

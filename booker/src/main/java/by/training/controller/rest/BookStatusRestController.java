@@ -1,5 +1,6 @@
 package by.training.controller.rest;
 
+import static by.training.constants.URLConstants.Key.ID_KEY;
 import static by.training.constants.URLConstants.Rest.BOOK_STATUS_URL;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,18 +40,30 @@ public class BookStatusRestController {
         return new ResponseEntity<Object>(HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/unsuccessful", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteUnsuccessfulBookStatuses() {
+        bookStatusServise.deleteUnsuccessfulBookStatuses(Secure.getLoggedUser().getId());
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/successful", method = RequestMethod.GET)
-    public ResponseEntity<List<BookStatusEntity>> getSuccessfulUploads() {
-        List<BookStatusEntity> successfulUploads = bookStatusServise
+    public ResponseEntity<List<BookStatusEntity>> getSuccessfulBookStatuses() {
+        List<BookStatusEntity> successfulBookStatuses = bookStatusServise
                 .getSuccessfulBookStatuses(Secure.getLoggedUser().getId());
-        return new ResponseEntity<List<BookStatusEntity>>(successfulUploads, HttpStatus.OK);
+        return new ResponseEntity<List<BookStatusEntity>>(successfulBookStatuses, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/unsuccessful", method = RequestMethod.GET)
-    public ResponseEntity<List<BookStatusEntity>> getUnsuccessfulUploads() {
-        List<BookStatusEntity> unsuccessfulUploads = bookStatusServise
+    public ResponseEntity<List<BookStatusEntity>> getUnsuccessfulBookStatuses() {
+        List<BookStatusEntity> unsuccessfulBookStatuses = bookStatusServise
                 .getUnsuccessfulBookStatuses(Secure.getLoggedUser().getId());
-        return new ResponseEntity<List<BookStatusEntity>>(unsuccessfulUploads, HttpStatus.OK);
+        return new ResponseEntity<List<BookStatusEntity>>(unsuccessfulBookStatuses, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/check" + ID_KEY, method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkBookStatus(@PathVariable("id") String id) {
+        boolean existsBookStatus = bookStatusServise.checkBookStatuses(id);
+        return new ResponseEntity<Boolean>(existsBookStatus, HttpStatus.OK);
     }
 
 }

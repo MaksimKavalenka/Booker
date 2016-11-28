@@ -14,7 +14,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 	};
 
 	var loginForm = {
-		controller: CONTROLLER.USERS_CONTROLLER,
+		controller: CONTROLLER.USER_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
 		templateUrl: PATH.LOGIN_FORM
 	};
@@ -26,31 +26,31 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 	};
 
 	var registerForm = {
-		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controller: CONTROLLER.USER_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
-		templateUrl: PATH.RESULT_CONTENT
+		templateUrl: PATH.REGISTER_FORM
 	};
 
 	var bookCustomContent = {
-		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controller: CONTROLLER.BOOK_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
 		templateUrl: PATH.BOOK_CUSTOM_CONTENT
 	};
 
 	var bookStandardContent = {
-		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controller: CONTROLLER.BOOK_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
 		templateUrl: PATH.BOOK_STANDARD_CONTENT
 	};
 
 	var booksContent = {
-		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controller: CONTROLLER.BOOK_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
 		templateUrl: PATH.BOOKS_CONTENT
 	};
 
 	var resultsContent = {
-		controller: CONTROLLER.BOOKS_CONTROLLER,
+		controller: CONTROLLER.BOOK_CONTROLLER,
 		controllerAs: CONTROLLER.CTRL,
 		templateUrl: PATH.RESULTS_CONTENT
 	};
@@ -180,6 +180,7 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		title: TITLE.BOOK,
 		url: URL.BOOK_CUSTOM,
 		params: {
+			content: undefined,
 			page: '1'
 		},
 		views: {

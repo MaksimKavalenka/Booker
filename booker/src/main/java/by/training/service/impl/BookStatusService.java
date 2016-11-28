@@ -21,6 +21,11 @@ public class BookStatusService implements BookStatusServiceDAO {
     }
 
     @Override
+    public void deleteUnsuccessfulBookStatuses(long uploaderId) {
+        repository.deleteByUploader_IdAndStatusFalse(uploaderId);
+    }
+
+    @Override
     public List<BookStatusEntity> getSuccessfulBookStatuses(long uploaderId) {
         return repository.findByUploader_IdAndStatusTrue(uploaderId);
     }
@@ -28,6 +33,11 @@ public class BookStatusService implements BookStatusServiceDAO {
     @Override
     public List<BookStatusEntity> getUnsuccessfulBookStatuses(long uploaderId) {
         return repository.findByUploader_IdAndStatusFalse(uploaderId);
+    }
+
+    @Override
+    public boolean checkBookStatuses(String id) {
+        return repository.checkBookStatus(id);
     }
 
 }

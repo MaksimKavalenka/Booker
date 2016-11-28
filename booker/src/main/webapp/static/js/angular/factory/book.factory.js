@@ -1,5 +1,5 @@
 'use strict';
-app.factory('BooksFactory', function($http, MESSAGE, REST, ValidatorService) {
+app.factory('BookFactory', function($http, MESSAGE, REST, ValidatorService) {
 
 	function getBooks(page, callback) {
 		if (!ValidatorService.allNotEmpty(callback, page)) {

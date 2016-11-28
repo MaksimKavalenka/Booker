@@ -10,7 +10,7 @@
 				<div class="link link-action action-book-viewer" ui-sref="book_custom({id: result.id})"></div>
 				<div class="link link-action link-empty"></div>
 				<div class="link link-action link-empty"></div>
-				<div class="link link-action link-empty"></div>
+				<a class="link link-action action-download" target="_self" href="book/{{book.id}}/{{book.fileName}}"></a>
 			</div>
 		</div>
 		<div class="info" ng-if="!result.metadataId">
@@ -22,10 +22,10 @@
 		<div class="body" ng-if="result.metadataId">
 			<a ui-sref="book_standard({id: result.metadataId})"><img ng-src="book/{{result.metadataId}}/{{result.metadataId}}"></a>
 			<div class="body-link">
-				<div class="link link-action action-book-viewer" ui-sref="book_custom({id: result.metadataId, page: result.page})"></div>
+				<div class="link link-action action-book-viewer" ui-sref="book_custom({id: result.metadataId, page: result.page, content: result.content})"></div>
 				<div class="link link-action link-empty"></div>
 				<div class="link link-action link-empty"></div>
-				<div class="link link-action link-empty"></div>
+				<a class="link link-action action-download" target="_self" href="book/{{book.id}}/{{book.fileName}}"></a>
 			</div>
 		</div>
 		<div class="info" ng-if="result.metadataId">

@@ -1,5 +1,5 @@
 'use strict';
-app.controller('BooksController', function($state, STATE, BooksFactory, SearchFactory, FlashService, PaginationService) {
+app.controller('BookController', function($state, STATE, BookFactory, SearchFactory, FlashService, PaginationService) {
 
 	var self = this;
 
@@ -7,7 +7,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, SearchFa
 		var id = $state.params.id;
 		var page = self.book.content[0].page - 1;
 		if (page > 0) {
-			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page});
+			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page, content: undefined});
 		}
 	};
 
@@ -15,7 +15,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, SearchFa
 		var id = $state.params.id;
 		var page = self.book.content[self.book.content.length - 1].page + 1;
 		if (page <= self.book.pagesCount) {
-			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page});
+			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page, content: undefined});
 		}
 	};
 
@@ -42,9 +42,10 @@ app.controller('BooksController', function($state, STATE, BooksFactory, SearchFa
 				getBooks(page);
 				break;
 			case STATE.BOOK_CUSTOM:
+				var content = $state.params.content;
 				var id = $state.params.id;
 				var page = $state.params.page;
-				getBookCustom(id, page);
+				getBookCustom(id, page, content);
 				break;
 			case STATE.BOOK_STANDARD:
 				var id = $state.params.id;
@@ -54,7 +55,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, SearchFa
 	}
 
 	function getBooks(page) {
-		BooksFactory.getBooks(page, function(response) {
+		BookFactory.getBooks(page, function(response) {
 			if (response.success) {
 				var resp = response.data;
 				self.books = resp.docs;
@@ -65,12 +66,19 @@ app.controller('BooksController', function($state, STATE, BooksFactory, SearchFa
 		});
 	}
 
-	function getBookCustom(id, page) {
-		BooksFactory.getBookCustom(id, page, function(response) {
+	function getBookCustom(id, page, content) {
+		BookFactory.getBookCustom(id, page, function(response) {
 			if (response.success) {
 				var data = response.data;
 				$state.current.title = data.title;
 				self.book = data;
+				if (content !== undefined) {
+					for (var i = 0; i < self.book.content.length; i++) {
+						if (self.book.content[i].page == page) {
+							self.book.content[i].content = content;
+						}
+					}
+				}
 			} else {
 				FlashService.error(response.message);
 			}
@@ -78,7 +86,7 @@ app.controller('BooksController', function($state, STATE, BooksFactory, SearchFa
 	}
 
 	function getBookStandard(id) {
-		BooksFactory.getBookStandard(id, function(response) {
+		BookFactory.getBookStandard(id, function(response) {
 			if (response.success) {
 				var data = response.data;
 				$state.current.title = data.title;

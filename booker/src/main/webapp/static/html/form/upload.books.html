@@ -8,9 +8,9 @@
 		<div>
 			<button class="btn btn-success" ng-click="ctrl.uploadBooks()" ng-disabled="form.$invalid || form.name.$pending || ctrl.dataLoading">Submit</button>
 			<img ng-if="ctrl.dataLoading" src="/img/load.gif"/>
-			<div>Uploaded {{ctrl.filesUploaded}} of {{ctrl.filesCount}}</div>
-			<div>Successful uploads {{ctrl.successfulUploads}}</div>
-			<div>Unsuccessful uploads {{ctrl.unsuccessfulUploads}}</div>
+			<div ng-if="ctrl.status">Uploaded {{ctrl.filesUploaded}} of {{ctrl.filesCount}}</div>
+			<div ng-if="ctrl.status">Successful uploads {{ctrl.successfulUploads}}</div>
+			<div ng-if="ctrl.status">Unsuccessful uploads {{ctrl.unsuccessfulUploads}}</div>
 		</div>
 	</fieldset>
 </form>
