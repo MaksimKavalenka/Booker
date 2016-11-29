@@ -5,19 +5,23 @@ app.controller('SearchController', function($state, STATE, SearchFactory, FlashS
 
 	self.search = function(keyCode) {
 		var query = self.search.query;
-		if (query !== '') {
-			if (keyCode === 13) {
-				$state.go(STATE.SEARCH, {query: query, facets: getChosenFasets(), chosenFacets: self.chosenFacets, queryFacets: self.facets});
-			} else if ((keyCode === -1) || (keyCode === 8) || (keyCode === 46) || ((keyCode >= 48) && (keyCode <= 57)) || ((keyCode >= 65) && (keyCode <= 90))) {
+		if (keyCode === 13) {
+			var facets = getChosenFasets();
+			if (facets !== undefined) {
+				if (query !== '') {
+					$state.go(STATE.SEARCH, {query: query, page: 1, facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
+				} else {
+					$state.go(STATE.SEARCH, {page: 1, facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
+				}
+			} else {
+				if (query !== '') {
+					$state.go(STATE.SEARCH, {query: query, page: 1, queryFacets: self.facets});
+				}
+			}
+		} else if ((keyCode === -1) || (keyCode === 8) || (keyCode === 46) || ((keyCode >= 48) && (keyCode <= 57)) || ((keyCode >= 65) && (keyCode <= 90))) {
+			if (query !== '') {
 				getSuggestions(self.search.query);
 			}
-		}
-	};
-
-	self.facetedSearch = function() {
-		var facets = getChosenFasets();
-		if (facets !== undefined) {
-			$state.go(STATE.FACETED_SEARCH, {facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
 		}
 	};
 
@@ -39,18 +43,10 @@ app.controller('SearchController', function($state, STATE, SearchFactory, FlashS
 		}
 	};
 
-	self.facetDisable = function() {
-		if (!self.facetEnable) {
-			self.chosenFacets = undefined;
-		}
-	};
-
 	function init() {
 		switch ($state.current.name) {
 			case STATE.SEARCH:
 				self.search.query = $state.params.query;
-				break;
-			case STATE.FACETED_SEARCH:
 				if ($state.params.facets !== undefined) {
 					self.facets = $state.params.queryFacets;
 					self.chosenFacets = $state.params.chosenFacets;

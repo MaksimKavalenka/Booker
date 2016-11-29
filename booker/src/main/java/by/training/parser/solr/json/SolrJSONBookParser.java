@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import by.training.constants.SolrConstants.Fields.ContentFields;
 import by.training.constants.SolrConstants.Fields.MetadataFields;
 
-public class SolrJSONBookParser {
+public abstract class SolrJSONBookParser {
 
     public static String getBooksResponse(String metadataJson) {
         JSONObject jsonObject = new JSONObject(metadataJson);

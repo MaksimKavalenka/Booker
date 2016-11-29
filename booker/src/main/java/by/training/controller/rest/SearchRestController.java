@@ -26,11 +26,19 @@ public class SearchRestController {
         return new ResponseEntity<String>(searchResult, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/faceted", params = {"page", "facets"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getFacetedSearchResult(@Param("page") long page,
-            @Param("facets") String facets) {
-        String facetedSearchResult = searchService.getFacetedSearchResultJson(page, facets);
-        return new ResponseEntity<String>(facetedSearchResult, HttpStatus.OK);
+    @RequestMapping(value = "", params = {"query", "facets", "page"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getFacetedSearchResult(@Param("query") String query,
+            @Param("facets") String facets, @Param("page") long page) {
+        String searchResult = searchService.getFacetedSearchResultJson(query, facets, page);
+        return new ResponseEntity<String>(searchResult, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "", params = {"facets", "page"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getFacetedSearchResult(@Param("facets") String facets,
+            @Param("page") long page) {
+        System.out.println(facets);
+        String searchResult = searchService.getFacetedSearchResultJson(facets, page);
+        return new ResponseEntity<String>(searchResult, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/suggest", params = "query", method = RequestMethod.GET)

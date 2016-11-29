@@ -1,17 +1,15 @@
 package by.training.parser.solr.json;
 
 import static by.training.constants.DefaultConstants.DEFAULT_ROWS_COUNT;
-import static by.training.constants.DelimiterConstants.SPACE_DELIMITER;
 import static by.training.constants.SolrConstants.Key.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import by.training.common.SolrURI;
 import by.training.constants.SolrConstants.Fields.ContentFields;
 import by.training.constants.SolrConstants.Fields.MetadataFields;
 
-public class SolrJSONSearchParser {
+public abstract class SolrJSONSearchParser {
 
     public static String getSearchResultResponse(String json) {
         JSONObject jsonObject = new JSONObject(json);
@@ -86,27 +84,17 @@ public class SolrJSONSearchParser {
         JSONObject jsonObject = new JSONObject(json);
         JSONObject facetCounts = jsonObject.getJSONObject(FACET_COUNTS_KEY);
         JSONObject facetFields = facetCounts.getJSONObject(FACET_FIELDS_KEY);
+        JSONObject facetRanges = facetCounts.getJSONObject(FACET_RANGES_KEY);
 
         setFacetArray(facetFields, MetadataFields.AUTHOR);
         setFacetArray(facetFields, MetadataFields.PUBLISHER);
         setFacetArray(facetFields, MetadataFields.UPLOADER);
 
+        setFacetArrayDates(facetRanges, MetadataFields.CREATION_DATE);
+        setFacetArrayDates(facetRanges, MetadataFields.PUBLICATION_DATE);
+        setFacetArrayDates(facetRanges, MetadataFields.UPLOAD_DATE);
+
         return facetFields.toString();
-    }
-
-    public static void addFacetToSolrUri(SolrURI solrUri, String facetsJson, String field) {
-        JSONObject jsonObject = new JSONObject(facetsJson);
-
-        if (!jsonObject.isNull(field) && jsonObject.getJSONArray(field).length() > 0) {
-            JSONArray jsonArray = jsonObject.getJSONArray(field);
-
-            StringBuilder condition = new StringBuilder(jsonArray.getString(0));
-            for (int i = 1; i < jsonArray.length(); i++) {
-                condition.append(SPACE_DELIMITER).append(jsonArray.getString(i));
-            }
-
-            solrUri.addFilterQuery(field, condition.toString());
-        }
     }
 
     private static void setHighlight(JSONObject doc, JSONObject highlight, String field) {
@@ -120,6 +108,21 @@ public class SolrJSONSearchParser {
         if (!facetFields.isNull(field)) {
             JSONArray array = facetFields.getJSONArray(field);
             for (int i = 1; i < array.length(); i++) {
+                array.remove(i);
+            }
+        }
+    }
+
+    private static void setFacetArrayDates(JSONObject facetRanges, String field) {
+        if (!facetRanges.isNull(field)) {
+            JSONObject dates = facetRanges.getJSONObject(field);
+
+            JSONArray array = dates.getJSONArray(COUNTS_KEY);
+            for (int i = 1; i < array.length(); i++) {
+                if (array.getLong(i) == 0) {
+                    array.remove(i - 1);
+                    --i;
+                }
                 array.remove(i);
             }
         }

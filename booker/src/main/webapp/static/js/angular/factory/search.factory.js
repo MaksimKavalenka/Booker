@@ -17,12 +17,28 @@ app.factory('SearchFactory', function($http, MESSAGE, REST, ValidatorService) {
 		});
 	}
 
-	function getFacetedSearchResult(page, facets, callback) {
-		if (!ValidatorService.allNotEmpty(callback, page, facets)) {
+	function getFacetedQuerySearchResult(query, facets, page, callback) {
+		if (!ValidatorService.allNotEmpty(callback, query, facets, page)) {
 			return;
 		}
 
-		$http.get(REST.SEARCH + '/faceted?&page=' + page + '&facets=' + facets)
+		$http.get(REST.SEARCH + '?query=' + query + '&facets=' + facets + '&page=' + page)
+		.success(function(response) {
+			var data = {success: true, data: response};
+			callback(data);
+		})
+		.error(function(response) {
+			response = {success: false, message: MESSAGE.GETTING_RESULTS_ERROR};
+			callback(response);
+		});
+	}
+
+	function getFacetedSearchResult(facets, page, callback) {
+		if (!ValidatorService.allNotEmpty(callback, facets, page)) {
+			return;
+		}
+
+		$http.get(REST.SEARCH + '?facets=' + facets + '&page=' + page)
 		.success(function(response) {
 			var data = {success: true, data: response};
 			callback(data);
@@ -63,6 +79,7 @@ app.factory('SearchFactory', function($http, MESSAGE, REST, ValidatorService) {
 
 	return {
 		getSearchResult: getSearchResult,
+		getFacetedQuerySearchResult: getFacetedQuerySearchResult,
 		getFacetedSearchResult: getFacetedSearchResult,
 		getSuggestions: getSuggestions,
 		getFacets: getFacets

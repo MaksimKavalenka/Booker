@@ -89,6 +89,42 @@ public class SolrURI {
         queries.remove(FACETED_FIELDS);
     }
 
+    public String getFacetRangeEnd() {
+        return queries.get(FACET_RANGE_END);
+    }
+
+    public void setFacetRangeEnd(String endDate) {
+        queries.put(FACET_RANGE_END, endDate);
+    }
+
+    public void removeFacetRangeEnd() {
+        queries.remove(FACET_RANGE_END);
+    }
+
+    public String getFacetRangeGap() {
+        return queries.get(FACET_RANGE_GAP);
+    }
+
+    public void setFacetRangeGap(String gap) {
+        queries.put(FACET_RANGE_GAP, gap);
+    }
+
+    public void removeFacetRangeGap() {
+        queries.remove(FACET_RANGE_GAP);
+    }
+
+    public String getFacetRangeStart() {
+        return queries.get(FACET_RANGE_START);
+    }
+
+    public void setFacetRangeStart(String startDate) {
+        queries.put(FACET_RANGE_START, startDate);
+    }
+
+    public void removeFacetRangeStart() {
+        queries.remove(FACET_RANGE_START);
+    }
+
     public String getFieldList() {
         return queries.get(FIELD_LIST);
     }
@@ -195,6 +231,43 @@ public class SolrURI {
 
     public void removeHighlightedFields() {
         queries.remove(HIGHLIGHTED_FIELDS);
+    }
+
+    public String getRangeFacetedFields() {
+        return queries.get(FACET_RANGE);
+    }
+
+    public void setRangeFacetedFields(String... rangeFacetedFields) {
+        StringBuilder _rangeFacetedFields = new StringBuilder(rangeFacetedFields[0]);
+
+        int size = rangeFacetedFields.length;
+        for (int i = 1; i < size; i++) {
+            _rangeFacetedFields.append(AMPERSAND_DELIMITER).append(FACET_RANGE)
+                    .append(EQUAL_DELIMITER).append(rangeFacetedFields[i]);
+        }
+
+        queries.put(FACET_RANGE, _rangeFacetedFields.toString());
+    }
+
+    public void addRangeFacetedFields(String... rangeFacetedFields) {
+        String _rangeFacetedFields = queries.get(FACET_RANGE);
+        if (_rangeFacetedFields != null) {
+            StringBuilder __rangeFacetedFields = new StringBuilder();
+
+            int size = rangeFacetedFields.length;
+            for (int i = 0; i < size; i++) {
+                __rangeFacetedFields.append(AMPERSAND_DELIMITER).append(FACET_RANGE)
+                        .append(EQUAL_DELIMITER).append(rangeFacetedFields[i]);
+            }
+
+            queries.put(FACET_RANGE, _rangeFacetedFields + __rangeFacetedFields);
+        } else {
+            setFacetedFields(rangeFacetedFields);
+        }
+    }
+
+    public void removeRangeFacetedFields() {
+        queries.remove(FACET_RANGE);
     }
 
     public long getRows() {

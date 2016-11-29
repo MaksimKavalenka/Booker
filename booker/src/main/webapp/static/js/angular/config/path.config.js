@@ -61,12 +61,6 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		templateUrl: PATH.UPLOADS_CONTENT
 	};
 
-	var facetedSearchTool = {
-		controller: CONTROLLER.SEARCH_CONTROLLER,
-		controllerAs: CONTROLLER.CTRL,
-		templateUrl: PATH.FACETED_SEARCH_TOOL
-	};
-
 	var paginationTool = {
 		templateUrl: PATH.PAGINATION_TOOL
 	};
@@ -102,30 +96,15 @@ app.config(function($stateProvider, $urlRouterProvider, CONTROLLER, PATH, STATE,
 		title: TITLE.SEARCH,
 		url: URL.SEARCH,
 		params: {
-			page: '1',
-			query: ''
-		},
-		views: {
-			header: header,
-			search: searchTool,
-			pagination: paginationTool,
-			content: resultsContent,
-			footer: footer
-		}
-	})
-
-	.state(STATE.FACETED_SEARCH, {
-		title: TITLE.FACETED_SEARCH,
-		url: URL.FACETED_SEARCH,
-		params: {
 			chosenFacets: undefined,
 			facets: undefined,
 			page: '1',
+			query: '',
 			queryFacets: undefined
 		},
 		views: {
 			header: header,
-			search: facetedSearchTool,
+			search: searchTool,
 			pagination: paginationTool,
 			content: resultsContent,
 			footer: footer

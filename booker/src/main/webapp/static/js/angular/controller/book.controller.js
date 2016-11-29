@@ -24,17 +24,21 @@ app.controller('BookController', function($state, STATE, BookFactory, SearchFact
 
 		switch ($state.current.name) {
 			case STATE.SEARCH:
-				var page = $state.params.page;
-				var query = $state.params.query;
-				if (query !== '') {
-					getSearchResult(query, page);
-				}
-				break;
-			case STATE.FACETED_SEARCH:
+				var chosenFacets = $state.params.chosenFacets;
 				var facets = $state.params.facets;
 				var page = $state.params.page;
+				var query = $state.params.query;
+				var queryFacets = $state.params.queryFacets;
 				if (facets !== undefined) {
-					getFacetedSearchResult(page, angular.toJson(facets));
+					if (query !== '') {
+						getFacetedQuerySearchResult(query, facets, page);
+					} else {
+						getFacetedSearchResult(facets, page);
+					}
+				} else {
+					if (query !== '') {
+						getSearchResult(query, page);
+					}
 				}
 				break;
 			case STATE.BOOKS:
@@ -109,8 +113,20 @@ app.controller('BookController', function($state, STATE, BookFactory, SearchFact
 		});
 	}
 
-	function getFacetedSearchResult(page, facets) {
-		SearchFactory.getFacetedSearchResult(page, facets, function(response) {
+	function getFacetedQuerySearchResult(query, facets, page) {
+		SearchFactory.getFacetedQuerySearchResult(query, angular.toJson(facets), page, function(response) {
+			if (response.success) {
+				var resp = response.data;
+				self.results = resp;
+				PaginationService.setPages($state.current.name, resp.page, resp.pagesCount);
+			} else {
+				FlashService.error(response.message);
+			}
+		});
+	}
+
+	function getFacetedSearchResult(facets, page) {
+		SearchFactory.getFacetedSearchResult(angular.toJson(facets), page, function(response) {
 			if (response.success) {
 				var resp = response.data;
 				self.results = resp;

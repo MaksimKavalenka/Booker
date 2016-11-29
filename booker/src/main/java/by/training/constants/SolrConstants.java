@@ -45,9 +45,11 @@ public abstract class SolrConstants {
 
     public static abstract class Key {
 
+        public static final String COUNTS_KEY       = "counts";
         public static final String DOCS_KEY         = "docs";
         public static final String FACET_COUNTS_KEY = "facet_counts";
         public static final String FACET_FIELDS_KEY = "facet_fields";
+        public static final String FACET_RANGES_KEY = "facet_ranges";
         public static final String HIGHLIGHTING_KEY = "highlighting";
         public static final String MAX_SCORE        = "maxScore";
         public static final String NUM_FOUND_KEY    = "numFound";
@@ -62,6 +64,10 @@ public abstract class SolrConstants {
     public static abstract class Query {
 
         public static final String FACET              = "facet";
+        public static final String FACET_RANGE        = FACET + ".range";
+        public static final String FACET_RANGE_END    = FACET_RANGE + ".end";
+        public static final String FACET_RANGE_GAP    = FACET_RANGE + ".gap";
+        public static final String FACET_RANGE_START  = FACET_RANGE + ".start";
         public static final String FACETED_FIELDS     = FACET + ".field";
         public static final String FIELD_LIST         = "fl";
         public static final String FILTER_QUERY       = "fq";

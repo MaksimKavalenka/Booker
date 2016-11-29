@@ -4,7 +4,9 @@ public interface SearchServiceDAO {
 
     String getSearchResultJson(String query, long page);
 
-    String getFacetedSearchResultJson(long page, String facets);
+    String getFacetedSearchResultJson(String query, String facets, long page);
+
+    String getFacetedSearchResultJson(String facets, long page);
 
     String getSuggestionsJson(String query);
 

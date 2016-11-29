@@ -49,7 +49,6 @@ app.constant('PATH', (function() {
 		FOOTER: titlePath + '/footer' + htmlExt,
 		HEADER: titlePath + '/header' + htmlExt,
 		WELCOME_HEADER: titlePath + '/welcome.header' + htmlExt,
-		FACETED_SEARCH_TOOL: toolPath + '/faceted.search' + htmlExt,
 		PAGINATION_TOOL: toolPath + '/pagination' + htmlExt,
 		SEARCH_TOOL: toolPath + '/search' + htmlExt
 	}
@@ -69,12 +68,10 @@ app.constant('REST', (function() {
 app.constant('STATE', (function() {
 	var delimiter = '_';
 	var book = 'book';
-	var search = 'search';
 	return {
 		LOGIN: 'login',
 		REGISTER: 'register',
-		SEARCH: search,
-		FACETED_SEARCH: 'faceted' + delimiter + search,
+		SEARCH: 'search',
 		UPLOAD_BOOKS: 'upload_books',
 		SUCCESSFUL_UPLOADS: 'successful_uploads',
 		UNSUCCESSFUL_UPLOADS: 'unsuccessful_uploads',
@@ -93,7 +90,6 @@ app.constant('TITLE', (function() {
 		UNSUCCESSFUL_UPLOADS: 'Unsuccessful uploads',
 		BOOKS: 'Books',
 		BOOK: 'Book',
-		FACETED_SEARCH: 'Faceted search',
 		SEARCH: 'Search'
 	}
 })());
@@ -112,7 +108,6 @@ app.constant('URL', (function() {
 		LOGIN: '/login',
 		REGISTER: '/register',
 		SEARCH: searchUrl + '?' + queryKey + '&' + pageKey,
-		FACETED_SEARCH: searchUrl + '/faceted?' + pageKey,
 		UPLOAD_BOOKS: booksUrl + uploadOperation,
 		SUCCESSFUL_UPLOADS: uploadsUrl + '/successful',
 		UNSUCCESSFUL_UPLOADS: uploadsUrl + '/unsuccessful',

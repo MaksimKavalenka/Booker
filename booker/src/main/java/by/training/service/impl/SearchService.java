@@ -1,5 +1,8 @@
 package by.training.service.impl;
 
+import static by.training.constants.DefaultConstants.DEFAULT_DATE_END;
+import static by.training.constants.DefaultConstants.DEFAULT_DATE_START;
+import static by.training.constants.DefaultConstants.DEFAULT_GAP;
 import static by.training.constants.DefaultConstants.DEFAULT_ROWS_COUNT;
 import static by.training.constants.DefaultConstants.DEFAULT_QUERY;
 import static by.training.constants.SolrConstants.Core.CONTENT_CORE_URI;
@@ -13,6 +16,7 @@ import by.training.common.SolrURI;
 import by.training.common.WriterType;
 import by.training.constants.SolrConstants.Fields.ContentFields;
 import by.training.constants.SolrConstants.Fields.MetadataFields;
+import by.training.parser.solr.json.SolrJSONParser;
 import by.training.parser.solr.json.SolrJSONSearchParser;
 import by.training.service.dao.SearchServiceDAO;
 
@@ -21,26 +25,114 @@ public class SearchService implements SearchServiceDAO {
 
     @Override
     public String getSearchResultJson(String query, long page) {
-        SolrURI solrUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
-        solrUri.setFieldList(ContentFields.CONTENT, ContentFields.METADATA_ID, ContentFields.PAGE,
-                MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
+        SolrURI solrMetadataUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
+        solrMetadataUri.setFieldList(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION,
+                MetadataFields.ID, MetadataFields.TITLE);
+        solrMetadataUri.setHighlight(true);
+        solrMetadataUri.setHighlightedFields(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION,
                 MetadataFields.TITLE);
-        solrUri.setHighlight(true);
-        solrUri.setHighlightedFields(ContentFields.CONTENT, MetadataFields.AUTHOR,
-                MetadataFields.DESCRIPTION, MetadataFields.TITLE);
-        solrUri.setRows(DEFAULT_ROWS_COUNT);
-        solrUri.setShards(CONTENT_CORE_URI, METADATA_CORE_URI);
-        solrUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
-        solrUri.setQuery(query);
-        solrUri.setWriterType(WriterType.JSON);
+        solrMetadataUri.setRows(DEFAULT_ROWS_COUNT);
+        solrMetadataUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
+        solrMetadataUri.setQuery(query);
+        solrMetadataUri.setWriterType(WriterType.JSON);
 
         RestTemplate restTemplate = new RestTemplate();
-        return SolrJSONSearchParser.getSearchResultResponse(
-                restTemplate.getForObject(solrUri.toString(), String.class));
+        String metadataResponse = SolrJSONSearchParser.getSearchResultResponse(
+                restTemplate.getForObject(solrMetadataUri.toString(), String.class));
+
+        long docs = SolrJSONParser.getRowsCount(metadataResponse);
+        if (docs < DEFAULT_ROWS_COUNT) {
+            SolrURI solrContentUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
+            solrContentUri.setFieldList(ContentFields.CONTENT, ContentFields.ID,
+                    ContentFields.METADATA_ID, ContentFields.PAGE);
+            solrContentUri.setHighlight(true);
+            solrContentUri.setHighlightedFields(ContentFields.CONTENT);
+            solrContentUri.setQuery(query);
+            solrContentUri.setWriterType(WriterType.JSON);
+
+            long start = DEFAULT_ROWS_COUNT * (page - 1)
+                    - SolrJSONParser.getRowsCount(metadataResponse);
+            if (start < 0) {
+                solrContentUri.setRows(DEFAULT_ROWS_COUNT - docs);
+                solrContentUri.setStart(0);
+            } else {
+                solrContentUri.setRows(DEFAULT_ROWS_COUNT);
+                solrContentUri.setStart(start);
+            }
+
+            String contentResponse = SolrJSONSearchParser.getSearchResultResponse(
+                    restTemplate.getForObject(solrContentUri.toString(), String.class));
+            return SolrJSONParser.uniteResponses(metadataResponse, contentResponse);
+        }
+
+        return metadataResponse;
     }
 
     @Override
-    public String getFacetedSearchResultJson(long page, String facets) {
+    public String getFacetedSearchResultJson(String query, String facets, long page) {
+        SolrURI solrMetadataUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
+        solrMetadataUri.setFieldList(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION,
+                MetadataFields.ID, MetadataFields.TITLE);
+
+        solrMetadataUri.setHighlight(true);
+        solrMetadataUri.setHighlightedFields(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION,
+                MetadataFields.TITLE);
+        solrMetadataUri.setRows(DEFAULT_ROWS_COUNT);
+        solrMetadataUri.setStart(DEFAULT_ROWS_COUNT * (page - 1));
+        solrMetadataUri.setQuery(query);
+        solrMetadataUri.setWriterType(WriterType.JSON);
+
+        SolrJSONParser.addFacetToSolrUri(solrMetadataUri, facets, MetadataFields.AUTHOR);
+        SolrJSONParser.addFacetToSolrUri(solrMetadataUri, facets, MetadataFields.PUBLISHER);
+        SolrJSONParser.addFacetToSolrUri(solrMetadataUri, facets, MetadataFields.UPLOADER);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String metadataResponse = SolrJSONSearchParser.getSearchResultResponse(
+                restTemplate.getForObject(solrMetadataUri.toString(), String.class));
+
+        long docs = SolrJSONParser.getRowsCount(metadataResponse);
+        if (docs < DEFAULT_ROWS_COUNT) {
+            SolrURI solrIdUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
+            solrIdUri.setFieldList(MetadataFields.ID);
+            solrIdUri.setQuery(DEFAULT_QUERY);
+            solrIdUri.setWriterType(WriterType.JSON);
+
+            SolrJSONParser.addFacetToSolrUri(solrIdUri, facets, MetadataFields.AUTHOR);
+            SolrJSONParser.addFacetToSolrUri(solrIdUri, facets, MetadataFields.PUBLISHER);
+            SolrJSONParser.addFacetToSolrUri(solrIdUri, facets, MetadataFields.UPLOADER);
+
+            String ids = restTemplate.getForObject(solrIdUri.toString(), String.class);
+
+            SolrURI solrContentUri = new SolrURI(CONTENT_CORE_URI, RequestHeader.SELECT);
+            solrContentUri.setFieldList(ContentFields.CONTENT, ContentFields.ID,
+                    ContentFields.METADATA_ID, ContentFields.PAGE);
+            solrContentUri.setHighlight(true);
+            solrContentUri.setHighlightedFields(ContentFields.CONTENT);
+            solrContentUri.setQuery(query);
+            solrContentUri.setWriterType(WriterType.JSON);
+
+            SolrJSONParser.addIdToSolrUri(solrContentUri, ids);
+
+            long start = DEFAULT_ROWS_COUNT * (page - 1)
+                    - SolrJSONParser.getRowsCount(metadataResponse);
+            if (start < 0) {
+                solrContentUri.setRows(DEFAULT_ROWS_COUNT - docs);
+                solrContentUri.setStart(0);
+            } else {
+                solrContentUri.setRows(DEFAULT_ROWS_COUNT);
+                solrContentUri.setStart(start);
+            }
+
+            String contentResponse = SolrJSONSearchParser.getSearchResultResponse(
+                    restTemplate.getForObject(solrContentUri.toString(), String.class));
+            return SolrJSONParser.uniteResponses(metadataResponse, contentResponse);
+        }
+
+        return metadataResponse;
+    }
+
+    @Override
+    public String getFacetedSearchResultJson(String facets, long page) {
         SolrURI solrUri = new SolrURI(METADATA_CORE_URI, RequestHeader.SELECT);
         solrUri.setFieldList(MetadataFields.AUTHOR, MetadataFields.DESCRIPTION, MetadataFields.ID,
                 MetadataFields.TITLE);
@@ -49,9 +141,9 @@ public class SearchService implements SearchServiceDAO {
         solrUri.setQuery(DEFAULT_QUERY);
         solrUri.setWriterType(WriterType.JSON);
 
-        SolrJSONSearchParser.addFacetToSolrUri(solrUri, facets, MetadataFields.AUTHOR);
-        SolrJSONSearchParser.addFacetToSolrUri(solrUri, facets, MetadataFields.PUBLISHER);
-        SolrJSONSearchParser.addFacetToSolrUri(solrUri, facets, MetadataFields.UPLOADER);
+        SolrJSONParser.addFacetToSolrUri(solrUri, facets, MetadataFields.AUTHOR);
+        SolrJSONParser.addFacetToSolrUri(solrUri, facets, MetadataFields.PUBLISHER);
+        SolrJSONParser.addFacetToSolrUri(solrUri, facets, MetadataFields.UPLOADER);
 
         RestTemplate restTemplate = new RestTemplate();
         return SolrJSONSearchParser.getFacetedSearchResultResponse(
@@ -75,6 +167,14 @@ public class SearchService implements SearchServiceDAO {
         solrUri.setFacet(true);
         solrUri.setFacetedFields(MetadataFields.AUTHOR, MetadataFields.PUBLISHER,
                 MetadataFields.UPLOADER);
+
+        // solrUri.setRangeFacetedFields(MetadataFields.CREATION_DATE,
+        // MetadataFields.PUBLICATION_DATE,
+        // MetadataFields.UPLOAD_DATE);
+        // solrUri.setFacetRangeStart(DEFAULT_DATE_START);
+        // solrUri.setFacetRangeEnd(DEFAULT_DATE_END);
+        // solrUri.setFacetRangeGap(DEFAULT_GAP);
+
         solrUri.setQuery(DEFAULT_QUERY);
         solrUri.setWriterType(WriterType.JSON);
 
