@@ -1,8 +1,5 @@
 package by.training.service.impl;
 
-import static by.training.constants.DefaultConstants.DEFAULT_DATE_END;
-import static by.training.constants.DefaultConstants.DEFAULT_DATE_START;
-import static by.training.constants.DefaultConstants.DEFAULT_GAP;
 import static by.training.constants.DefaultConstants.DEFAULT_ROWS_COUNT;
 import static by.training.constants.DefaultConstants.DEFAULT_QUERY;
 import static by.training.constants.SolrConstants.Core.CONTENT_CORE_URI;
@@ -167,13 +164,6 @@ public class SearchService implements SearchServiceDAO {
         solrUri.setFacet(true);
         solrUri.setFacetedFields(MetadataFields.AUTHOR, MetadataFields.PUBLISHER,
                 MetadataFields.UPLOADER);
-
-        // solrUri.setRangeFacetedFields(MetadataFields.CREATION_DATE,
-        // MetadataFields.PUBLICATION_DATE,
-        // MetadataFields.UPLOAD_DATE);
-        // solrUri.setFacetRangeStart(DEFAULT_DATE_START);
-        // solrUri.setFacetRangeEnd(DEFAULT_DATE_END);
-        // solrUri.setFacetRangeGap(DEFAULT_GAP);
 
         solrUri.setQuery(DEFAULT_QUERY);
         solrUri.setWriterType(WriterType.JSON);

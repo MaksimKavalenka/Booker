@@ -5,7 +5,7 @@ app.controller('BookController', function($state, STATE, BookFactory, SearchFact
 
 	self.prevPage = function() {
 		var id = $state.params.id;
-		var page = self.book.content[0].page - 1;
+		var page = self.book.content[0].page - 2;
 		if (page > 0) {
 			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page, content: undefined});
 		}
@@ -13,7 +13,7 @@ app.controller('BookController', function($state, STATE, BookFactory, SearchFact
 
 	self.nextPage = function() {
 		var id = $state.params.id;
-		var page = self.book.content[self.book.content.length - 1].page + 1;
+		var page = self.book.content[0].page + 2;
 		if (page <= self.book.pagesCount) {
 			$state.go(STATE.BOOK_CUSTOM, {id: id, page: page, content: undefined});
 		}

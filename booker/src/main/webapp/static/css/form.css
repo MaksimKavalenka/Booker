@@ -3,10 +3,9 @@ form {
 }
 .form-search {
 	margin: 20px;
-	position: relative;
 }
-.form-search * {
-	display: inline;
+.form-search .search {
+	position: relative;
 }
 .form-search .input-search {
 	font-size: 18px;
@@ -27,10 +26,21 @@ form {
 	margin-top: -1px;
 	padding: 9px 15px;
 }
+.form-search .suggestion-active {
+	background: #ccad00;
+	color: #ffffff;
+}
 .form-search .suggestion:hover,
 .form-search .suggestion:active {
 	background: #ccad00;
 	color: #ffffff;
+}
+.form-search .btn-search {
+	bottom: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 1;
 }
 .form-search .facet {
 	display: table-cell;

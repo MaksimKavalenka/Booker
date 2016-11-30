@@ -46,17 +46,6 @@ hr.hr-menu {
 .justify > * {
 	vertical-align: middle;
 }
-.upload-info {
-	margin: 10px 30px;
-}
-.upload-info > * {
-	display: inline-block;
-}
-.upload-info .message {
-	color: #ff0000;
-	font-weight: bold;
-	margin-left: 25px;
-}
 .welcome-title {
 	color: #6b2f04;
 	font-size: 80px;

@@ -1,5 +1,5 @@
 <button class="btn btn-default" ng-if="ctrl.unsuccessful" ng-click="ctrl.clear()">Clear</button>
-<div class="upload-info" ng-repeat="status in ctrl.uploads">
+<div class="book-status" ng-repeat="status in ctrl.uploads">
 	<div>{{status.fileName}}</div>
 	<div class="message">{{status.message}}</div>
 </div>

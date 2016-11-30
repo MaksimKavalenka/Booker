@@ -2,26 +2,49 @@
 app.controller('SearchController', function($state, STATE, SearchFactory, FlashService) {
 
 	var self = this;
+	var suggestNumber;
+	var nodes;
 
 	self.search = function(keyCode) {
 		var query = self.search.query;
+
 		if (keyCode === 13) {
 			var facets = getChosenFasets();
 			if (facets !== undefined) {
 				if (query !== '') {
 					$state.go(STATE.SEARCH, {query: query, page: 1, facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
 				} else {
-					$state.go(STATE.SEARCH, {page: 1, facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
+					$state.go(STATE.SEARCH, {query: '', page: 1, facets: facets, chosenFacets: self.chosenFacets, queryFacets: self.facets});
 				}
 			} else {
 				if (query !== '') {
-					$state.go(STATE.SEARCH, {query: query, page: 1, queryFacets: self.facets});
+					$state.go(STATE.SEARCH, {query: query, page: 1, facets: undefined, chosenFacets: undefined, queryFacets: self.facets});
 				}
 			}
 		} else if ((keyCode === -1) || (keyCode === 8) || (keyCode === 46) || ((keyCode >= 48) && (keyCode <= 57)) || ((keyCode >= 65) && (keyCode <= 90))) {
 			if (query !== '') {
 				getSuggestions(self.search.query);
 			}
+		} else if (keyCode === 40) {
+			nodes[suggestNumber].className = 'suggestion';
+
+			++suggestNumber;
+			if (nodes.length <= suggestNumber) {
+				suggestNumber = 0;
+			}
+
+			self.search.query = self.suggestions[suggestNumber];
+			nodes[suggestNumber].className += ' suggestion-active';
+		} else if (keyCode === 38) {
+			nodes[suggestNumber].className = 'suggestion';
+
+			--suggestNumber;
+			if (suggestNumber < 0) {
+				suggestNumber = nodes.length - 1;
+			}
+
+			self.search.query = self.suggestions[suggestNumber];
+			nodes[suggestNumber].className += ' suggestion-active';
 		}
 	};
 
@@ -44,12 +67,17 @@ app.controller('SearchController', function($state, STATE, SearchFactory, FlashS
 	};
 
 	function init() {
+		document.getElementById('suggestions').onmouseover = function() {
+			nodes[suggestNumber].className = 'suggestion';
+		}
+
 		switch ($state.current.name) {
 			case STATE.SEARCH:
 				self.search.query = $state.params.query;
 				if ($state.params.facets !== undefined) {
 					self.facets = $state.params.queryFacets;
 					self.chosenFacets = $state.params.chosenFacets;
+					self.showFacets = true;
 				} else {
 					getFacets();
 				}
@@ -61,6 +89,8 @@ app.controller('SearchController', function($state, STATE, SearchFactory, FlashS
 		SearchFactory.getSuggestions(query, function(response) {
 			if (response.success) {
 				self.suggestions = response.data;
+				suggestNumber = self.suggestions.length - 1;
+				nodes = document.querySelector('.suggestions').children;
 			} else {
 				FlashService.error(response.message);
 			}

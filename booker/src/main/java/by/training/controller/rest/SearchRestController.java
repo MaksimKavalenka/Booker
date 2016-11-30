@@ -36,7 +36,6 @@ public class SearchRestController {
     @RequestMapping(value = "", params = {"facets", "page"}, method = RequestMethod.GET)
     public ResponseEntity<String> getFacetedSearchResult(@Param("facets") String facets,
             @Param("page") long page) {
-        System.out.println(facets);
         String searchResult = searchService.getFacetedSearchResultJson(facets, page);
         return new ResponseEntity<String>(searchResult, HttpStatus.OK);
     }

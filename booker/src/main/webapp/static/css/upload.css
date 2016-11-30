@@ -1,0 +1,23 @@
+.book-status {
+	margin: 10px 30px;
+}
+.book-status > * {
+	display: inline-block;
+}
+.book-status .message {
+	color: #ff0000;
+	font-weight: bold;
+	margin-left: 25px;
+}
+.upload {
+	margin: 15px;
+}
+.upload > * {
+	margin: 5px;
+}
+.upload .successful {
+	color: #00ff00;
+}
+.upload .unsuccessful {
+	color: #ff0000;
+}
